@@ -1,0 +1,7 @@
+# Para Python 3.11
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+numpy==2.4.6
+piper-tts==1.8.0
+pytest==8.3.4
+httpx==0.28.1
