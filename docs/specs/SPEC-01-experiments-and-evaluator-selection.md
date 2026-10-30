@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-06 | **RNF:** RNF-01, RNF-03, RNF-05, RNF-06, RNF-14  
 > **RT:** RT-02, RT-03, RT-04, RT-05, RT-06, RT-07  
 > **Módulo:** Evaluación | **Responsable:** C; A revisa operación y B contenido  
-> **Etapa:** E0–E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E0–E3 | **Iteración:** 1: protocolo y validación; 2: prueba final, Azure, RT-05 y RT-06 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -33,7 +33,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ### Fuera de esta iteración
 
-- Piloto longitudinal, participantes propios, certificación y afirmaciones de eficacia pedagógica.
+- Piloto longitudinal, participantes propios, certificación y afirmaciones de eficacia pedagógica. El corpus interno del equipo (D-16) no es un estudio con participantes.
 - Garantizar una precisión no observada o escoger el umbral con prueba.
 
 ### Supuestos acordados
@@ -64,7 +64,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 - [ ] **S01-CA-04** (S01-RF-04) — Dados modelo y umbral congelados, Cuando se ejecute prueba, Entonces el manifiesto conserva sus hashes y reporta resultados incluso si la meta no se alcanza.
 - [ ] **S01-CA-05** (S01-RF-05) — Dada una sesión real y un conjunto de repeticiones definido antes de medir, Cuando se capture rendimiento, Entonces se reportan tamaño de muestra, fallos, percentiles y condiciones sin adoptar los dos segundos como límite acordado.
 - [ ] **S01-CA-06** (S01-RF-06) — Dadas muestras con silencio y con pronunciación errónea pero evaluable, Cuando se aplique la política, Entonces la primera es inválida y la segunda sigue siendo válida; las unidades dudosas quedan no evaluadas.
-- [ ] **S01-CA-07** (S01-RF-07) — Dada una muestra pública con referencias humanas preparadas y protocolo fijado, Cuando se comparen variantes, Entonces se reportan observaciones sustentadas, atribuciones sin evidencia y precisión separada de gramática/vocabulario con denominadores.
+- [ ] **S01-CA-07** (S01-RF-07) — Dada una muestra con referencias humanas preparadas (corpus del equipo, D-16) y protocolo fijado, Cuando se comparen variantes, Entonces se reportan observaciones sustentadas, atribuciones sin evidencia y precisión separada de gramática/vocabulario con denominadores.
 
 ## 7. Diseño técnico y datos
 

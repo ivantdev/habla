@@ -150,3 +150,23 @@ Un incidente conserva su `operation_id` a través del reintento; el fallo de ese
 SPEC-00 publica ejemplos versionados y pruebas de esquema de: dos cuentas, consentimiento aceptado/rechazado/cambiado, sesión por estado, cupo ocupado, intento válido/inválido/pendiente, resultado con evidencia/ausencia/incertidumbre, informe respaldado y cita inválida, audios disponible/vencido/borrado, comparación compatible/incompatible y operación de eliminación pendiente.
 
 Los simuladores son deterministas, se identifican como fixtures en desarrollo y no alimentan métricas ni la demo declarada real. C produce fixtures de evidencia, B de contenido/canal y A de identidad/estado/audio. Cada consumidor prueba contra esos mismos ejemplos. Las preguntas de formato bloquean solo el adaptador afectado hasta G0/G1, no el desarrollo del resto del flujo con fixtures.
+
+## C-09. Perfil de la iteración 1
+
+Vigente durante la iteración 1 del [plan por iteraciones](../ROADMAP.md) (D-14, D-16 y D-17). C-01 a C-08 describen el contrato completo; este perfil indica qué se omite por ahora y qué se conserva para que la iteración 2 no rompa los DTO.
+
+| Contrato | En la iteración 1 | Llega en |
+| --- | --- | --- |
+| C-01 autenticación | Sin cookie ni login. El backend usa un propietario local fijo (`owner_id` constante de una cuenta sembrada) y construye `ActorContext` con él. | Iteración 2 (SPEC-03) |
+| C-01 `Idempotency-Key` y CSRF | No se exigen; el cliente no reintenta subidas automáticamente. Se mantiene la validación de `Origin`. | Iteración 2 |
+| C-03 cuentas, `DELETE` y `/operations` | No se exponen. | Iteración 2 (SPEC-03, SPEC-11) |
+| C-04 lease, heartbeat y recuperación de canal | `stream.ready` envía sus campos con valores de configuración, pero cerrar el canal termina la práctica como `incomplete` (D-17). | Iteración 2 |
+| C-05 `deletion_epoch` y checkpoints | Se omiten. Antes de publicar se comprueba `state_version` y que la práctica no esté cancelada. | Iteración 2 (SPEC-11) |
+| C-02/C-05 recortes (`conversation_clip`, `clip_reference`) y caducidad | No se generan; `expires_at` queda vacío y las anclas válidas se conservan. | Iteración 2 |
+| C-06 observaciones de pronunciación | Solo desde anclas; `limitations` declara que la pronunciación de la conversación no se evaluó. | Iteración 2 |
+| C-08 fixtures | Se priorizan los de un propietario; los de dos cuentas, borrado y caducidad pueden esperar. | Iteración 2 |
+| Corpus del equipo (D-16) | Con el modo de recolección activo, antes de borrar temporales se copian audio de conversación, transcripciones, informe, evidencia y anclas a `data/corpus/`, con el integrante que hizo la sesión. No se sirve por la API ni se sube al repositorio. | Se desactiva cuando usan la app personas externas |
+
+Se conservan sin cambios: forma de los DTO, estados y `state_version`, cupo hasta `processing`, eventos y perfil de audio del canal, `PhoneticResult` y validación de citas del informe.
+
+Los criterios de las specs que dependen de lo omitido (por ejemplo S04-CA-01, S04-CA-07, S07-CA-07, S09-CA-02 y los de SPEC-03 y SPEC-11) se verifican en la iteración 2.

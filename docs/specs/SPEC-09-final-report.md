@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-08, RF-14 | **RNF:** RNF-04, RNF-05, RNF-06, RNF-12  
 > **RT:** RT-05, RT-06  
 > **Módulo:** Informe | **Responsable:** C; B integra presentación  
-> **Etapa:** E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E2–E3 | **Iteración:** 1: anclas y citas; 2: recortes de conversación, sus referencias, RT-05 y RT-06 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -99,7 +99,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 ### Preguntas abiertas
 
 - **S09-P-01 — bloqueante G1 para generador real:** Definir modelo/reglas lingüísticas, prompts versionados y esquema de salida; C con política de datos de A.
-- **S09-P-02 — bloqueante G2:** Acordar texto de explicaciones y generación de referencias de recortes; C/B antes del recorrido integrado.
+- **S09-P-02 — bloqueante G2 para el texto de explicaciones; iteración 2 para referencias de recortes:** acordar ambos; C/B antes del recorrido integrado correspondiente.
 - **S09-P-03 — bloqueante G3:** Muestra humana y criterio de calidad lingüística; C/B mediante SPEC-01 antes de aceptación. Nicolás (B) realiza las anotaciones humanas según la [especificación de métricas](../experiments/METRICS.md).
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.

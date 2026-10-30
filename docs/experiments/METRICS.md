@@ -11,6 +11,7 @@ Este documento fija qué se mide, cómo se calcula y qué se reporta, para que l
 - Cada resultado registra: conjunto y versión, partición, modelo y versión, umbral, fecha, hardware y comando para reproducirlo.
 - Se reportan conteos absolutos junto a cada porcentaje, e intervalos de confianza al 95 % por *bootstrap* remuestreando hablantes.
 - Una meta no alcanzada se reporta tal cual (RNF-03); no se cambia la métrica para cumplirla.
+- Los resultados sobre el corpus del equipo (D-16) se reportan aparte de los datos públicos y no sustentan afirmaciones sobre acento colombiano ni eficacia pedagógica.
 
 ## 2. Detección de errores fonéticos (RNF-03, RT-02, RT-04)
 
@@ -54,14 +55,14 @@ Conjunto de validación con muestras válidas y degradadas: silencio, audio trun
 
 ## 5. Reconocimiento de voz
 
-- **WER** de Whisper sobre L2-ARCTIC (validación) y sobre una muestra de turnos del equipo transcrita a mano por Nicolás.
+- **WER** de Whisper sobre L2-ARCTIC (validación) y sobre una muestra de turnos del corpus del equipo (D-16) transcrita a mano por Nicolás.
 
 ## 6. Informe (RNF-04, RT-05, RT-06)
 
 - **Validez estructural (automática):** toda cita de gramática o vocabulario existe literalmente en un turno final; toda observación de pronunciación referencia evidencia acústica existente. Meta: 100 %; una observación inválida no se publica.
 - **RT-05, comparación con línea base:** el mismo LLM solo con la transcripción de Whisper. Se mide el porcentaje de observaciones sustentadas y el número de errores atribuidos sin evidencia en cada versión.
 - **RT-06, precisión lingüística:** Nicolás anota las transcripciones y se calcula, por categoría (gramática y vocabulario), precisión = observaciones correctas / observaciones emitidas, y recall cuando el anotador marque errores omitidos.
-  - Muestra propuesta: 20 transcripciones de sesiones del equipo, con consentimiento, o al menos 150 observaciones.
+  - Muestra propuesta: 20 sesiones del corpus del equipo (D-16) o al menos 150 observaciones.
   - Si otro integrante anota un 20 % de la muestra, se reporta el acuerdo (kappa de Cohen). Si no, se declara como limitación que hay un único anotador.
   - La meta numérica la fija el equipo antes de medir; no se inventa.
 - **Criterio pedagógico (RNF-06):** la guía de anotación marca como error solo lo que cambia el significado o dificulta la comprensión.
@@ -91,5 +92,6 @@ Casos escritos por Nicolás y revisados por Ivan: por tema y nivel, peticiones d
 | --- | --- |
 | Particiones, licencias y protocolo registrados en `docs/experiments/` | 1, semana 1 |
 | Precisión y recall en validación con el umbral elegido; línea base GOP | 1, semana 3 |
+| Acumular sesiones en el corpus del equipo | 1, desde la semana 3 |
 | Guía de anotación y primeras anotaciones | 1, semana 4 |
 | Resultados en prueba, RT-05, RT-06, latencias, tutor y comparación con Azure | 2, antes del pitch |

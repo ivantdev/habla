@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-01, RF-07, RF-09 | **RNF:** RNF-06, RNF-08, RNF-11, RNF-12  
 > **RT:** No aplica directamente  
 > **Módulo:** Contenido | **Responsable:** B; revisión acústica de C  
-> **Etapa:** E0–E1 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E0–E1 | **Iteración:** 1 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 

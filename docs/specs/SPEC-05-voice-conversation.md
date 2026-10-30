@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-02, RF-03, RF-04, RF-05, RF-15, RF-19 | **RNF:** RNF-01, RNF-02, RNF-08, RNF-12, RNF-13  
 > **RT:** RT-01  
 > **Módulo:** Experiencia de voz | **Responsable:** B; C asesora modelos y A canal  
-> **Etapa:** E1–E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1–E2 | **Iteración:** 1 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 

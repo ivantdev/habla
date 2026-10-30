@@ -65,11 +65,11 @@ Estado global de práctica, autoridad de SPEC-04:
 | `completed` | Informe publicado y temporales inaccesibles, con limpieza física confirmada antes de finalizar la operación | Solo eliminación; no reanuda grabación |
 | `incomplete` | Motivo terminal registrado y temporales revocados | Solo eliminación; no puede publicar informe |
 
-Se propone conservar cupo desde `ready` hasta `processing`, incluyendo error recuperable, para evitar solapamiento de trabajos GPU y cierre. Esto es más conservador que una sola conversación de voz y debe revisarse en G0; el historial permanece disponible.
+El cupo se conserva desde `ready` hasta `processing`, incluyendo error recuperable, para evitar solapamiento de trabajos GPU y cierre (decidido el 2026-10-30, S04-P-01); el historial permanece disponible.
 
 - Una transición compara `state_version`; duplicados no repiten efectos. La sesión y el cupo se actualizan de forma atómica o mediante una operación durable equivalente.
 - El reloj de conversación es del servidor y monotónico para el cálculo; se guardan instantes UTC para presentación. Pausas y errores consumen tiempo de charla. Recuperar no reinicia el reloj; si ya venció, se cierra hacia `anchors`.
-- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto.
+- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto. En la iteración 1, cerrar el canal termina la práctica como incompleta (D-17, C-09).
 - Cancelar o eliminar gana frente a una publicación tardía: un trabajo solo publica si coinciden propietario vigente, `state_version`, `deletion_epoch` y estado permitido.
 - Borrar audio tras un informe conserva el texto del informe. Borrar sesión/cuenta elimina también sus textos. La revocación de acceso precede a la limpieza física.
 - Cero observaciones no significa pronunciación perfecta. Evidencia ausente o dudosa se identifica como no evaluada.
@@ -102,7 +102,7 @@ No se permite que varios módulos instalen routers o manejadores de autenticaci�
 
 Propuesta de G0: origen único; desarrollo web `127.0.0.1:3000`, backend `127.0.0.1:8000`, canal bajo `/api/v1/practices/:id/stream` y API bajo `/api/v1`. El servidor web reenvía esas rutas al backend, con soporte de actualización de canal. La inferencia, si usa otro proceso, solo es interna y su puerto se declara en configuración de servidor.
 
-Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. El MVP se ejecuta en local (D-13): en `localhost` el navegador permite el micrófono sin HTTPS. Si se accede desde otro equipo por red, entrada HTTPS y canal cifrado. El despliegue en la nube queda para V2. Credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
+Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. El MVP se ejecuta en local (D-13): en `localhost` el navegador permite el micrófono sin HTTPS. Si se accede desde otro equipo por red, entrada HTTPS y canal cifrado. El despliegue en la nube queda para la iteración 2. Credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
 
 ## 7. Decisiones y límites de tecnología
 

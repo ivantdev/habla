@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-07, RF-17 | **RNF:** RNF-09, RNF-12, RNF-14  
 > **RT:** No aplica directamente  
 > **Módulo:** Frases ancla | **Responsable:** B; C entrega validador  
-> **Etapa:** E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E2 | **Iteración:** 1; idempotencia de subidas en la 2 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 

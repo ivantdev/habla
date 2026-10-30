@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-06 | **RNF:** RNF-02, RNF-04, RNF-05, RNF-06, RNF-11, RNF-14  
 > **RT:** RT-02  
 > **Módulo:** Evaluación fonética | **Responsable:** C; A revisa aislamiento y B consume validez  
-> **Etapa:** E1–E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1–E3 | **Iteración:** 1: anclas; 2: conversación libre y evaluación final | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 

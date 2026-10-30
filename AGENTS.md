@@ -5,7 +5,7 @@
 - Consulta [README.md](README.md) para conocer el propósito y el estado del proyecto.
 - Antes de implementar una funcionalidad, revisa los requisitos y criterios de aceptación pertinentes en [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md). Conserva sus identificadores al referenciarlos.
 - Consulta el [plan de specs](docs/specs/README.md), la spec de la tarea y sus contratos compartidos. Respeta la propiedad de cada módulo y resuelve las preguntas bloqueantes del hito antes de integrar interfaces reales.
-- Consulta el [plan por iteraciones](docs/ROADMAP.md) para saber qué entra en la iteración actual y con qué simplificaciones. No implementes trabajo de una iteración posterior sin acuerdo del equipo.
+- Consulta el [plan por iteraciones](docs/ROADMAP.md) para saber qué entra en la iteración actual y con qué simplificaciones. En la iteración 1 aplica el perfil C-09 de [CONTRACTS.md](docs/architecture/CONTRACTS.md) aunque la spec describa el mecanismo completo. No implementes trabajo de una iteración posterior sin acuerdo del equipo.
 - En experimentos, sigue la [especificación de métricas](docs/experiments/METRICS.md).
 - Al escribir, revisar o refactorizar código, lee y aplica [Karpathy Guidelines](skills/karpathy-guidelines/SKILL.md).
 

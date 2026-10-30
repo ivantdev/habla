@@ -4,7 +4,7 @@
 > **RF relacionados:** Derivados de soporte; no amplía el catálogo | **RNF:** RNF-02, RNF-12, RNF-13  
 > **RT:** No aplica directamente  
 > **Módulo:** Transversal | **Responsable:** A; revisión B y C  
-> **Etapa:** E0 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E0 | **Iteración:** 1 (semana 1) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -37,7 +37,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ### Supuestos acordados
 
-- Confirmados: navegador de escritorio y demo local en equipos del grupo con GPU NVIDIA; nube en V2. Orientación aceptada el 2026-10-30: FastAPI y React con Vite. Puertos y transporte de la arquitectura son propuestas hasta G0.
+- Confirmados: navegador de escritorio y demo local en equipos del grupo con GPU NVIDIA; nube en la iteración 2. Orientación aceptada el 2026-10-30: FastAPI y React con Vite. Puertos y transporte de la arquitectura son propuestas hasta G0.
 
 Las propuestas se revisan en los gates definidos por el plan.
 
@@ -90,7 +90,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S00-P-01 — bloqueante G0:** Elegir stack, estructura, transporte, perfil/cabecera binaria, comandos, puertos y sesión web; A con B/C, antes de cerrar E0.
+- **S00-P-01 — bloqueante G0:** Elegir stack, estructura, transporte, perfil/cabecera binaria, comandos y puertos; A con B/C, antes de cerrar E0. La sesión web se decide antes de integrar cuentas en la iteración 2 (S03-P-01).
 - **S00-P-02 — no bloqueante para fixtures:** Hardware confirmado el 2026-10-30: Ivan (RTX 4090 y RTX 5090) y Nicolás (2× RTX 5060 de 16 GB). Falta verificar VRAM real con `nvidia-smi`, compatibilidad de driver/CUDA/PyTorch con Blackwell y reparto de modelos entre GPU; C, antes de G1.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.

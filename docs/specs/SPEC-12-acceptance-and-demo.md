@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-01, RF-02, RF-03, RF-04, RF-05, RF-06, RF-07, RF-08, RF-09, RF-10, RF-11, RF-12, RF-13, RF-14, RF-15, RF-16, RF-17, RF-18, RF-19, RF-20 | **RNF:** RNF-01, RNF-02, RNF-03, RNF-04, RNF-05, RNF-06, RNF-07, RNF-08, RNF-09, RNF-10, RNF-11, RNF-12, RNF-13, RNF-14  
 > **RT:** RT-01, RT-02, RT-03, RT-04, RT-05, RT-06, RT-07  
 > **Módulo:** Operación y aceptación | **Responsable:** A: despliegue; B: recorridos; C: métricas  
-> **Etapa:** E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E3 | **Iteración:** 2 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -37,7 +37,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ### Supuestos acordados
 
-- Confirmados: escritorio, ejecución local en un equipo del grupo con GPU NVIDIA, una sesión de voz y ocho criterios finales de REQUIREMENTS.md; entrega con presentación tipo *Shark Tank* según D-12. Navegador, equipo de demo y presupuesto no están acordados; la nube queda para V2.
+- Confirmados: escritorio, ejecución local en un equipo del grupo con GPU NVIDIA, una sesión de voz y ocho criterios finales de REQUIREMENTS.md; entrega con presentación tipo *Shark Tank* según D-12. Navegador, equipo de demo y presupuesto no están acordados; la nube queda para la iteración 2.
 
 Las propuestas se revisan en los gates definidos por el plan.
 

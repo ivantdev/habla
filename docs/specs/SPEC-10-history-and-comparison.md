@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-09, RF-12, RF-20 | **RNF:** RNF-09, RNF-11, RNF-12  
 > **RT:** No aplica directamente  
 > **Módulo:** Consulta y experiencia | **Responsable:** A; B mantiene shell/router y C provee el informe  
-> **Etapa:** E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E2 | **Iteración:** 1: lista, informe, audios de anclas y comparación; 2: cuentas, audio vencido o eliminado y acciones de borrado | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -94,7 +94,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S10-P-01 — no bloqueante:** Ajustar presentación por sonido tras disponer de cobertura real; B/C antes de G3.
+- **S10-P-01 — no bloqueante:** Ajustar presentación por sonido tras disponer de cobertura real; A/C antes de G3.
 - **S10-P-02 — no bloqueante para MVP:** Permitir equivalencias entre versiones distintas requeriría ADR y evidencia; no implementarlo por defecto.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
@@ -118,6 +118,6 @@ Una pregunta bloqueante detiene únicamente la interfaz o integración indicada.
 
 ## 11. Esfuerzo, riesgos y consecuencias
 
-- **Esfuerzo:** M: consultas, detalle, tabla y estados; B reutiliza reproductores e informe de specs previas.
+- **Esfuerzo:** M: consultas, detalle, tabla y estados; A reutiliza reproductores e informe de specs previas.
 - **Riesgos:** Comparar resultados sin denominador, confiar en cache obsoleta o usar versión de frases actual en sesiones antiguas.
 - **Consecuencias:** La comparación describe resultados observados; no prueba aprendizaje ni conserva audio vencido.

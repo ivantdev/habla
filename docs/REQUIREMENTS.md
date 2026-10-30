@@ -13,7 +13,7 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 - [Propuesta del proyecto](https://introsistemasinteligentes.com/proyectos/habla), consultada el 28 de octubre de 2026 mediante la [API pública utilizada por la página](https://introsistemasinteligentes.com/api/proyectos/habla).
 - Decisiones del equipo recogidas en la entrevista: alcance, duración, contenido, cuentas, historial, interrupciones, conservación de audio, suficiencia de evidencia y recuperación ante fallos, detallados en este documento.
 - Recursos y orientación técnica: equipos personales del grupo con GPU NVIDIA (un computador con RTX 4090 y RTX 5090 (Ivan) y otro con dos RTX 5060 de 16 GB (Nicolás)), preferencia por modelos de pesos abiertos y comparación del prototipo propio con una posible alternativa de Microsoft antes de seleccionar el motor fonético.
-- Planificación del equipo del 30 de octubre de 2026: entrega en aproximadamente mes y medio con presentación tipo *Shark Tank*, primera iteración funcional en aproximadamente un mes, MVP ejecutado solo en local y despliegue en la nube aplazado a una V2.
+- Planificación del equipo del 30 de octubre de 2026: entrega en aproximadamente mes y medio con presentación tipo *Shark Tank*, primera iteración funcional en aproximadamente un mes, MVP ejecutado solo en local y despliegue en la nube aplazado a la iteración 2.
 - Evaluación: datos públicos inicialmente, precisión objetivo mínima de 0,70 en validación y reporte de precisión y recall reales en prueba. Los límites de latencia se fijarán tras medir el prototipo.
 
 **Confirmado** identifica decisiones expresas del equipo. **Base** identifica requisitos conservados de la propuesta original, compatibles con el MVP acordado. **Derivado** explicita una condición necesaria para cumplir ese alcance. **Pendiente** se reserva para parámetros o selecciones que requieren prototipado, preparación de contenido o verificación técnica; no incorpora funcionalidades adicionales al MVP.
@@ -30,7 +30,7 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 | Niveles y temas | Confirmado | A2, B1 o B2; restaurante, entrevista laboral, fin de semana, viajes o noticias; duración seleccionable de 5 o 10 minutos con paso automático a frases ancla. |
 | Idioma de interfaz e informe | Confirmado | Español; conversación y frases ancla en inglés. |
 | Audios conservados | Confirmado | Frases ancla y recortes de errores con consentimiento explícito durante 30 días. El usuario puede borrar sesiones, audios o cuenta. El audio completo y temporal se elimina al generar el informe, cancelar o dar por fallida la sesión. |
-| Entorno de demo | Confirmado | Navegador de escritorio, ejecución local en un equipo del grupo con GPU NVIDIA y una única sesión de voz activa a la vez. Si está ocupado se informa al siguiente estudiante. Equipo y navegador de demo por documentar en el prototipo. El despliegue en la nube queda para una V2. |
+| Entorno de demo | Confirmado | Navegador de escritorio, ejecución local en un equipo del grupo con GPU NVIDIA y una única sesión de voz activa a la vez. Si está ocupado se informa al siguiente estudiante. Equipo y navegador de demo por documentar en el prototipo. El despliegue en la nube queda para la iteración 2 (D-13). |
 | Motor de evaluación | Pendiente de experimento | Comparar un prototipo propio con la alternativa de Microsoft antes de elegir. No se considera obligatoria todavía una tecnología concreta. |
 | Latencia | Pendiente de medición | Medir el prototipo antes de fijar límites de respuesta del tutor y generación del informe. |
 | Evolución por sonido | Confirmado | Comparación entre sesiones sobre las mismas cinco frases ancla; sin mapa de vocales ni nota global. |
@@ -126,8 +126,11 @@ Las grabaciones de participantes, la comparación con monólogos y el piloto lon
 | D-10 | Datos públicos; precisión objetivo mínima de 0,70 en validación y reporte de precisión y recall reales en prueba; participantes para después. | Resuelto; protocolo por preparar |
 | D-11 | Elegir entre prototipo propio y alternativa de Microsoft tras compararlos. | Resuelto en estrategia; selección pendiente de experimento |
 | D-12 | Entrega en aproximadamente mes y medio desde el 30 de octubre de 2026, con presentación tipo *Shark Tank*; primera iteración funcional en aproximadamente un mes. | Resuelto; fechas exactas por confirmar |
-| D-13 | MVP probado solo en local; despliegue en la nube en una V2. | Resuelto |
+| D-13 | Desarrollo y primera iteración solo en local; despliegue en la nube en la iteración 2, después del pitch. El acceso a la demo en el auditorio es una decisión pendiente de la iteración 2. | Resuelto; acceso al auditorio pendiente |
 | D-14 | Recorte en tres iteraciones: MVP local de un solo usuario; acceso remoto, nube, cuentas y borrado; extras en V3. Los requisitos se conservan y el [plan por iteraciones](ROADMAP.md) fija cuándo se implementa cada uno. | Resuelto |
+| D-15 | Criterios del pitch: 1 a 5, 7 y 8 de la sección 8, más el aislamiento entre cuentas del 6; el borrado y la caducidad del 6 se incluyen si alcanza el tiempo. Las cuentas son prioridad P0 de la iteración 2. | Resuelto |
+| D-16 | Corpus interno del equipo: en la iteración 1 se conservan las sesiones de los tres integrantes (audio de conversación, transcripciones, informes, evidencia y anclas) para iterar el producto y medir RT-06 y WER, con su consentimiento, fuera del repositorio y sin servirse por la API. Es una excepción a RNF-07 limitada al equipo; no es un estudio con participantes ni sustenta afirmaciones sobre acento colombiano. | Resuelto |
+| D-17 | Desviación aceptada de RF-18 en la iteración 1: cerrar el canal termina la práctica como incompleta y el reintento manual cubre fallos de modelo. El reintento ante corte de conexión y la idempotencia de subidas llegan en la iteración 2. | Resuelto; corrección en iteración 2 |
 
 ### Trabajo de prototipo y preparación
 
