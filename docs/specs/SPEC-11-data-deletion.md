@@ -3,8 +3,8 @@
 > **Estado:** Borrador | **Prioridad:** P1 | **Dominio:** Ciclo de vida y privacidad  
 > **RF relacionados:** RF-16, RF-20 | **RNF:** RNF-07, RNF-09, RNF-12  
 > **RT:** No aplica directamente  
-> **Módulo:** Ciclo de vida y privacidad | **Responsable:** A; B integra acciones y C cancela trabajos  
-> **Etapa:** E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Módulo:** Ciclo de vida y privacidad | **Responsable:** B; A provee revocación de audio e identidad y C cancela trabajos  
+> **Etapa:** E3 | **Iteración:** 2 (prioridad P1 del plan por iteraciones: si alcanza para el pitch) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Solicitud propia, confirmación de acción y revocación inmediata.
 - Cascada de datos, cancelación de trabajos, limpieza física recuperable y estados de operación.
 - Protección contra resultados tardíos, doble borrado y caídas.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Recuperar datos borrados, exportación masiva, panel administrativo o nueva política de conservación.
 - Mantener textos/informes de una sesión o cuenta ya eliminada.
@@ -95,8 +95,8 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S11-P-01 — bloqueante G1:** Fijar plazo de limpieza de bytes y registros técnicos, inventario de caches y políticas externas si aplican; A con C, ADR-003.
-- **S11-P-02 — bloqueante G2 para integrar:** Cada módulo declara su operación de cancelación/eliminación y acknowledgment; A con B/C antes de la prueba de carreras.
+- **S11-P-01 — bloqueante para integrar el borrado (iteración 2):** Fijar plazo de limpieza de bytes y registros técnicos, inventario de caches y políticas externas si aplican; B con A/C, ADR-003.
+- **S11-P-02 — bloqueante para integrar el borrado (iteración 2):** Cada módulo declara su operación de cancelación/eliminación y acknowledgment; B con A/C antes de la prueba de carreras.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
 

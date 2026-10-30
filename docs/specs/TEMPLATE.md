@@ -3,7 +3,7 @@
 > **Estado:** Borrador | **Prioridad:** P1/P2/P3/Futuro | **Dominio:** <dominio>  
 > **RF relacionados:** <IDs del catálogo> | **RNF:** <IDs> | **RT:** <IDs>  
 > **Módulo:** <módulo lógico> | **Responsable:** <persona y revisores>  
-> **Etapa:** <etapa> | **Versión:** 1.0 | **Actualizado:** <fecha>
+> **Etapa:** <etapa> | **Iteración:** <1, 2 o ambas, según el plan por iteraciones> | **Versión:** 1.0 | **Actualizado:** <fecha>
 
 ## 1. Contexto y problema
 
@@ -21,11 +21,11 @@ Actores secundarios, permisos y propiedad.
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - <entregable>
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - <no objetivo>
 

@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-06 | **RNF:** RNF-02, RNF-04, RNF-05, RNF-06, RNF-11, RNF-14  
 > **RT:** RT-02  
 > **Módulo:** Evaluación fonética | **Responsable:** C; A revisa aislamiento y B consume validez  
-> **Etapa:** E1–E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1–E3 | **Iteración:** 1: anclas; 2: conversación libre y evaluación final | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Adaptador de audio a evidencia normalizada y validador de anclas.
 - Cobertura por unidad/sonido, exclusión por incertidumbre, versiones y deduplicación.
 - Tarea desacoplada de conversación con cancelación, deadline y cola acotada.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Fijar métricas con prueba, elegir el modelo sin SPEC-01 o emitir nota global.
 - Validar muestra por parecido exacto al acento de referencia.

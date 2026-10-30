@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-01, RF-13, RF-18 | **RNF:** RNF-01, RNF-09, RNF-10, RNF-12  
 > **RT:** No aplica directamente  
 > **Módulo:** Orquestación | **Responsable:** A; B integra estados y C trabajos  
-> **Etapa:** E1 mínimo; E2 completo | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1 mínimo; E2 completo | **Iteración:** 1 con el perfil C-09; lease, idempotencia y reintento ante corte de canal en la 2 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,20 +24,20 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Creación y snapshot, inicio, tiempo 5/10 minutos, transición a frases y procesamiento.
 - Cupo atómico, cancelación, abandono, un reintento manual por incidente y terminales coherentes.
 - Control de versiones, publicación coordinada y descarte de resultados tardíos.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Cola de espera de estudiantes, prácticas simultáneas y reanudación después de recarga.
 - Algoritmos ASR, fonéticos o lingüísticos que pertenecen a otros módulos.
 
 ### Supuestos acordados
 
-- Confirmados: duración desde inicio de charla, pausas incluidas, un reintento manual y recarga sin reanudación. Se propone reservar cupo hasta terminar procesamiento; revisar G0.
+- Confirmados: duración desde inicio de charla, pausas incluidas, un reintento manual y recarga sin reanudación. El cupo se reserva hasta terminar el procesamiento (decidido el 2026-10-30).
 
 Las propuestas se revisan en los gates definidos por el plan.
 
@@ -97,8 +97,8 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S04-P-01 — bloqueante G0:** Acordar política de cupo hasta processing y transición al vencimiento; A con B/C, antes de implementar la máquina compartida.
-- **S04-P-02 — bloqueante G1:** Fijar lease, heartbeat, ventana de recuperación y deadlines de operación; A/B/C, ADR-003 antes de integrar audio real.
+- **S04-P-01 — parcialmente resuelta el 2026-10-30:** el cupo se conserva desde `ready` hasta `processing` (opción larga) y el MVP atiende un solo usuario a la vez. Falta acordar la transición al vencimiento; A con B/C, antes de G1, porque la máquina compartida se implementa en las semanas 2 y 3.
+- **S04-P-02 — bloqueante G1 solo para deadlines de operación:** fijarlos antes de integrar audio real. Lease, heartbeat y ventana de recuperación se fijan en ADR-003 durante la iteración 2 (D-17); A/B/C.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
 

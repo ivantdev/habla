@@ -1,0 +1,23 @@
+# Entornos y dependencias
+.venv/
+__pycache__/
+node_modules/
+
+# Datos, audio y modelos locales
+data/
+*.wav
+*.webm
+*.ogg
+*.flac
+*.mp3
+*.pt
+*.safetensors
+*.onnx
+*.gguf
+spikes/**/out/
+
+# Secretos
+.env
+
+# Configuración personal de herramientas de IA
+.claude/

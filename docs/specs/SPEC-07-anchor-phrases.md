@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-07, RF-17 | **RNF:** RNF-09, RNF-12, RNF-14  
 > **RT:** No aplica directamente  
 > **Módulo:** Frases ancla | **Responsable:** B; C entrega validador  
-> **Etapa:** E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E2 | **Iteración:** 1; idempotencia de subidas en la 2 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Secuencia fija de cinco frases y reproducción de referencia.
 - Subida de grabación, validación asíncrona, máximo tres intentos por frase e idempotencia.
 - Entrega de cinco muestras válidas al orquestador o finalización incompleta.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Modificar textos, corregir pronunciación en esta etapa, repetir por error fonético o admitir informe con menos de cinco muestras válidas.
 - Elegir umbrales acústicos dentro de la UI.
@@ -67,7 +67,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 ## 7. Diseño técnico y datos
 
-**Datos:** `AnchorAttempt` y cursor de frase activa por práctica. Unicidad de `(practice_id,phrase_id,attempt_number)` y de muestra válida de la frase; el estado de práctica se cambia solo mediante SPEC-04. Conservar la primera muestra válida, eliminar inválidas tras validación salvo la operación recuperable en curso.
+**Datos:** `AnchorAttempt` y cursor de frase activa por práctica. Unicidad de `(practice_id,phrase_id,attempt_number)` y de muestra válida de la frase; el estado de práctica se cambia solo mediante SPEC-04. Conservar la primera muestra válida, eliminar inválidas tras validación salvo la operación recuperable en curso y la copia al corpus del equipo (D-16).
 
 **Backend:** POST/GET de intentos en C-03. La subida multipart autentica antes de persistir, llama Audio y encola `Evaluator.validateAnchor`; `422` de formato no crea intento. Un audio aceptado cuya voz/texto no sea evaluable sí cuenta como grabación. Una indisponibilidad técnica no se etiqueta como inválida.
 

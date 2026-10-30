@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-06 | **RNF:** RNF-01, RNF-03, RNF-05, RNF-06, RNF-14  
 > **RT:** RT-02, RT-03, RT-04, RT-05, RT-06, RT-07  
 > **Módulo:** Evaluación | **Responsable:** C; A revisa operación y B contenido  
-> **Etapa:** E0–E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E0–E3 | **Iteración:** 1: protocolo y evaluador GOP en validación; 2: clasificador entrenado frente a GOP, prueba final, Azure, RT-05 y RT-06 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,16 +24,16 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Protocolo, licencias verificadas, manifiestos y separación por hablante.
 - Prototipo propio, comparación externa cuando sea accesible y GOP donde sea aplicable.
 - Calibración de confianza/validez y medición de calidad, latencia y recursos.
 - Comparación de informes acústicos frente a texto solo y revisión humana de gramática/vocabulario.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
-- Piloto longitudinal, participantes propios, certificación y afirmaciones de eficacia pedagógica.
+- Piloto longitudinal, participantes propios, certificación y afirmaciones de eficacia pedagógica. El corpus interno del equipo (D-16) no es un estudio con participantes.
 - Garantizar una precisión no observada o escoger el umbral con prueba.
 
 ### Supuestos acordados
@@ -64,7 +64,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 - [ ] **S01-CA-04** (S01-RF-04) — Dados modelo y umbral congelados, Cuando se ejecute prueba, Entonces el manifiesto conserva sus hashes y reporta resultados incluso si la meta no se alcanza.
 - [ ] **S01-CA-05** (S01-RF-05) — Dada una sesión real y un conjunto de repeticiones definido antes de medir, Cuando se capture rendimiento, Entonces se reportan tamaño de muestra, fallos, percentiles y condiciones sin adoptar los dos segundos como límite acordado.
 - [ ] **S01-CA-06** (S01-RF-06) — Dadas muestras con silencio y con pronunciación errónea pero evaluable, Cuando se aplique la política, Entonces la primera es inválida y la segunda sigue siendo válida; las unidades dudosas quedan no evaluadas.
-- [ ] **S01-CA-07** (S01-RF-07) — Dada una muestra pública con referencias humanas preparadas y protocolo fijado, Cuando se comparen variantes, Entonces se reportan observaciones sustentadas, atribuciones sin evidencia y precisión separada de gramática/vocabulario con denominadores.
+- [ ] **S01-CA-07** (S01-RF-07) — Dada una muestra con referencias humanas preparadas (corpus del equipo, D-16) y protocolo fijado, Cuando se comparen variantes, Entonces se reportan observaciones sustentadas, atribuciones sin evidencia y precisión separada de gramática/vocabulario con denominadores.
 
 ## 7. Diseño técnico y datos
 
@@ -96,7 +96,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S01-P-01 — bloqueante G1 para modelos reales:** Acceso/licencias, tamaño de muestra, guía de anotación, indicador ASR, umbrales de validez y confianza; C, antes de conectar evaluación real.
+- **S01-P-01 — bloqueante G1 para modelos reales:** Acceso/licencias, tamaño de muestra, motor preliminar, umbrales de validez de anclas y guía fonética de RNF-06; C con B, antes de conectar evaluación real. La guía de anotación lingüística de RT-06 se cierra en la semana 4 y el indicador ASR con su umbral de confianza (RNF-05) en la iteración 2. Las métricas están especificadas en [METRICS.md](../experiments/METRICS.md).
 - **S01-P-02 — bloqueante G3:** Cerrar selección, umbrales de latencia, recortes, precisión lingüística y criterio pedagógico; C con B/A, antes de aceptación. La meta numérica lingüística no se inventa.
 - **S01-P-03 — no bloqueante para otros módulos:** Disponibilidad y presupuesto de la alternativa externa; C/A, investigar durante E0 y registrar limitación si no hay acceso.
 

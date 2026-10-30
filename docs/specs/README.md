@@ -1,6 +1,6 @@
 # Plan de construcción por especificaciones
 
-**Producto:** ¡Habla! — MVP del [catálogo](../REQUIREMENTS.md). **Fecha:** 2026-10-29. **Estado:** propuesta de planificación para tres personas; todas las specs están en borrador y no hay implementación.
+**Producto:** ¡Habla! — MVP del [catálogo](../REQUIREMENTS.md). **Fecha:** 2026-10-29; actualizado el 2026-10-30. **Estado:** propuesta de planificación para tres personas; todas las specs están en borrador y no hay implementación.
 
 Este es el punto de entrada al trabajo de construcción. El README raíz presenta el producto; aquí se organizan su ejecución, dependencias y aceptación. La especificación guía contratos, implementación y pruebas; una tarea termina al satisfacer sus criterios con evidencia, no al producir código.
 
@@ -13,7 +13,7 @@ Este es el punto de entrada al trabajo de construcción. El README raíz present
 
 Se usó la primera variante del template recibido: once secciones con contratos, propiedad de datos y verificación. La segunda contenía supuestos de frontend dummy y backend inexistente de otro contexto. No se trasladan rutas de código, citas de reuniones ni acuerdos no disponibles. Las tecnologías continúan como propuestas hasta sus ADR.
 
-**Autoridad:** catálogo para alcance confirmado; ADR aceptado y contratos congelados para diseño; spec para comportamiento y aceptación del módulo. Si se contradicen, corregir los documentos antes de implementar. Un contrato propuesto no se presenta como decisión del equipo.
+**Autoridad:** catálogo para alcance confirmado; ADR aceptado y contratos congelados para diseño; spec para comportamiento y aceptación del módulo. Si se contradicen, corregir los documentos antes de implementar. El [plan por iteraciones](../ROADMAP.md) decide qué parte de cada spec se implementa en cada iteración y con qué mecanismos; el perfil de la iteración 1 está en C-09 de los contratos. Un contrato propuesto no se presenta como decisión del equipo.
 
 ## 2. Notación, identificadores y prioridades
 
@@ -21,7 +21,7 @@ Se conserva `RF-01..RF-20`, `RNF-01..RNF-14`, `RT-01..RT-07` y `D-*` del catálo
 
 Se usa [EARS, de Alistair Mavin](https://alistairmavin.com/ears/), con palabras clave traducidas al español: invariantes «EL SISTEMA DEBE…»; eventos «CUANDO…, EL SISTEMA DEBE…»; estados «MIENTRAS…, EL SISTEMA DEBE…»; situaciones no deseadas «SI…, ENTONCES EL SISTEMA DEBE…». Cuando haga falta combinar estado y evento, mantener primero la precondición y luego el disparador. Cada requisito identifica una respuesta observable y se comprueba con Dado/Cuando/Entonces.
 
-P1 significa necesario para aceptar este MVP. Las trece specs son P1 porque todas aportan requisitos obligatorios o soporte indispensable; P1 no significa que se hagan simultáneamente. El orden está en etapas/gates. No se incorporan funciones opcionales como P2 para aparentar una segunda etapa de producto.
+P1 significa que la spec aporta requisitos obligatorios del producto o soporte indispensable; las trece specs son P1. P1 no indica cuándo se implementa: el orden está en las etapas y en el [plan por iteraciones](../ROADMAP.md). Las prioridades P0–P2 de la iteración 2 en ese plan ordenan el calendario hacia el pitch; no crean funciones opcionales ni cambian el alcance.
 
 Esfuerzo S/M/L es relativo, no una promesa de días: S una pieza acotada; M varias piezas conocidas; L integración con incertidumbre o múltiples subsistemas. Las specs L se ejecutan en los hitos de las etapas, sin convertirlas en una única entrega final.
 
@@ -32,41 +32,41 @@ Esfuerzo S/M/L es relativo, no una promesa de días: S una pieza acotada; M vari
 | [SPEC-00](SPEC-00-foundations-and-contracts.md) | Base del proyecto y contratos compartidos | A; revisión B y C | E0 | M |
 | [SPEC-01](SPEC-01-experiments-and-evaluator-selection.md) | Protocolo experimental y selección del evaluador | C; A revisa operación y B contenido | E0–E3 | L |
 | [SPEC-02](SPEC-02-content-and-catalog.md) | Catálogo pedagógico, frases y referencias | B; revisión acústica de C | E0–E1 | M |
-| [SPEC-03](SPEC-03-identity-and-access.md) | Cuentas, autenticación y acceso propio | A; B integra formularios | E1 | M |
+| [SPEC-03](SPEC-03-identity-and-access.md) | Cuentas, autenticación y acceso propio | A; B integra formularios | E3 | M |
 | [SPEC-04](SPEC-04-session-orchestration.md) | Sesiones, reloj, cupo y recuperación | A; B integra estados y C trabajos | E1 mínimo; E2 completo | L |
 | [SPEC-05](SPEC-05-voice-conversation.md) | Conversación, transcripción e interrupciones | B; C asesora modelos y A canal | E1–E2 | L |
-| [SPEC-06](SPEC-06-audio-and-consent.md) | Consentimiento y ciclo de vida del audio | A; B integra consentimiento y C consume audio | E1–E2 | L |
+| [SPEC-06](SPEC-06-audio-and-consent.md) | Consentimiento y ciclo de vida del audio | A; B integra consentimiento y C consume audio | E1–E3 | L |
 | [SPEC-07](SPEC-07-anchor-phrases.md) | Lectura y validación de las cinco frases ancla | B; C entrega validador | E2 | M |
-| [SPEC-08](SPEC-08-phonetic-evaluation.md) | Evaluación acústica, validez y evidencia fonética | C; A revisa aislamiento y B consume validez | E1–E2 | L |
-| [SPEC-09](SPEC-09-final-report.md) | Informe sustentado de pronunciación, gramática y vocabulario | C; B integra presentación | E2 | L |
-| [SPEC-10](SPEC-10-history-and-comparison.md) | Historial propio y comparación por sonido | B; A/C proveen consultas | E3 | M |
-| [SPEC-11](SPEC-11-data-deletion.md) | Eliminación de audio, sesiones y cuenta | A; B integra acciones y C cancela trabajos | E3 | L |
+| [SPEC-08](SPEC-08-phonetic-evaluation.md) | Evaluación acústica, validez y evidencia fonética | C; A revisa aislamiento y B consume validez | E1–E3 | L |
+| [SPEC-09](SPEC-09-final-report.md) | Informe sustentado de pronunciación, gramática y vocabulario | C; B implementa la vista de informe | E2–E3 | L |
+| [SPEC-10](SPEC-10-history-and-comparison.md) | Historial propio y comparación por sonido | A; B mantiene shell/router y C provee el informe | E2 | M |
+| [SPEC-11](SPEC-11-data-deletion.md) | Eliminación de audio, sesiones y cuenta | B; A provee revocación de audio e identidad y C cancela trabajos | E3 | L |
 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | Integración, despliegue y aceptación de la demo | A: despliegue; B: recorridos; C: métricas | E3 | M |
 
 ## 4. Equipo y propiedad
 
-A/B/C son roles de planificación; asignar nombres reales al iniciar E0. No implican tres agentes automáticos ni una asignación ya acordada.
+Asignación acordada el 2026-10-30: **A = Sebastián**, **B = Nicolás**, **C = Ivan**. Ivan dispone del computador con RTX 4090 y RTX 5090; Nicolás, del computador con dos RTX 5060 de 16 GB. Son equipos personales en casa de cada uno.
 
 | Persona | Área principal | Entregables | Revisión que aporta |
 | --- | --- | --- | --- |
-| A | Plataforma y datos | Base, identidad, orquestación, audio, eliminación y operación | Permisos, persistencia, carreras y configuración de módulos de B/C |
-| B | Experiencia y voz | Catálogo, shell, conversación, anclas, historial y comparación | Usabilidad, canal, contratos de pantalla y contenido pedagógico |
+| A | Plataforma y datos | Base, identidad, orquestación, audio, historial, comparación y operación | Permisos, persistencia, carreras y configuración de módulos de B/C |
+| B | Experiencia y voz | Catálogo, shell, conversación, anclas, eliminación y anotaciones humanas | Usabilidad, canal, contratos de pantalla y contenido pedagógico |
 | C | Evaluación | Experimentos, validador/evaluador, análisis lingüístico e informe | Evidencia, cobertura, versiones y mediciones |
 
-Cada área entrega frontend/adaptadores que le correspondan; B mantiene router y componentes compartidos. A custodia API/proxy/configuración; C custodia DTO de evidencia e informe. B puede implementar la vista de informe a partir del DTO de C para descargar trabajo de C, manteniendo un único editor de esa vista por tarea.
+Cada área entrega frontend/adaptadores que le correspondan; B mantiene router y componentes compartidos. A custodia API/proxy/configuración; C custodia DTO de evidencia e informe. B implementa la vista de informe a partir del DTO de C y C la revisa, con un único editor de esa vista por tarea.
 
-La carga de A y C es alta: usar WIP de una tarea principal por persona, reservar bloques de GPU y revisar capacidad tras G1. B puede apoyar contratos UI y pruebas de integración mientras C mide, y preparar casos de borrado mientras A implementa la coordinación. Ajustar reparto tras mediciones, sin cambiar propietarios de datos a mitad de una integración.
+La carga de B y C es alta: usar WIP de una tarea principal por persona, reservar bloques de GPU y revisar capacidad tras G1. A no tiene GPU potente y toma trabajo de CPU que descarga a B y C: historial (SPEC-10) y validación de citas del informe. B coordina el borrado (SPEC-11) sobre las APIs de revocación de A. Ajustar reparto tras mediciones, sin cambiar propietarios de datos a mitad de una integración.
 
 ## 5. Etapas y gates de integración
 
-No se fijan fechas de calendario ni duración sin conocer disponibilidad del equipo. «Antes de G1» es una fecha objetivo relativa verificable; al iniciar E0 el equipo asigna fechas reales al tablero.
+Calendario acordado el 2026-10-30, con fechas exactas por confirmar: primera iteración funcional en aproximadamente un mes (cerca del 2026-11-30) y entrega con presentación tipo *Shark Tank* en aproximadamente mes y medio (cerca del 2026-12-14). Las fechas de cada gate se asignan en el tablero dentro de ese margen. El recorte en dos iteraciones y V3 y el reparto semanal están en el [plan por iteraciones](../ROADMAP.md), que prevalece para el orden de trabajo.
 
 | Etapa | A: plataforma | B: experiencia | C: evaluación | Entrega y condición de salida |
 | --- | --- | --- | --- | --- |
-| E0 — Definir y reducir incertidumbre | SPEC-00: ADR-001, shell/API, esquemas, fixtures y spike conjunto de canal | SPEC-02: esquema de contenido, borrador de fichas/frases; aporta captura/shell al spike | SPEC-01: protocolo, acceso/licencias, evidencia fixture y prueba inicial de GPU | G0: contrato v1 revisado por productores/consumidores, stack/puertos/perfil de audio fijados y base local reproducible |
-| E1 — Bases y un turno real | SPEC-03; SPEC-06 consentimiento/temporales/lectura; mínimo de SPEC-04 para crear/iniciar/cancelar con cupo | SPEC-05 con fixtures y luego un turno real; cerrar SPEC-02 | SPEC-01 calibración inicial y SPEC-08 validez/adaptador mínimo | G1: cuenta→consentimiento→captura→un turno hablado real→cancelación/limpieza; frases/políticas y deadlines cerrados para integración real |
-| E2 — Sesión completa | Completar SPEC-04; SPEC-06 recortes, expiración y limpieza; barrera de borrado preparada | Completar SPEC-05; SPEC-07 con validador real; integrar vista de informe | Completar SPEC-08 y SPEC-09 con referencias y citas verificables | G2: conversación cronometrada→cinco anclas→informe real y temporales borrados; cancelación/fallo no publican informe |
-| E3 — Producto verificable | SPEC-11 completo; SPEC-12 despliegue, reinicios, inventario y permisos | SPEC-10 y SPEC-12 recorridos, comparación y UI | SPEC-01 evaluación final congelada; SPEC-12 métricas/limitaciones | G3: ocho criterios del catálogo verificados, expediente real y limitaciones explícitas; pendientes críticos impiden declarar MVP aceptado |
+| E0 — Definir y reducir incertidumbre (semana 1) | SPEC-00: ADR-001, shell/API, esquemas, fixtures, adaptadores simulados y usuario base (D-18) | SPEC-02: esquema de contenido, borrador de fichas/frases; spike de captura y canal | SPEC-01: protocolo, acceso/licencias, evidencia fixture y prueba inicial de GPU | G0: contrato v1 y perfil C-09 revisados por productores/consumidores, stack/puertos/perfil de audio fijados y base local reproducible |
+| E1 — Un turno real (semana 2) | SPEC-06 temporales, consentimiento sembrado del usuario base (D-18) y corpus del equipo; mínimo de SPEC-04 para crear/iniciar/cancelar con cupo | SPEC-05 con fixtures y luego un turno real; cerrar SPEC-02 | SPEC-01 calibración inicial y SPEC-08 validez/adaptador mínimo | G1: usuario base con consentimiento sembrado→captura→un turno hablado real→cancelación/limpieza; frases/políticas y deadlines de operación cerrados |
+| E2 — Sesión completa (semanas 3–4, fin de la iteración 1) | Completar SPEC-04 según C-09; SPEC-10 historial y comparación; validación de citas para SPEC-09 | Completar SPEC-05; SPEC-07 con validador real; vista de informe; casos del tutor | Completar SPEC-08 para anclas con GOP y SPEC-09 con citas verificables | G2: conversación cronometrada→cinco anclas→informe real→historial y comparación, con temporales borrados (modo corpus desactivado, C-09); cancelación/fallo no publican informe |
+| E3 — Producto para el pitch (iteración 2) | SPEC-03 cuentas; SPEC-06 texto de consentimiento, recortes, caducidad y reconciliación; reintento ante corte de canal; SPEC-12 acceso a la demo y análisis de nube | SPEC-11 si alcanza; SPEC-12 recorridos, video de respaldo y audio en la sala | SPEC-01 clasificador frente a GOP y evaluación final congelada; SPEC-08 conversación libre; SPEC-12 métricas/limitaciones | G3: criterios del pitch (D-15) verificados, expediente real y limitaciones explícitas; lo pendiente se declara |
 
 Los gates incluyen una revisión breve de los tres: contratos, criterios y evidencia. G0 congela forma de DTO, no el modelo fonético. G1 habilita audio/modelos reales con consentimiento y criterios calibrados. El adaptador puede cambiar tras comparación sin romper DTO. G2 acredita un recorrido, no toda la demo. G3 acepta o identifica con precisión los criterios incumplidos.
 
@@ -99,9 +99,9 @@ flowchart TD
   S01 --> S12
 ```
 
-Las flechas son condiciones de integración real, no espera hasta terminar cada spec por completo. 01 y 02 arrancan con 00 y solo congelan la forma de sus datos en G0. 03/06 entregan una primera base; 04 entrega create/start/cancel antes del flujo completo. 05/07/09/10 pueden construirse con C-08 antes de recibir productores reales. La evaluación final de 01 consume resultados de 08/09 en E3: es realimentación experimental planificada, no una dependencia circular que impida comenzar.
+Las flechas son condiciones de integración real, no espera hasta terminar cada spec por completo. 01 y 02 arrancan con 00 y solo congelan la forma de sus datos en G0. 03/06 entregan una primera base; 04 entrega create/start/cancel antes del flujo completo. 05/07/09/10 pueden construirse con C-08 antes de recibir productores reales. La evaluación final de 01 consume resultados de 08/09 en E3: es realimentación experimental planificada, no una dependencia circular que impida comenzar. En la iteración 1, 04 y los demás módulos usan el usuario base de C-09 (D-18) en lugar de 03.
 
-**Camino crítico funcional:** contratos → identidad/audio/cupo mínimos → voz → anclas válidas → informe/publicación/limpieza → historial/comparación y aceptación.
+**Camino crítico funcional:** contratos → usuario base/audio/cupo mínimos → voz → anclas válidas → informe/publicación/limpieza → historial/comparación y aceptación.
 
 **Camino crítico experimental:** acceso/licencias/GPU → protocolo/particiones → calibración/validez → adaptador real → métricas congeladas. Una API externa inaccesible se documenta como limitación conforme al catálogo; no se fabrica una comparación ni se bloquea el resto de áreas sin necesidad.
 
@@ -131,10 +131,12 @@ Un requisito sigue **pendiente** si su prueba no se ejecutó. Registrar fallos y
 | Textos de cinco anclas, referencias y quince fichas | B con C | G1 | Validación/comparación reales | UI y DTO fixture |
 | Política detallada del tutor y parte TTS no escuchada | B con C | G1; casos temáticos completos G2 | Aceptación del tutor | Transporte y UI con fixtures |
 | Motor preliminar, datos/licencias, validez y confianza | C | G1 | Adaptador acústico real | Plataforma y consumidor de evidencia fixture |
-| Consentimiento, procesadores externos si aplican | A con B/C | G1, antes de usar voz real | Captura persistida/procesamiento real | Preflight local sin envío y fixtures |
-| Deadlines, lease, límites de audio/recorte y limpieza física | A con B/C | G1 | Recuperación, almacenamiento y trabajos reales | Contratos/algoritmos con reloj/configuración fixture |
+| Texto de consentimiento y procesadores externos si aplican (D-18) | A con B/C | Iteración 2, antes de que use la app alguien fuera del equipo; en la iteración 1 basta el acuerdo escrito del equipo | Uso por personas ajenas al equipo | Desarrollo y corpus del equipo con el usuario base |
+| Deadlines de operación (G1); lease, límites de recorte y limpieza física (iteración 2) | A con B/C | G1 e iteración 2 | Recuperación, almacenamiento y trabajos reales | Contratos/algoritmos con reloj/configuración fixture |
+| Acceso a la demo en el auditorio: red privada, túnel o PC en sitio | A con C | G2 (revisión al cierre de la iteración 1) | Demo en el auditorio | Desarrollo y demo en `localhost` |
+| Política de datos para personas externas en el pitch | A con B/C | G2 | Uso de la app por personas ajenas al equipo | Desarrollo y demo del equipo |
 | Modelos de tutor/TTS y gramática/vocabulario | B/C | G1 | Voz/análisis lingüístico reales | Adaptadores y citas fixture |
 | Umbrales finales de latencia y protocolo/calidad lingüística | C con A/B | Protocolo antes de medir; valores finales G3 | Declarar aceptación de esos criterios | Implementación y mediciones exploratorias |
-| Presupuesto, conexión, navegador/red y calendario | A/B/C | Fechas al iniciar E0; entorno antes de G3 | Demo reproducible y compromisos de fecha | Desarrollo local declarado |
+| Presupuesto, navegador y equipo de demo | A/B/C | Navegador y equipo en G2, con el acceso; presupuesto antes de G3 | Demo reproducible | Desarrollo local; calendario (D-12) y ejecución local (D-13) ya acordados |
 
-Las preguntas locales `SNN-P-MM` precisan estos bloqueos. No hay selección tecnológica aprobada, citas de reuniones disponibles ni resultados experimentales en este paquete. La especificación de contenido incluye resolver los límites temáticos de la propuesta original: la URL externa no fue accesible durante la preparación; se conserva el catálogo existente como fuente y se marca la precisión pendiente.
+Las preguntas locales `SNN-P-MM` precisan estos bloqueos. La orientación de stack (FastAPI y React con Vite) se aceptó el 2026-10-30; ADR-001 debe formalizarla con puertos, comandos y perfil de audio. No hay citas de reuniones ni resultados experimentales en este paquete. Los límites temáticos del tutor se verificaron el 2026-10-30 en la [API pública de la propuesta](https://introsistemasinteligentes.com/api/proyectos/habla): ajustarse a la ficha del tema, filtrar temas sensibles y no dar consejos médicos, legales ni emocionales.

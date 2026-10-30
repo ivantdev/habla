@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-11 | **RNF:** RNF-09, RNF-12, RNF-13  
 > **RT:** No aplica directamente  
 > **Módulo:** Identidad | **Responsable:** A; B integra formularios  
-> **Etapa:** E1 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E3 | **Iteración:** 2 (prioridad P0 del plan por iteraciones); la iteración 1 usa el usuario base de C-09 (D-18) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Registro, acceso, consulta de identidad y cierre de sesión.
 - Contrato de autorización por propietario para todos los módulos.
 - Formularios accesibles y bloqueo de cuenta usado por eliminación.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Recuperación/verificación por correo, login social, roles administrativos y compartir sesiones.
 - Implementar borrado completo de datos, que pertenece a SPEC-11.
@@ -38,6 +38,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 ### Supuestos acordados
 
 - Confirmados: correo y contraseña, hash adaptativo con sal y acceso del propietario. Política de contraseña, normalización de correo y duración de sesión son decisiones de ADR-001.
+- Confirmado el 2026-10-30 (D-18): el usuario base sembrado en la iteración 1 se conserva y desde la iteración 2 inicia sesión como cualquier cuenta; sus credenciales viven en la configuración local, nunca en el repositorio.
 
 Las propuestas se revisan en los gates definidos por el plan.
 
@@ -61,7 +62,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 - [ ] **S03-CA-03** (S03-RF-03) — Dada una cuenta activa, Cuando ingrese y consulte /auth/me, Entonces recibe su identidad; con contraseña errónea recibe INVALID_CREDENTIALS sin cookie válida.
 - [ ] **S03-CA-04** (S03-RF-04) — Dada una cookie capturada antes de salir y un canal abierto, Cuando se cierre sesión, Entonces reutilizar la cookie falla y el canal ya no recibe datos privados.
 - [ ] **S03-CA-05** (S03-RF-05) — Dadas cuentas A y B y un audio de A, Cuando B o una petición anónima intente leerlo, modificarlo o eliminarlo por ID, Entonces recibe 404 o 401 y el dato no cambia.
-- [ ] **S03-CA-06** (S03-RF-06) — Dada la demo configurada, Cuando se inspeccionen respuestas, cookies, bundle y conexión, Entonces se usa entrada cifrada y no aparecen claves del servidor.
+- [ ] **S03-CA-06** (S03-RF-06) — Dada la demo configurada, Cuando se inspeccionen respuestas, cookies, bundle y conexión, Entonces se usa entrada cifrada cuando el acceso es por red y no aparecen claves del servidor.
 
 ## 7. Diseño técnico y datos
 
@@ -95,7 +96,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S03-P-01 — bloqueante G0:** Elegir hash, política de contraseña/correo, expiración, CSRF y formato de sesión; A, ADR-001 antes de integrar formularios reales.
+- **S03-P-01 — bloqueante para integrar cuentas (iteración 2):** Elegir hash, política de contraseña/correo, expiración, CSRF y formato de sesión; A, en ADR-001 o una adenda antes de integrar formularios reales. No bloquea G0: la iteración 1 usa el usuario base de C-09 (D-18).
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
 

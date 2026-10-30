@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-09, RF-10, RF-14, RF-20 | **RNF:** RNF-07, RNF-09, RNF-12, RNF-13  
 > **RT:** No aplica directamente  
 > **Módulo:** Audio y privacidad | **Responsable:** A; B integra consentimiento y C consume audio  
-> **Etapa:** E1–E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1–E3 | **Iteración:** 1: temporales, anclas, consentimiento sembrado del usuario base y corpus del equipo; 2: texto de consentimiento, recortes, caducidad y reconciliación (D-18) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,15 +24,15 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Política versionada, aceptación explícita y comprobación previa a capturar/enviar.
 - Temporales, frases válidas, recortes mínimos y reproducción privada de usuario/referencia.
 - Caducidad, revocación, limpieza física y reconciliación de huérfanos.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
-- Conservar conversaciones completas, descargar datasets mediante endpoints del producto o compartir audio.
+- Conservar conversaciones completas, salvo el corpus interno del equipo (D-16); descargar datasets mediante endpoints del producto o compartir audio.
 - Implementar eliminación de cuenta y sesión completas fuera del coordinador SPEC-11.
 
 ### Supuestos acordados
@@ -69,7 +69,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 **Datos:** `ConsentPolicy`, `ConsentRecord`, `AudioAsset`, referencias de origen y operación de limpieza. Bytes privados separados de rutas públicas; cada lectura revalida cuenta, pertenencia, estado y `expires_at`. Solo la referencia del catálogo es pública. La referencia `clip_reference` sintetizada desde texto del estudiante es privada, pertenece a su práctica y vence o se elimina con su recorte fuente, según C-02/C-05/C-06.
 
-**Backend:** C-03 y funciones `Audio.*` de C-05. Validación de tipo, tamaño y duración antes de procesar; el multipart de frases delega almacenamiento aquí. No conservar intentos inválidos más allá de la validación/reintento; si una práctica queda incompleta se descartan también anclas aún no publicadas. La única persistencia autorizada tras éxito son anclas válidas y recortes.
+**Backend:** C-03 y funciones `Audio.*` de C-05. Validación de tipo, tamaño y duración antes de procesar; el multipart de frases delega almacenamiento aquí. No conservar intentos inválidos más allá de la validación/reintento, salvo la copia al corpus del equipo (D-16); si una práctica queda incompleta se descartan también anclas aún no publicadas. La única persistencia autorizada tras éxito son anclas válidas y recortes.
 
 **Eventos:** cambios de disponibilidad alimentan proyección de historial; esta revalida la fuente al leer. Revocación lógica es inmediata, eliminación física tiene tarea idempotente; el ack de finalización de SPEC-04/09 espera limpieza de temporales. Los checkpoints de C-05 permiten reintentar limpieza sin regenerar desde audio eliminado. Los assets candidatos de un informe no publicado se eliminan si termina incompleta la práctica.
 
@@ -97,8 +97,8 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S06-P-01 — bloqueante G1:** Aprobar texto de consentimiento y proveedores reales antes de procesar voz; A con B/C.
-- **S06-P-02 — bloqueante G1 para recortes reales:** Fijar límites de carga/recorte y plazo de depuración con medición; A/C, ADR-003.
+- **S06-P-01 — bloqueante para que use la app alguien fuera del equipo (iteración 2):** Aprobar texto de consentimiento y proveedores reales; A con B/C. En la iteración 1 no hay texto en la app: el usuario base tiene un consentimiento sembrado respaldado por el acuerdo escrito del equipo (D-18). El texto describe la retención real y cita la Ley 1581 de 2012; los 30 días, incluido `ConsentPolicy.retention_days=30`, solo se publican cuando la caducidad esté implementada. Si no lo está, el DTO se ajusta antes de mostrarse, según la política para personas externas que se decide en G2.
+- **S06-P-02 — bloqueante para recortes reales (iteración 2):** Fijar límites de carga/recorte y plazo de depuración con medición; A/C, ADR-003.
 - **S06-P-03 — no bloqueante para almacenamiento local:** Si se elige proveedor externo, verificar política de retención/eliminación y describir sus límites antes de habilitarlo; A/C antes de G1.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.

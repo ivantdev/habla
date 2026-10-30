@@ -1,6 +1,6 @@
 # Contratos de integración v1
 
-**Estado:** propuesta para congelar en G0. **Fecha:** 2026-10-29. **Custodios:** A (API, identidad, estado y audio), B (contenido, conversación e intentos), C (evaluación e informe). Referencias: [arquitectura](ARCHITECTURE.md), [plan](../specs/README.md).
+**Estado:** propuesta para congelar en G0. **Fecha:** 2026-10-29; C-09 del 2026-10-30. **Custodios:** A (API, identidad, estado y audio), B (contenido, conversación e intentos), C (evaluación e informe). Referencias: [arquitectura](ARCHITECTURE.md), [plan](../specs/README.md).
 
 Este documento concentra las definiciones compartidas. Las specs describen el comportamiento y remiten a estos contratos. Los DTO son independientes de lenguaje, tablas y proveedor. No se exponen rutas de archivos ni claves del almacenamiento.
 
@@ -150,3 +150,51 @@ Un incidente conserva su `operation_id` a través del reintento; el fallo de ese
 SPEC-00 publica ejemplos versionados y pruebas de esquema de: dos cuentas, consentimiento aceptado/rechazado/cambiado, sesión por estado, cupo ocupado, intento válido/inválido/pendiente, resultado con evidencia/ausencia/incertidumbre, informe respaldado y cita inválida, audios disponible/vencido/borrado, comparación compatible/incompatible y operación de eliminación pendiente.
 
 Los simuladores son deterministas, se identifican como fixtures en desarrollo y no alimentan métricas ni la demo declarada real. C produce fixtures de evidencia, B de contenido/canal y A de identidad/estado/audio. Cada consumidor prueba contra esos mismos ejemplos. Las preguntas de formato bloquean solo el adaptador afectado hasta G0/G1, no el desarrollo del resto del flujo con fixtures.
+
+## C-09. Perfil de la iteración 1
+
+Vigente durante la iteración 1 del [plan por iteraciones](../ROADMAP.md) (D-14, D-16, D-17 y D-18). C-01 a C-08 describen el contrato completo; este perfil indica qué se omite por ahora y qué se conserva para que la iteración 2 no rompa los DTO.
+
+| Contrato | En la iteración 1 | Llega en |
+| --- | --- | --- |
+| C-01 autenticación | Sin cookie ni login. El backend usa el usuario base: una cuenta sembrada con `owner_id` constante, que se conserva en la iteración 2 (D-18), y construye `ActorContext` con ella. | Iteración 2 (SPEC-03) |
+| C-01 `Idempotency-Key` y CSRF | No se exigen; el cliente no reintenta subidas automáticamente. Se mantiene la validación de `Origin`. | Iteración 2 |
+| C-03 consentimiento | Sin texto ni pantalla. El usuario base tiene un `ConsentRecord` sembrado respaldado por el acuerdo escrito del equipo (D-18), que `POST /practices` usa como `consent_id`. `GET /consent-policy` y `POST /consents` no se exponen. | Iteración 2 (SPEC-06) |
+| C-03 cuentas, `DELETE` y `/operations` | No se exponen. Cancelar y reintentar devuelven `Operation`, que el cliente sigue con `GET /practices/:id` y `practice.state_changed`. | Iteración 2 (SPEC-03, SPEC-11) |
+| C-03 cupo con el usuario base | Si hay una práctica no terminal con el canal abierto, crear otra responde `409 SERVER_BUSY`, también desde otra pestaña o navegador; la anterior solo se termina si su canal ya se cerró. | Se mantiene con cuentas |
+| C-04 lease, heartbeat y recuperación de canal | `stream.ready` envía sus campos con valores de configuración, pero cerrar el canal termina la práctica como `incomplete` (D-17). La espera en `recoverable_error` tiene un plazo fijo de configuración; al vencer, la práctica pasa a `incomplete`. | Iteración 2 |
+| C-05 `deletion_epoch` y checkpoints | Se omiten. Antes de publicar se comprueba `state_version` y que la práctica no esté cancelada. Orden de finalización: construir y validar el informe → copiar al corpus si el modo está activo → borrar temporales → commit; si falla el commit, se reintenta con el borrador guardado. | Iteración 2 (SPEC-11) |
+| C-07 reinicio | Al arrancar, las prácticas no terminales pasan a `incomplete`, se borran sus temporales y se libera el cupo. | Reconciliación completa de ADR-003 en la iteración 2 |
+| C-02/C-05 recortes (`conversation_clip`, `clip_reference`) y caducidad | No se generan; `expires_at` queda vacío y las anclas válidas se conservan. | Iteración 2 |
+| C-06 observaciones de pronunciación | Solo desde anclas; `limitations` declara que la pronunciación de la conversación no se evaluó. | Iteración 2 |
+| C-08 fixtures | Se priorizan los de un propietario; los de dos cuentas, borrado y caducidad pueden esperar. | Iteración 2 |
+| Corpus del equipo (D-16) | Con el modo de recolección activo, antes de borrar temporales se copian audio de conversación, transcripciones, informe si existe, evidencia y anclas a `data/corpus/`, también en sesiones canceladas o fallidas; los intentos de anclas inválidos se copian antes de descartarlos. El integrante que hizo la sesión se registra en el manifiesto del corpus mediante la configuración del modo de recolección, no en los DTO. No se sirve por la API ni se sube al repositorio. La copia principal está en el PC de Ivan hasta el cierre del curso. | Continúa para el equipo en la iteración 2; nunca para personas externas |
+
+Se conservan sin cambios: forma de los DTO, estados y `state_version`, cupo hasta `processing`, eventos y perfil de audio del canal, `PhoneticResult` y validación de citas del informe.
+
+El criterio 4 de la [sección 8 de los requisitos](../REQUIREMENTS.md), S06-CA-06, S12-CA-03 y la condición de G2 «con temporales borrados» se verifican sobre el almacenamiento del producto con el modo corpus desactivado; la copia al corpus es la excepción D-16.
+
+Criterios de las specs que dependen de lo omitido. Los demás criterios de las specs de la iteración 1 se verifican sin cambios.
+
+| Criterio | Iteración 1 | Iteración 2 |
+| --- | --- | --- |
+| SPEC-03 y SPEC-11, todos | — | Completo |
+| S04-CA-01 | — | Dos propietarios y clave repetida |
+| S04-CA-02 | Otra pestaña o navegador recibe `SERVER_BUSY` y el historial sigue disponible | Otro estudiante |
+| S04-CA-04 | Cancelación o cierre del canal | Vencimiento del lease tras recarga |
+| S04-CA-05 | Fallo de modelo con un reintento; la ventana es el plazo fijo de configuración | Ventana de ADR-003 |
+| S04-CA-06 | Cancelación antes del commit | Borrado antes del commit |
+| S04-CA-07 | Versión obsoleta devuelve `STATE_CONFLICT` | Misma clave devuelve el recurso original |
+| S05-CA-02 | Captura con el consentimiento sembrado del usuario base | Rechazo sin consentimiento |
+| S05-RF-07 / S05-CA-07 | Fallo de ASR, tutor o TTS con reintento manual; el fallo de canal termina la práctica (D-17) | Fallo de canal con recuperación manual |
+| S06-CA-01 | — | Completo (texto de consentimiento, D-18) |
+| S06-CA-02, S06-CA-04 | Solo el usuario base | Otra cuenta y petición anónima |
+| S06-CA-03, S06-CA-05, S06-CA-07 | — | Completo |
+| S06-CA-06 | Con el modo corpus desactivado | Completo |
+| S07-CA-07 | Fallo del modelo y recuperación manual con el mismo intento | Reenvío con la misma clave |
+| S08-CA-02 | — | Conversación libre (P2) |
+| S08-CA-06 | Job duplicado | Resultado tras borrado (`deletion_epoch`) |
+| S09-CA-02 | Evidencia de anclas y referencia inexistente | Unidad dudosa y recorte de conversación |
+| S09-CA-05 | Fallo de limpieza o cancelación antes del commit | Borrado antes del commit |
+| S10-CA-01, S10-CA-05 | Un propietario | Dos cuentas |
+| S10-CA-03 | — | Completo |

@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-02, RF-03, RF-04, RF-05, RF-15, RF-19 | **RNF:** RNF-01, RNF-02, RNF-08, RNF-12, RNF-13  
 > **RT:** RT-01  
 > **Módulo:** Experiencia de voz | **Responsable:** B; C asesora modelos y A canal  
-> **Etapa:** E1–E2 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
+> **Etapa:** E1–E2 | **Iteración:** 1 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Preflight de micrófono, captura, turnos, ASR, tutor contextual y TTS.
 - Transcripción parcial/final, interrupción, descarte de salida tardía y trazas de latencia.
 - Adaptadores con fixtures antes de conectar modelos reales.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Evaluar errores de pronunciación mediante ASR o corregir durante la charla.
 - Continuar conversación después del vencimiento y reanudar tras recarga.
@@ -114,7 +114,7 @@ Una pregunta bloqueante detiene únicamente la interfaz o integración indicada.
 | S05-RF-05 → S05-CA-05 | Integración/audio; traza de interrupción y generaciones. | Escenario CA-05 satisfecho y evidencia adjunta al cierre. |
 | S05-RF-06 → S05-CA-06 | Rendimiento/integración; tarea lenta y traza de cola. | Escenario CA-06 satisfecho y evidencia adjunta al cierre. |
 | S05-RF-07 → S05-CA-07 | Inyección de fallos; UI y estado correlacionados. | Escenario CA-07 satisfecho y evidencia adjunta al cierre. |
-| RF-02, RF-03, RT-01 | Audio real ASR→LLM→TTS en escritorio | Grabación de demo autorizada o traza técnica sin guardar conversación completa. |
+| RF-02, RF-03, RT-01 | Audio real ASR→LLM→TTS en escritorio | Grabación de demo autorizada o traza técnica sin guardar conversación completa, salvo el corpus del equipo (D-16). |
 | RF-04, RF-05 | UI y corpus de tutor con errores deliberados | Transcripción sin marcas y correcciones reservadas. |
 | RF-15, RNF-01 | Interrupción con frames tardíos y medición | Tiempos y resultado audible. |
 | RF-19 | Permisos y ausencia de dispositivo | Ningún envío previo a consentimiento. |

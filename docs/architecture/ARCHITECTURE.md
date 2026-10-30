@@ -1,6 +1,6 @@
 # Arquitectura del MVP de ¡Habla!
 
-**Estado:** propuesta de diseño, versión 1.0, 2026-10-29. **Custodio:** persona A; revisión de B y C.
+**Estado:** propuesta de diseño, versión 1.0, 2026-10-29; actualizada el 2026-10-30. **Custodio:** persona A; revisión de B y C.
 
 Este documento y [CONTRACTS.md](CONTRACTS.md) definen la base compartida de las [specs](../specs/README.md). Son borradores revisables; se convierten en referencia normativa de implementación al superar G0. Los requisitos confirmados en [REQUIREMENTS.md](../REQUIREMENTS.md) conservan su autoridad sobre el alcance. No hay arquitectura implementada ni tecnologías aprobadas.
 
@@ -45,8 +45,8 @@ Las flechas representan colaboración mediante interfaces; no conceden acceso di
 | Frases ancla | SPEC-07 | B | Intentos, orden, resultado de validez; consulta el catálogo |
 | Evaluación fonética | SPEC-08 | C | Evidencia acústica, cobertura y versión del evaluador; no decide estado global |
 | Informe | SPEC-09 | C | Informe final, observaciones, referencias de evidencia y publicación |
-| Historial y comparación | SPEC-10 | B | Proyección de lectura y comparación; consulta las fuentes autoritativas |
-| Eliminación | SPEC-11 | A | Operación de borrado y coordinación; cada módulo elimina sus propios datos |
+| Historial y comparación | SPEC-10 | A | Proyección de lectura y comparación; consulta las fuentes autoritativas |
+| Eliminación | SPEC-11 | B | Operación de borrado y coordinación; cada módulo elimina sus propios datos |
 | Aceptación y operación | SPEC-12 | A/B/C | Configuración de demo, mediciones y expediente de aceptación |
 
 Compartir una base de datos es válido; las tablas siguen teniendo un solo escritor lógico. Las consultas entre módulos pasan por interfaces o proyecciones identificadas. No introducir escritura cruzada desde el frontend ni desde el worker.
@@ -65,11 +65,11 @@ Estado global de práctica, autoridad de SPEC-04:
 | `completed` | Informe publicado y temporales inaccesibles, con limpieza física confirmada antes de finalizar la operación | Solo eliminación; no reanuda grabación |
 | `incomplete` | Motivo terminal registrado y temporales revocados | Solo eliminación; no puede publicar informe |
 
-Se propone conservar cupo desde `ready` hasta `processing`, incluyendo error recuperable, para evitar solapamiento de trabajos GPU y cierre. Esto es más conservador que una sola conversación de voz y debe revisarse en G0; el historial permanece disponible.
+El cupo se conserva desde `ready` hasta `processing`, incluyendo error recuperable, para evitar solapamiento de trabajos GPU y cierre (decidido el 2026-10-30, S04-P-01); el historial permanece disponible.
 
 - Una transición compara `state_version`; duplicados no repiten efectos. La sesión y el cupo se actualizan de forma atómica o mediante una operación durable equivalente.
 - El reloj de conversación es del servidor y monotónico para el cálculo; se guardan instantes UTC para presentación. Pausas y errores consumen tiempo de charla. Recuperar no reinicia el reloj; si ya venció, se cierra hacia `anchors`.
-- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto.
+- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior solo si fue abandonada. Si la anterior sigue activa, la creación responde `409 SERVER_BUSY`. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto. En la iteración 1, cerrar el canal termina la práctica como incompleta (D-17, C-09).
 - Cancelar o eliminar gana frente a una publicación tardía: un trabajo solo publica si coinciden propietario vigente, `state_version`, `deletion_epoch` y estado permitido.
 - Borrar audio tras un informe conserva el texto del informe. Borrar sesión/cuenta elimina también sus textos. La revocación de acceso precede a la limpieza física.
 - Cero observaciones no significa pronunciación perfecta. Evidencia ausente o dudosa se identifica como no evaluada.
@@ -94,7 +94,7 @@ Esquema conceptual; no obliga a un ORM. `Report` solo existe públicamente si es
 
 ## 5. Frontend y propiedad de pantallas
 
-B integra navegación y componentes compartidos; A entrega formularios de cuenta mediante las interfaces de B y C entrega la vista de informe con el mismo shell. Rutas propuestas: `/registro`, `/ingresar`, `/practica`, `/sesiones`, `/sesiones/:id`, `/comparar`, `/cuenta`. La ruta de práctica muestra configuración, permiso de micrófono, consentimiento, conversación, frases, espera y fallo como estados de un mismo flujo.
+B integra navegación y componentes compartidos; A entrega formularios de cuenta mediante las interfaces de B, y B implementa la vista de informe a partir del DTO de C, que la revisa. Rutas propuestas: `/registro`, `/ingresar`, `/practica`, `/sesiones`, `/sesiones/:id`, `/comparar`, `/cuenta`. La ruta de práctica muestra configuración, permiso de micrófono, consentimiento, conversación, frases, espera y fallo como estados de un mismo flujo.
 
 No se permite que varios módulos instalen routers o manejadores de autenticación distintos. Las cadenas visibles y errores explicables están en español; el texto de tutor y frases en inglés. Controles con etiquetas, foco visible, operación por teclado y estados anunciables; las comprobaciones concretas pertenecen a cada spec.
 
@@ -102,7 +102,7 @@ No se permite que varios módulos instalen routers o manejadores de autenticaci�
 
 Propuesta de G0: origen único; desarrollo web `127.0.0.1:3000`, backend `127.0.0.1:8000`, canal bajo `/api/v1/practices/:id/stream` y API bajo `/api/v1`. El servidor web reenvía esas rutas al backend, con soporte de actualización de canal. La inferencia, si usa otro proceso, solo es interna y su puerto se declara en configuración de servidor.
 
-Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. En demo por red, entrada HTTPS y canal cifrado; credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
+Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. El MVP se ejecuta en local (D-13): en `localhost` el navegador permite el micrófono sin HTTPS. Si se accede desde otro equipo por red, entrada HTTPS y canal cifrado. El despliegue en la nube queda para la iteración 2. Credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
 
 ## 7. Decisiones y límites de tecnología
 
@@ -110,10 +110,10 @@ Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma 
 | --- | --- | --- | --- |
 | ADR-001 | A con B/C | Lenguajes, web/backend, persistencia, canal, codificación de audio, puertos, scripts, autenticación y ejecución de tareas | G0 |
 | ADR-002 | C con A/B | Evaluador, evidencia disponible, costos, licencias, confianza, validez y versión compatible | G1 para usar modelo real; selección final G3 |
-| ADR-003 | A con B/C | Lease/heartbeat, deadlines, límites de carga, limpieza física y comportamiento ante reinicio | G1 |
+| ADR-003 | A con B/C | Lease/heartbeat, deadlines, límites de carga, limpieza física y comportamiento ante reinicio | G1: deadlines y límites de carga; iteración 2: lease/heartbeat, recortes, limpieza física y reinicio |
 | ADR-004 | B con C | Catálogo de frases/referencias, guía del tutor, parte de TTS no escuchada | G1 |
 
-Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. No se selecciona framework ni proveedor por insinuación. Pesos abiertos y GPU RTX 5090 son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.
+Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. El 2026-10-30 el equipo aceptó como orientación FastAPI (Python) en el backend y React con Vite en el frontend; ADR-001 la formaliza. No se selecciona proveedor por insinuación. Pesos abiertos y las GPU locales del grupo (RTX 4090/5090 y 2× RTX 5060 de 16 GB) son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.
 
 ## 8. Protocolo para modificar contratos
 
