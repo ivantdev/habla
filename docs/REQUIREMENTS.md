@@ -12,7 +12,8 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 
 - [Propuesta del proyecto](https://introsistemasinteligentes.com/proyectos/habla), consultada el 28 de octubre de 2026 mediante la [API pública utilizada por la página](https://introsistemasinteligentes.com/api/proyectos/habla).
 - Decisiones del equipo recogidas en la entrevista: alcance, duración, contenido, cuentas, historial, interrupciones, conservación de audio, suficiencia de evidencia y recuperación ante fallos, detallados en este documento.
-- Recursos y orientación técnica: servidor con GPU RTX 5090 para la demo, preferencia por modelos de pesos abiertos y comparación del prototipo propio con una posible alternativa de Microsoft antes de seleccionar el motor fonético.
+- Recursos y orientación técnica: equipos personales del grupo con GPU NVIDIA (un computador con RTX 4090 y RTX 5090 (Ivan) y otro con dos RTX 5060 de 16 GB (Nicolás)), preferencia por modelos de pesos abiertos y comparación del prototipo propio con una posible alternativa de Microsoft antes de seleccionar el motor fonético.
+- Planificación del equipo del 30 de octubre de 2026: entrega en aproximadamente mes y medio con presentación tipo *Shark Tank*, primera iteración funcional en aproximadamente un mes, MVP ejecutado solo en local y despliegue en la nube aplazado a una V2.
 - Evaluación: datos públicos inicialmente, precisión objetivo mínima de 0,70 en validación y reporte de precisión y recall reales en prueba. Los límites de latencia se fijarán tras medir el prototipo.
 
 **Confirmado** identifica decisiones expresas del equipo. **Base** identifica requisitos conservados de la propuesta original, compatibles con el MVP acordado. **Derivado** explicita una condición necesaria para cumplir ese alcance. **Pendiente** se reserva para parámetros o selecciones que requieren prototipado, preparación de contenido o verificación técnica; no incorpora funcionalidades adicionales al MVP.
@@ -29,7 +30,7 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 | Niveles y temas | Confirmado | A2, B1 o B2; restaurante, entrevista laboral, fin de semana, viajes o noticias; duración seleccionable de 5 o 10 minutos con paso automático a frases ancla. |
 | Idioma de interfaz e informe | Confirmado | Español; conversación y frases ancla en inglés. |
 | Audios conservados | Confirmado | Frases ancla y recortes de errores con consentimiento explícito durante 30 días. El usuario puede borrar sesiones, audios o cuenta. El audio completo y temporal se elimina al generar el informe, cancelar o dar por fallida la sesión. |
-| Entorno de demo | Confirmado | Navegador de escritorio, servidor con RTX 5090 y una única sesión de voz activa a la vez. Si está ocupado se informa al siguiente estudiante. Navegador y condiciones de red por documentar en el prototipo. |
+| Entorno de demo | Confirmado | Navegador de escritorio, ejecución local en un equipo del grupo con GPU NVIDIA y una única sesión de voz activa a la vez. Si está ocupado se informa al siguiente estudiante. Equipo y navegador de demo por documentar en el prototipo. El despliegue en la nube queda para una V2. |
 | Motor de evaluación | Pendiente de experimento | Comparar un prototipo propio con la alternativa de Microsoft antes de elegir. No se considera obligatoria todavía una tecnología concreta. |
 | Latencia | Pendiente de medición | Medir el prototipo antes de fijar límites de respuesta del tutor y generación del informe. |
 | Evolución por sonido | Confirmado | Comparación entre sesiones sobre las mismas cinco frases ancla; sin mapa de vocales ni nota global. |
@@ -69,14 +70,14 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 
 | ID | Categoría | Requisito y verificación | Estado |
 | --- | --- | --- | --- |
-| RNF-01 | Latencia | Medir el tiempo entre el fin de la intervención del estudiante y el comienzo de la respuesta audible, la reacción a interrupciones y la espera hasta el informe. Registrar percentiles y condiciones de prueba en escritorio, servidor RTX 5090 y una sesión activa. Fijar límites con los resultados antes de aceptar la demo. Los 2 segundos del percentil 95 de la propuesta son una referencia, no un límite acordado. | Medición confirmada; umbrales pendientes de prototipo |
+| RNF-01 | Latencia | Medir el tiempo entre el fin de la intervención del estudiante y el comienzo de la respuesta audible, la reacción a interrupciones y la espera hasta el informe. Registrar percentiles y condiciones de prueba en escritorio, equipo local de demo con su GPU y una sesión activa. Fijar límites con los resultados antes de aceptar la demo. Los 2 segundos del percentil 95 de la propuesta son una referencia, no un límite acordado. | Medición confirmada; umbrales pendientes de prototipo |
 | RNF-02 | Fluidez | La ruta de evaluación de pronunciación debe ejecutarse sin bloquear la ruta conversacional. Verificar que la conversación pueda continuar mientras exista análisis pendiente. | Base |
 | RNF-03 | Calidad de detección | Seleccionar el umbral del motor en validación buscando una precisión de detección de errores fonéticos de al menos 0,70 y reportar el recall resultante. Informar precisión y recall reales en prueba por separado, con número de errores y fonemas evaluados. No ajustar con prueba ni garantizar que alcance la meta. Si no hay detecciones, la precisión no se considera una meta cumplida. | Confirmado |
 | RNF-04 | Trazabilidad del informe | Toda observación de pronunciación debe referir a evidencia del motor de evaluación elegido; toda observación de gramática o vocabulario debe referir a una intervención transcrita. Revisar que el informe no introduzca ejemplos atribuidos al estudiante que no existan en la sesión. | Base |
 | RNF-05 | Incertidumbre | Excluir de la evaluación fonética las palabras de conversación con transcripción dudosa, sin solicitar repetirlas. Identificar lo no evaluado sin considerarlo pronunciación correcta ni error. Definir el indicador de confianza y su umbral con el prototipo; las frases ancla usan texto conocido. | Confirmado; umbral pendiente de prototipo |
 | RNF-06 | Criterio pedagógico | Señalar errores que cambien el significado o dificulten la comprensión, evitando tratar toda diferencia frente al acento de referencia como error. Falta definir la guía de anotación y revisión. | Base |
 | RNF-07 | Privacidad | Conservar frases ancla y recortes autorizados por 30 días desde su grabación; permitir su eliminación anterior a solicitud del usuario. Eliminar audio completo y temporal al generar el informe, cancelar o dar por fallida la sesión. Mantener texto e informes hasta que el usuario los elimine. Verificar la caducidad y que los audios eliminados o vencidos ya no se sirvan. El plazo operativo para depurar archivos residuales se documentará en la implementación. | Confirmado; detalle operativo pendiente |
-| RNF-08 | Adecuación del tutor | El tutor debe seguir el contexto de la práctica y aplicar los límites temáticos descritos en la propuesta. Falta definir los casos de evaluación y el comportamiento ante una solicitud fuera del contexto permitido. | Base |
+| RNF-08 | Adecuación del tutor | El tutor debe seguir el contexto de la práctica y aplicar los límites temáticos de la propuesta: ajustarse a la ficha del tema, filtrar temas sensibles y no dar consejos médicos, legales ni emocionales. Falta definir los casos de evaluación y el comportamiento ante una solicitud fuera del contexto permitido. | Base |
 | RNF-09 | Acceso y credenciales | Solo el propietario autenticado debe consultar, reproducir o eliminar sus sesiones, transcripciones, informes y audios. Guardar contraseñas mediante hash adaptativo con sal. Verificar que una segunda cuenta y una petición sin sesión no puedan acceder a datos de otra cuenta. | Derivado |
 | RNF-10 | Capacidad | Admitir una única sesión de voz activa en el servidor. Si está ocupado, informar al siguiente estudiante y permitir reintentar sin comenzar una segunda conversación. Consultar el historial no equivale a iniciar una sesión de voz. | Derivado |
 | RNF-11 | Comparabilidad | Comparar por sonido solo oportunidades evaluadas de las mismas frases y con condiciones de evaluación compatibles. Distinguir ausencia de evidencia de ausencia de errores; registrar versión de frases y evaluador para no atribuir cambios del motor al aprendizaje del estudiante. La visualización no constituye una nota global. | Derivado |
@@ -88,7 +89,7 @@ Permitir que un estudiante practique conversación en inglés con un tutor de vo
 
 Estas condiciones preservan la evaluación prevista en la propuesta y la adaptan a las decisiones del MVP. La selección de modelos y parámetros se resolverá mediante el prototipo.
 
-Se priorizan modelos de pesos abiertos y una demostración con GPU RTX 5090, navegador de escritorio y una sesión de voz activa a la vez. La API de Microsoft es una alternativa por investigar; no se ha confirmado que proporcione los fonemas, puntuaciones o características necesarios para la evaluación propuesta. La decisión entre el prototipo propio y el servicio externo queda aplazada hasta compararlos. La necesidad de conexión a internet y el presupuesto quedan pendientes.
+Se priorizan modelos de pesos abiertos y una demostración local en equipos del grupo con GPU NVIDIA, navegador de escritorio y una sesión de voz activa a la vez. La API de Microsoft es una alternativa por investigar; no se ha confirmado que proporcione los fonemas, puntuaciones o características necesarios para la evaluación propuesta. La decisión entre el prototipo propio y el servicio externo queda aplazada hasta compararlos. La necesidad de conexión a internet y el presupuesto quedan pendientes.
 
 | ID | Condición | Evidencia esperada | Estado |
 | --- | --- | --- | --- |
@@ -117,13 +118,16 @@ Las grabaciones de participantes, la comparación con monólogos y el piloto lon
 | D-02 | A2/B1/B2; cinco temas definidos; elegir 5 o 10 minutos, paso automático a frases y cancelación anticipada. | Resuelto |
 | D-03 | Cinco frases fijas, referencia estadounidense, interfaz e informes en español. | Resuelto; textos por preparar |
 | D-04 | Audio autorizado durante 30 días y eliminación a solicitud; borrar audio completo y temporal al terminar, cancelar o fallar. | Resuelto; detalles de operación por implementar |
-| D-05 | Pesos abiertos, posible API de Microsoft y RTX 5090 para la demo. | Resuelto en orientación; fecha y presupuesto no definidos |
-| D-06 | Escritorio, servidor RTX 5090 y una sesión de voz activa; interrupciones naturales; aviso de servidor ocupado. | Resuelto; navegador y red por documentar |
+| D-05 | Pesos abiertos, posible API de Microsoft y GPU NVIDIA locales: un computador con RTX 4090 y RTX 5090 (Ivan) y otro con dos RTX 5060 de 16 GB (Nicolás). | Resuelto en orientación; presupuesto no definido |
+| D-06 | Escritorio, ejecución local en un equipo del grupo y una sesión de voz activa; interrupciones naturales; aviso de servidor ocupado. | Resuelto; equipo y navegador de demo por documentar |
 | D-07 | Cinco frases válidas, hasta dos reintentos por frase; omitir conversación dudosa. Ante fallo, reintento manual, sin reanudar tras recarga. | Resuelto; validez acústica por calibrar |
 | D-08 | Medir prototipo antes de fijar límites de respuesta, interrupción y espera del informe. | Resuelto en estrategia; valores pendientes de medición |
 | D-09 | Correo y contraseña sin verificación ni recuperación por correo en la demo. | Resuelto |
 | D-10 | Datos públicos; precisión objetivo mínima de 0,70 en validación y reporte de precisión y recall reales en prueba; participantes para después. | Resuelto; protocolo por preparar |
 | D-11 | Elegir entre prototipo propio y alternativa de Microsoft tras compararlos. | Resuelto en estrategia; selección pendiente de experimento |
+| D-12 | Entrega en aproximadamente mes y medio desde el 30 de octubre de 2026, con presentación tipo *Shark Tank*; primera iteración funcional en aproximadamente un mes. | Resuelto; fechas exactas por confirmar |
+| D-13 | MVP probado solo en local; despliegue en la nube en una V2. | Resuelto |
+| D-14 | Recorte en tres iteraciones: MVP local de un solo usuario; acceso remoto, nube, cuentas y borrado; extras en V3. Los requisitos se conservan y el [plan por iteraciones](ROADMAP.md) fija cuándo se implementa cada uno. | Resuelto |
 
 ### Trabajo de prototipo y preparación
 
@@ -136,7 +140,7 @@ Las grabaciones de participantes, la comparación con monólogos y el piloto lon
 | Contenido | Preparar las cinco frases fijas, sus referencias y las fichas de los cinco temas para los tres niveles. | RF-01, RF-07 |
 | Evaluación pública | Verificar datos, licencias y particiones; preparar protocolo, métricas y casos de informe. Evitar fugas por hablante y documentar las limitaciones de modelos preentrenados y servicios externos. | RNF-03, RT-03 a RT-07 |
 
-La fecha de entrega y el presupuesto de servicios externos se definirán durante la planificación. Las pruebas con participantes no son requisito de esta versión.
+La entrega y la primera iteración siguen D-12. El presupuesto de servicios externos se definirá durante la planificación. Las pruebas con participantes no son requisito de esta versión.
 
 ## 8. Criterios de aceptación de la demostración
 

@@ -3,7 +3,7 @@
 > **Estado:** Borrador | **Prioridad:** P1 | **Dominio:** Ciclo de vida y privacidad  
 > **RF relacionados:** RF-16, RF-20 | **RNF:** RNF-07, RNF-09, RNF-12  
 > **RT:** No aplica directamente  
-> **Módulo:** Ciclo de vida y privacidad | **Responsable:** A; B integra acciones y C cancela trabajos  
+> **Módulo:** Ciclo de vida y privacidad | **Responsable:** B; A provee revocación de audio e identidad y C cancela trabajos  
 > **Etapa:** E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
 
 ## 1. Contexto y problema

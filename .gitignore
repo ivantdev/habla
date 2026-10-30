@@ -1,0 +1,12 @@
+# Entornos y dependencias
+.venv/
+__pycache__/
+node_modules/
+
+# Datos, audio y modelos locales
+data/
+*.wav
+spikes/**/out/
+
+# Secretos
+.env

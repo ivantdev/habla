@@ -97,7 +97,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S04-P-01 — bloqueante G0:** Acordar política de cupo hasta processing y transición al vencimiento; A con B/C, antes de implementar la máquina compartida.
+- **S04-P-01 — parcialmente resuelta el 2026-10-30:** el cupo se conserva desde `ready` hasta `processing` (opción larga) y el MVP atiende un solo usuario a la vez. Falta acordar la transición al vencimiento; A con B/C, antes de implementar la máquina compartida.
 - **S04-P-02 — bloqueante G1:** Fijar lease, heartbeat, ventana de recuperación y deadlines de operación; A/B/C, ADR-003 antes de integrar audio real.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.

@@ -61,7 +61,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 - [ ] **S03-CA-03** (S03-RF-03) — Dada una cuenta activa, Cuando ingrese y consulte /auth/me, Entonces recibe su identidad; con contraseña errónea recibe INVALID_CREDENTIALS sin cookie válida.
 - [ ] **S03-CA-04** (S03-RF-04) — Dada una cookie capturada antes de salir y un canal abierto, Cuando se cierre sesión, Entonces reutilizar la cookie falla y el canal ya no recibe datos privados.
 - [ ] **S03-CA-05** (S03-RF-05) — Dadas cuentas A y B y un audio de A, Cuando B o una petición anónima intente leerlo, modificarlo o eliminarlo por ID, Entonces recibe 404 o 401 y el dato no cambia.
-- [ ] **S03-CA-06** (S03-RF-06) — Dada la demo configurada, Cuando se inspeccionen respuestas, cookies, bundle y conexión, Entonces se usa entrada cifrada y no aparecen claves del servidor.
+- [ ] **S03-CA-06** (S03-RF-06) — Dada la demo configurada, Cuando se inspeccionen respuestas, cookies, bundle y conexión, Entonces se usa entrada cifrada cuando el acceso es por red y no aparecen claves del servidor.
 
 ## 7. Diseño técnico y datos
 

@@ -96,7 +96,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S01-P-01 — bloqueante G1 para modelos reales:** Acceso/licencias, tamaño de muestra, guía de anotación, indicador ASR, umbrales de validez y confianza; C, antes de conectar evaluación real.
+- **S01-P-01 — bloqueante G1 para modelos reales:** Acceso/licencias, tamaño de muestra, guía de anotación, indicador ASR, umbrales de validez y confianza; C, antes de conectar evaluación real. Las métricas están especificadas en [METRICS.md](../experiments/METRICS.md).
 - **S01-P-02 — bloqueante G3:** Cerrar selección, umbrales de latencia, recortes, precisión lingüística y criterio pedagógico; C con B/A, antes de aceptación. La meta numérica lingüística no se inventa.
 - **S01-P-03 — no bloqueante para otros módulos:** Disponibilidad y presupuesto de la alternativa externa; C/A, investigar durante E0 y registrar limitación si no hay acceso.
 

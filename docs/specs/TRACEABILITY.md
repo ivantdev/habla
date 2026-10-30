@@ -37,8 +37,8 @@ La spec primaria responde por el cumplimiento de cada requisito; las colaborador
 | RNF-09 | [SPEC-03](SPEC-03-identity-and-access.md) | 04, 06, 07, 10, 11, 12 | S03-RF-01 / CA-01; S03-RF-04 / CA-04; S03-RF-05 / CA-05; S06-RF-04 / CA-04; S10-RF-05 / CA-05; S11-RF-03 / CA-03; S11-RF-05 / CA-05; S12-RF-04 / CA-04; SPEC-03 §10 y SPEC-12 §10 |
 | RNF-10 | [SPEC-04](SPEC-04-session-orchestration.md) | 12 | S04-RF-01 / CA-01; S04-RF-02 / CA-02; S04-RF-07 / CA-07; S12-RF-06 / CA-06; SPEC-04 §10 y SPEC-12 §10 |
 | RNF-11 | [SPEC-10](SPEC-10-history-and-comparison.md) | 02, 08, 12 | S02-RF-03 / CA-03; S08-RF-04 / CA-04; S10-RF-04 / CA-04; S10-RF-05 / CA-05; SPEC-10 §10 y SPEC-12 §10 |
-| RNF-12 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | 00, 02, 03, 04, 05, 06, 07, 09, 10, 11 | S00-RF-05 / CA-05; SPEC-12 §10 y SPEC-12 §10 |
-| RNF-13 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | 00, 03, 05, 06 | S00-RF-02 / CA-02; S00-RF-04 / CA-04; S00-RF-05 / CA-05; S03-RF-06 / CA-06; S12-RF-01 / CA-01; SPEC-12 §10 y SPEC-12 §10 |
+| RNF-12 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | 00, 02, 03, 04, 05, 06, 07, 09, 10, 11 | S00-RF-05 / CA-05; SPEC-12 §10 |
+| RNF-13 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | 00, 03, 05, 06 | S00-RF-02 / CA-02; S00-RF-04 / CA-04; S00-RF-05 / CA-05; S03-RF-06 / CA-06; S12-RF-01 / CA-01; SPEC-12 §10 |
 | RNF-14 | [SPEC-08](SPEC-08-phonetic-evaluation.md) | 01, 07, 12 | S01-RF-06 / CA-06; S07-RF-02 / CA-02; S07-RF-03 / CA-03; S08-RF-03 / CA-03; SPEC-08 §10 y SPEC-12 §10 |
 | RT-01 | [SPEC-05](SPEC-05-voice-conversation.md) | 12 | S05-RF-03 / CA-03; S12-RF-01 / CA-01; SPEC-05 §10 y SPEC-12 §10 |
 | RT-02 | [SPEC-01](SPEC-01-experiments-and-evaluator-selection.md) | 08, 12 | S01-RF-03 / CA-03; S12-RF-05 / CA-05; SPEC-01 §10 y SPEC-12 §10 |

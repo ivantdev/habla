@@ -45,8 +45,8 @@ Las flechas representan colaboración mediante interfaces; no conceden acceso di
 | Frases ancla | SPEC-07 | B | Intentos, orden, resultado de validez; consulta el catálogo |
 | Evaluación fonética | SPEC-08 | C | Evidencia acústica, cobertura y versión del evaluador; no decide estado global |
 | Informe | SPEC-09 | C | Informe final, observaciones, referencias de evidencia y publicación |
-| Historial y comparación | SPEC-10 | B | Proyección de lectura y comparación; consulta las fuentes autoritativas |
-| Eliminación | SPEC-11 | A | Operación de borrado y coordinación; cada módulo elimina sus propios datos |
+| Historial y comparación | SPEC-10 | A | Proyección de lectura y comparación; consulta las fuentes autoritativas |
+| Eliminación | SPEC-11 | B | Operación de borrado y coordinación; cada módulo elimina sus propios datos |
 | Aceptación y operación | SPEC-12 | A/B/C | Configuración de demo, mediciones y expediente de aceptación |
 
 Compartir una base de datos es válido; las tablas siguen teniendo un solo escritor lógico. Las consultas entre módulos pasan por interfaces o proyecciones identificadas. No introducir escritura cruzada desde el frontend ni desde el worker.
@@ -102,7 +102,7 @@ No se permite que varios módulos instalen routers o manejadores de autenticaci�
 
 Propuesta de G0: origen único; desarrollo web `127.0.0.1:3000`, backend `127.0.0.1:8000`, canal bajo `/api/v1/practices/:id/stream` y API bajo `/api/v1`. El servidor web reenvía esas rutas al backend, con soporte de actualización de canal. La inferencia, si usa otro proceso, solo es interna y su puerto se declara en configuración de servidor.
 
-Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. En demo por red, entrada HTTPS y canal cifrado; credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
+Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma puertos, comandos, variables y transporte en ADR-001 antes de implementar clientes reales. El MVP se ejecuta en local (D-13): en `localhost` el navegador permite el micrófono sin HTTPS. Si se accede desde otro equipo por red, entrada HTTPS y canal cifrado. El despliegue en la nube queda para V2. Credenciales de servicios solo en servidor. No registrar contraseñas, cookies, textos completos ni audio en telemetría de operación.
 
 ## 7. Decisiones y límites de tecnología
 
@@ -113,7 +113,7 @@ Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma 
 | ADR-003 | A con B/C | Lease/heartbeat, deadlines, límites de carga, limpieza física y comportamiento ante reinicio | G1 |
 | ADR-004 | B con C | Catálogo de frases/referencias, guía del tutor, parte de TTS no escuchada | G1 |
 
-Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. No se selecciona framework ni proveedor por insinuación. Pesos abiertos y GPU RTX 5090 son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.
+Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. El 2026-10-30 el equipo aceptó como orientación FastAPI (Python) en el backend y React con Vite en el frontend; ADR-001 la formaliza. No se selecciona proveedor por insinuación. Pesos abiertos y las GPU locales del grupo (RTX 4090/5090 y 2× RTX 5060 de 16 GB) son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.
 
 ## 8. Protocolo para modificar contratos
 

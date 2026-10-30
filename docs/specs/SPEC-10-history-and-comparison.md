@@ -3,7 +3,7 @@
 > **Estado:** Borrador | **Prioridad:** P1 | **Dominio:** Consulta y experiencia  
 > **RF relacionados:** RF-09, RF-12, RF-20 | **RNF:** RNF-09, RNF-11, RNF-12  
 > **RT:** No aplica directamente  
-> **Módulo:** Consulta y experiencia | **Responsable:** B; A/C proveen consultas  
+> **Módulo:** Consulta y experiencia | **Responsable:** A; B mantiene shell/router y C provee el informe  
 > **Etapa:** E3 | **Versión:** 1.0 | **Actualizado:** 2026-10-29
 
 ## 1. Contexto y problema

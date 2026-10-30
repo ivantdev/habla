@@ -39,34 +39,34 @@ Esfuerzo S/M/L es relativo, no una promesa de días: S una pieza acotada; M vari
 | [SPEC-07](SPEC-07-anchor-phrases.md) | Lectura y validación de las cinco frases ancla | B; C entrega validador | E2 | M |
 | [SPEC-08](SPEC-08-phonetic-evaluation.md) | Evaluación acústica, validez y evidencia fonética | C; A revisa aislamiento y B consume validez | E1–E2 | L |
 | [SPEC-09](SPEC-09-final-report.md) | Informe sustentado de pronunciación, gramática y vocabulario | C; B integra presentación | E2 | L |
-| [SPEC-10](SPEC-10-history-and-comparison.md) | Historial propio y comparación por sonido | B; A/C proveen consultas | E3 | M |
-| [SPEC-11](SPEC-11-data-deletion.md) | Eliminación de audio, sesiones y cuenta | A; B integra acciones y C cancela trabajos | E3 | L |
+| [SPEC-10](SPEC-10-history-and-comparison.md) | Historial propio y comparación por sonido | A; B mantiene shell/router y C provee el informe | E3 | M |
+| [SPEC-11](SPEC-11-data-deletion.md) | Eliminación de audio, sesiones y cuenta | B; A provee revocación de audio e identidad y C cancela trabajos | E3 | L |
 | [SPEC-12](SPEC-12-acceptance-and-demo.md) | Integración, despliegue y aceptación de la demo | A: despliegue; B: recorridos; C: métricas | E3 | M |
 
 ## 4. Equipo y propiedad
 
-A/B/C son roles de planificación; asignar nombres reales al iniciar E0. No implican tres agentes automáticos ni una asignación ya acordada.
+Asignación acordada el 2026-10-30: **A = Sebastián**, **B = Nicolás**, **C = Ivan**. Ivan dispone del computador con RTX 4090 y RTX 5090; Nicolás, del computador con dos RTX 5060 de 16 GB. Son equipos personales en casa de cada uno.
 
 | Persona | Área principal | Entregables | Revisión que aporta |
 | --- | --- | --- | --- |
-| A | Plataforma y datos | Base, identidad, orquestación, audio, eliminación y operación | Permisos, persistencia, carreras y configuración de módulos de B/C |
-| B | Experiencia y voz | Catálogo, shell, conversación, anclas, historial y comparación | Usabilidad, canal, contratos de pantalla y contenido pedagógico |
+| A | Plataforma y datos | Base, identidad, orquestación, audio, historial, comparación y operación | Permisos, persistencia, carreras y configuración de módulos de B/C |
+| B | Experiencia y voz | Catálogo, shell, conversación, anclas, eliminación y anotaciones humanas | Usabilidad, canal, contratos de pantalla y contenido pedagógico |
 | C | Evaluación | Experimentos, validador/evaluador, análisis lingüístico e informe | Evidencia, cobertura, versiones y mediciones |
 
 Cada área entrega frontend/adaptadores que le correspondan; B mantiene router y componentes compartidos. A custodia API/proxy/configuración; C custodia DTO de evidencia e informe. B puede implementar la vista de informe a partir del DTO de C para descargar trabajo de C, manteniendo un único editor de esa vista por tarea.
 
-La carga de A y C es alta: usar WIP de una tarea principal por persona, reservar bloques de GPU y revisar capacidad tras G1. B puede apoyar contratos UI y pruebas de integración mientras C mide, y preparar casos de borrado mientras A implementa la coordinación. Ajustar reparto tras mediciones, sin cambiar propietarios de datos a mitad de una integración.
+La carga de A y C es alta: usar WIP de una tarea principal por persona, reservar bloques de GPU y revisar capacidad tras G1. B puede apoyar contratos UI y pruebas de integración mientras C mide, y coordina el borrado (SPEC-11) sobre las APIs de revocación de A. Ajustar reparto tras mediciones, sin cambiar propietarios de datos a mitad de una integración.
 
 ## 5. Etapas y gates de integración
 
-No se fijan fechas de calendario ni duración sin conocer disponibilidad del equipo. «Antes de G1» es una fecha objetivo relativa verificable; al iniciar E0 el equipo asigna fechas reales al tablero.
+Calendario acordado el 2026-10-30, con fechas exactas por confirmar: primera iteración funcional en aproximadamente un mes (cerca del 2026-11-30) y entrega con presentación tipo *Shark Tank* en aproximadamente mes y medio (cerca del 2026-12-14). Las fechas de cada gate se asignan en el tablero dentro de ese margen. El recorte en tres iteraciones y el reparto semanal están en el [plan por iteraciones](../ROADMAP.md), que prevalece para el orden de trabajo.
 
 | Etapa | A: plataforma | B: experiencia | C: evaluación | Entrega y condición de salida |
 | --- | --- | --- | --- | --- |
 | E0 — Definir y reducir incertidumbre | SPEC-00: ADR-001, shell/API, esquemas, fixtures y spike conjunto de canal | SPEC-02: esquema de contenido, borrador de fichas/frases; aporta captura/shell al spike | SPEC-01: protocolo, acceso/licencias, evidencia fixture y prueba inicial de GPU | G0: contrato v1 revisado por productores/consumidores, stack/puertos/perfil de audio fijados y base local reproducible |
 | E1 — Bases y un turno real | SPEC-03; SPEC-06 consentimiento/temporales/lectura; mínimo de SPEC-04 para crear/iniciar/cancelar con cupo | SPEC-05 con fixtures y luego un turno real; cerrar SPEC-02 | SPEC-01 calibración inicial y SPEC-08 validez/adaptador mínimo | G1: cuenta→consentimiento→captura→un turno hablado real→cancelación/limpieza; frases/políticas y deadlines cerrados para integración real |
 | E2 — Sesión completa | Completar SPEC-04; SPEC-06 recortes, expiración y limpieza; barrera de borrado preparada | Completar SPEC-05; SPEC-07 con validador real; integrar vista de informe | Completar SPEC-08 y SPEC-09 con referencias y citas verificables | G2: conversación cronometrada→cinco anclas→informe real y temporales borrados; cancelación/fallo no publican informe |
-| E3 — Producto verificable | SPEC-11 completo; SPEC-12 despliegue, reinicios, inventario y permisos | SPEC-10 y SPEC-12 recorridos, comparación y UI | SPEC-01 evaluación final congelada; SPEC-12 métricas/limitaciones | G3: ocho criterios del catálogo verificados, expediente real y limitaciones explícitas; pendientes críticos impiden declarar MVP aceptado |
+| E3 — Producto verificable | SPEC-10; SPEC-12 despliegue, reinicios, inventario y permisos | SPEC-11 completo y SPEC-12 recorridos y UI | SPEC-01 evaluación final congelada; SPEC-12 métricas/limitaciones | G3: ocho criterios del catálogo verificados, expediente real y limitaciones explícitas; pendientes críticos impiden declarar MVP aceptado |
 
 Los gates incluyen una revisión breve de los tres: contratos, criterios y evidencia. G0 congela forma de DTO, no el modelo fonético. G1 habilita audio/modelos reales con consentimiento y criterios calibrados. El adaptador puede cambiar tras comparación sin romper DTO. G2 acredita un recorrido, no toda la demo. G3 acepta o identifica con precisión los criterios incumplidos.
 
@@ -135,6 +135,6 @@ Un requisito sigue **pendiente** si su prueba no se ejecutó. Registrar fallos y
 | Deadlines, lease, límites de audio/recorte y limpieza física | A con B/C | G1 | Recuperación, almacenamiento y trabajos reales | Contratos/algoritmos con reloj/configuración fixture |
 | Modelos de tutor/TTS y gramática/vocabulario | B/C | G1 | Voz/análisis lingüístico reales | Adaptadores y citas fixture |
 | Umbrales finales de latencia y protocolo/calidad lingüística | C con A/B | Protocolo antes de medir; valores finales G3 | Declarar aceptación de esos criterios | Implementación y mediciones exploratorias |
-| Presupuesto, conexión, navegador/red y calendario | A/B/C | Fechas al iniciar E0; entorno antes de G3 | Demo reproducible y compromisos de fecha | Desarrollo local declarado |
+| Presupuesto, navegador y equipo de demo | A/B/C | Antes de G3 | Demo reproducible | Desarrollo local; calendario (D-12) y ejecución local (D-13) ya acordados |
 
-Las preguntas locales `SNN-P-MM` precisan estos bloqueos. No hay selección tecnológica aprobada, citas de reuniones disponibles ni resultados experimentales en este paquete. La especificación de contenido incluye resolver los límites temáticos de la propuesta original: la URL externa no fue accesible durante la preparación; se conserva el catálogo existente como fuente y se marca la precisión pendiente.
+Las preguntas locales `SNN-P-MM` precisan estos bloqueos. La orientación de stack (FastAPI y React con Vite) se aceptó el 2026-10-30; ADR-001 debe formalizarla con puertos, comandos y perfil de audio. No hay citas de reuniones ni resultados experimentales en este paquete. Los límites temáticos del tutor se verificaron el 2026-10-30 en la [API pública de la propuesta](https://introsistemasinteligentes.com/api/proyectos/habla): ajustarse a la ficha del tema, filtrar temas sensibles y no dar consejos médicos, legales ni emocionales.

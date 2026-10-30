@@ -100,7 +100,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 - **S09-P-01 — bloqueante G1 para generador real:** Definir modelo/reglas lingüísticas, prompts versionados y esquema de salida; C con política de datos de A.
 - **S09-P-02 — bloqueante G2:** Acordar texto de explicaciones y generación de referencias de recortes; C/B antes del recorrido integrado.
-- **S09-P-03 — bloqueante G3:** Muestra humana y criterio de calidad lingüística; C/B mediante SPEC-01 antes de aceptación.
+- **S09-P-03 — bloqueante G3:** Muestra humana y criterio de calidad lingüística; C/B mediante SPEC-01 antes de aceptación. Nicolás (B) realiza las anotaciones humanas según la [especificación de métricas](../experiments/METRICS.md).
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
 

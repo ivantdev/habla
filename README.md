@@ -17,4 +17,6 @@ El alcance completo, las restricciones y los criterios de aceptación están en 
 ## Documentación
 
 - [Requisitos del MVP](docs/REQUIREMENTS.md): alcance, decisiones pendientes y criterios de aceptación.
+- [Plan por iteraciones](docs/ROADMAP.md): recorte del MVP, reparto por persona y demo del *Shark Tank*.
 - [Especificaciones y plan de construcción](docs/specs/README.md): módulos, contratos, etapas y reparto del trabajo entre tres personas.
+- [Métricas de evaluación](docs/experiments/METRICS.md): qué se mide, cómo y quién lo ejecuta.

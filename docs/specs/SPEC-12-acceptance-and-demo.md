@@ -26,7 +26,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ### Dentro de esta iteración
 
-- Entorno de demo reproducible y cifrado, configuración sin secretos y comprobación de dependencias.
+- Entorno de demo local reproducible (cifrado si se accede por red), configuración sin secretos y comprobación de dependencias.
 - Recorridos completos reales, errores, concurrencia de cupo, borrado y caducidad.
 - Resultados congelados, umbrales medidos, manual operativo y expediente de aceptación.
 
@@ -37,7 +37,7 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ### Supuestos acordados
 
-- Confirmados: escritorio, RTX 5090, una sesión de voz y ocho criterios finales de REQUIREMENTS.md. Navegador/red, presupuesto y fecha de entrega no están acordados.
+- Confirmados: escritorio, ejecución local en un equipo del grupo con GPU NVIDIA, una sesión de voz y ocho criterios finales de REQUIREMENTS.md; entrega con presentación tipo *Shark Tank* según D-12. Navegador, equipo de demo y presupuesto no están acordados; la nube queda para V2.
 
 Las propuestas se revisan en los gates definidos por el plan.
 
@@ -56,7 +56,7 @@ IDs `S12-RF-*` son descomposiciones locales estables, no renumeraciones de `RF-*
 
 Todos pendientes; escenarios propuestos para implementación y verificación. Cada criterio indica su requisito local.
 
-- [ ] **S12-CA-01** (S12-RF-01) — Dado un entorno compatible, Cuando otra persona siga el manual, Entonces puede abrir la app por entrada cifrada y comprobar dependencias; el modo real/fixture es visible y las claves no están en cliente ni repositorio.
+- [ ] **S12-CA-01** (S12-RF-01) — Dado un entorno compatible, Cuando otra persona siga el manual, Entonces puede abrir la app en local, o por entrada cifrada si accede por red, y comprobar dependencias; el modo real/fixture es visible y las claves no están en cliente ni repositorio.
 - [ ] **S12-CA-02** (S12-RF-02) — Dados dos recorridos reales del mismo usuario, Cuando se completen, Entonces hay evidencia de las etapas, informe sin nota y comparación con denominadores, manteniendo correcciones fuera de charla.
 - [ ] **S12-CA-03** (S12-RF-03) — Dados fallos inyectados por separado y un tercer intento inválido, Cuando se recorra cada caso, Entonces se observa recuperación permitida o incompleta, no cuarto intento ni reanudación tras recarga y no queda audio temporal.
 - [ ] **S12-CA-04** (S12-RF-04) — Dadas cuentas A/B y audio próximo a caducar, Cuando se borren recursos y avance el reloj, Entonces no hay acceso ajeno o a bytes revocados y se verifica el inventario físico tras reinicio/limpieza.
@@ -71,7 +71,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 **Frontend:** recorrido por navegador de escritorio seleccionado, formularios, micrófono, stream, anclas, informe, historial, comparación y borrado. Verificar teclado, etiquetas y mensajes españoles con contenido inglés. No exigir móvil ni accesibilidad certificada ajena al alcance.
 
-**Proxy/local/demo:** A publica configuración y comandos reales de ADR-001, entrada cifrada, upgrade de canal y almacenamiento no público. No desplegar públicamente por el hecho de completar la spec; documentar entorno de demo acordado.
+**Proxy/local/demo:** A publica configuración y comandos reales de ADR-001, entrada cifrada si hay acceso por red, upgrade de canal y almacenamiento no público. No desplegar públicamente por el hecho de completar la spec; documentar entorno de demo acordado.
 
 **Tecnologías/ADR:** usar decisiones de G0/G1 y motor congelado de G3. El presupuesto, conexión requerida y memoria real se documentan con las mediciones. Dimensionar una sola sesión; consultas de historial no acaparan el cupo de voz.
 
