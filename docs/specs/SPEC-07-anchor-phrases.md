@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Secuencia fija de cinco frases y reproducción de referencia.
 - Subida de grabación, validación asíncrona, máximo tres intentos por frase e idempotencia.
 - Entrega de cinco muestras válidas al orquestador o finalización incompleta.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Modificar textos, corregir pronunciación en esta etapa, repetir por error fonético o admitir informe con menos de cinco muestras válidas.
 - Elegir umbrales acústicos dentro de la UI.

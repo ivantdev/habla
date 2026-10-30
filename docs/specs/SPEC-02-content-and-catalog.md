@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Tres niveles, cinco temas y objetivos de vocabulario/estructuras para las quince combinaciones.
 - Cinco frases en inglés con IDs, orden, sonidos objetivo y referencia estadounidense.
 - Guía pedagógica, política del tutor y versión de catálogo congelada por práctica.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Nuevos idiomas, frases aleatorias por sesión y certificación del nivel.
 - Administración de contenido mediante una pantalla nueva.
@@ -90,6 +90,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 ### Decisiones tomadas
 
 - **S02-D-01** — Las categorías proceden de RF-01/RF-07; se propone catálogo inmutable por práctica el 2026-10-29.
+- **S02-D-02** — Las referencias habladas del catálogo no se suben al repositorio: un script versionado las genera con el TTS aprobado (modelo, voz y parámetros fijos) y el manifiesto guarda el hash de cada archivo para comprobar que todos usan el audio revisado. Si el TTS no reproduce el mismo audio en cada equipo, el archivo revisado se comparte fuera del repositorio y se comprueba su hash. Decidido el 2026-10-30.
 
 ### Preguntas abiertas
 

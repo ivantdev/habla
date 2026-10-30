@@ -30,7 +30,7 @@ Unidad: cada fonema esperado alineado con la secuencia canónica.
 - **Precisión de diagnóstico** = TR con el fonema observado correcto / TR, cuando el método predice qué sonido se produjo.
 - **Selección del umbral:** en validación, el umbral con mayor recall que mantiene precisión ≥ 0,70. Si ninguno la alcanza, se elige el de mayor precisión y se documenta. Se entrega la curva precisión-recall.
 - **Sin detecciones:** la precisión es indefinida y la meta no se considera cumplida.
-- **Líneas base:** GOP con umbral fijo elegido en validación; Azure Pronunciation Assessment si hay acceso. Si un servicio solo da puntuaciones agregadas, se documenta y no se equipara con detección por fonema (RT-04).
+- **Evaluador y líneas base:** en la iteración 1 el evaluador es GOP con umbral fijo elegido en validación. En la iteración 2 el clasificador entrenado se compara con él y solo se adopta si mejora; entonces GOP queda como línea base. Azure Pronunciation Assessment si hay acceso. Si un servicio solo da puntuaciones agregadas, se documenta y no se equipara con detección por fonema (RT-04).
 - **Desgloses:** por conjunto, por L1 (incluido el subconjunto hispanohablante de L2-ARCTIC) y por tipo de error (sustitución, omisión, inserción).
 
 ### Conjuntos
@@ -63,6 +63,7 @@ Conjunto de validación con muestras válidas y degradadas: silencio, audio trun
 - **RT-05, comparación con línea base:** el mismo LLM solo con la transcripción de Whisper. Se mide el porcentaje de observaciones sustentadas y el número de errores atribuidos sin evidencia en cada versión.
 - **RT-06, precisión lingüística:** Nicolás anota las transcripciones y se calcula, por categoría (gramática y vocabulario), precisión = observaciones correctas / observaciones emitidas, y recall cuando el anotador marque errores omitidos.
   - Muestra propuesta: 20 sesiones del corpus del equipo (D-16) o al menos 150 observaciones.
+  - Las sesiones grabadas antes del generador final se evalúan regenerando el informe fuera de línea desde la transcripción y el audio conservados.
   - Si otro integrante anota un 20 % de la muestra, se reporta el acuerdo (kappa de Cohen). Si no, se declara como limitación que hay un único anotador.
   - La meta numérica la fija el equipo antes de medir; no se inventa.
 - **Criterio pedagógico (RNF-06):** la guía de anotación marca como error solo lo que cambia el significado o dificulta la comprensión.
@@ -81,7 +82,7 @@ Se reportan p50, p95 y máximo, junto con hardware, modelos y su cuantización.
 
 ## 8. Adecuación del tutor (RNF-08, RF-05)
 
-Casos escritos por Nicolás y revisados por Ivan: por tema y nivel, peticiones dentro del tema, temas sensibles y peticiones de consejo médico, legal o emocional.
+Casos escritos por Nicolás y revisados por Ivan antes de G2: por tema y nivel, peticiones dentro del tema, temas sensibles y peticiones de consejo médico, legal o emocional.
 
 - Porcentaje de respuestas que cumplen la ficha y los límites, según una lista de comprobación.
 - Porcentaje de turnos con correcciones durante la charla. Meta: 0 %.
@@ -91,7 +92,8 @@ Casos escritos por Nicolás y revisados por Ivan: por tema y nivel, peticiones d
 | Entregable | Iteración |
 | --- | --- |
 | Particiones, licencias y protocolo registrados en `docs/experiments/` | 1, semana 1 |
-| Precisión y recall en validación con el umbral elegido; línea base GOP | 1, semana 3 |
+| Precisión y recall en validación del evaluador GOP con el umbral elegido | 1, semana 3 |
 | Acumular sesiones en el corpus del equipo | 1, desde la semana 3 |
 | Guía de anotación y primeras anotaciones | 1, semana 4 |
-| Resultados en prueba, RT-05, RT-06, latencias, tutor y comparación con Azure | 2, antes del pitch |
+| Casos del tutor escritos y revisados | 1, semana 4 (G2) |
+| Clasificador frente a GOP, resultados en prueba, RT-05, RT-06, WER, latencias, medición del tutor y comparación con Azure | 2, antes del pitch |

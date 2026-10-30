@@ -3,7 +3,7 @@
 > **Estado:** Borrador | **Prioridad:** P1 | **Dominio:** Informe  
 > **RF relacionados:** RF-08, RF-14 | **RNF:** RNF-04, RNF-05, RNF-06, RNF-12  
 > **RT:** RT-05, RT-06  
-> **Módulo:** Informe | **Responsable:** C; B integra presentación  
+> **Módulo:** Informe | **Responsable:** C; B implementa la vista de informe  
 > **Etapa:** E2–E3 | **Iteración:** 1: anclas y citas; 2: recortes de conversación, sus referencias, RT-05 y RT-06 | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Agregación acústica, análisis de gramática/vocabulario y redacción en español.
 - Validación estructural y de citas, referencias, recortes y reproducción.
 - Construcción privada, limpieza y publicación mediante orquestador; vista de informe.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Nota global, certificación, informe de sesión incompleta o eficacia pedagógica demostrada.
 - Corregir al estudiante durante conversación o inferir pronunciación solo del texto.
@@ -73,7 +73,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 **Eventos:** `processing.updated` por etapa y `report.ready` solo tras commit. El trabajo conserva `operation_id` y epoch; reintentos no generan dos informes. No distribuir un evento final antes de confirmar transacción y limpieza.
 
-**Frontend:** B integra componente de C en detalle de sesión: tres categorías, motivos de incertidumbre, observaciones y pares de reproductores. Tras audio vencido/borrado mantiene texto con estado de indisponibilidad; botones de reproducción no prometen acceso. Controles en español y navegación por teclado.
+**Frontend:** B implementa la vista de informe a partir del DTO de C, que la revisa, en el detalle de sesión: tres categorías, motivos de incertidumbre, observaciones y pares de reproductores. Tras audio vencido/borrado mantiene texto con estado de indisponibilidad; botones de reproducción no prometen acceso. Controles en español y navegación por teclado.
 
 **Proxy/local:** GET autenticado de informe y audio por origen común, sin llamadas directas del navegador a proveedores.
 

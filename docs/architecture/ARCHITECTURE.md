@@ -1,6 +1,6 @@
 # Arquitectura del MVP de ¡Habla!
 
-**Estado:** propuesta de diseño, versión 1.0, 2026-10-29. **Custodio:** persona A; revisión de B y C.
+**Estado:** propuesta de diseño, versión 1.0, 2026-10-29; actualizada el 2026-10-30. **Custodio:** persona A; revisión de B y C.
 
 Este documento y [CONTRACTS.md](CONTRACTS.md) definen la base compartida de las [specs](../specs/README.md). Son borradores revisables; se convierten en referencia normativa de implementación al superar G0. Los requisitos confirmados en [REQUIREMENTS.md](../REQUIREMENTS.md) conservan su autoridad sobre el alcance. No hay arquitectura implementada ni tecnologías aprobadas.
 
@@ -69,7 +69,7 @@ El cupo se conserva desde `ready` hasta `processing`, incluyendo error recuperab
 
 - Una transición compara `state_version`; duplicados no repiten efectos. La sesión y el cupo se actualizan de forma atómica o mediante una operación durable equivalente.
 - El reloj de conversación es del servidor y monotónico para el cálculo; se guardan instantes UTC para presentación. Pausas y errores consumen tiempo de charla. Recuperar no reinicia el reloj; si ya venció, se cierra hacia `anchors`.
-- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto. En la iteración 1, cerrar el canal termina la práctica como incompleta (D-17, C-09).
+- Una recarga o nuevo canal no reanuda una práctica anterior. El backend detecta abandono por lease/heartbeat; antes de crear otra práctica del mismo usuario termina y limpia la anterior solo si fue abandonada. Si la anterior sigue activa, la creación responde `409 SERVER_BUSY`. Los plazos son decisiones de G0/G1 y no latencias prometidas del producto. En la iteración 1, cerrar el canal termina la práctica como incompleta (D-17, C-09).
 - Cancelar o eliminar gana frente a una publicación tardía: un trabajo solo publica si coinciden propietario vigente, `state_version`, `deletion_epoch` y estado permitido.
 - Borrar audio tras un informe conserva el texto del informe. Borrar sesión/cuenta elimina también sus textos. La revocación de acceso precede a la limpieza física.
 - Cero observaciones no significa pronunciación perfecta. Evidencia ausente o dudosa se identifica como no evaluada.
@@ -94,7 +94,7 @@ Esquema conceptual; no obliga a un ORM. `Report` solo existe públicamente si es
 
 ## 5. Frontend y propiedad de pantallas
 
-B integra navegación y componentes compartidos; A entrega formularios de cuenta mediante las interfaces de B y C entrega la vista de informe con el mismo shell. Rutas propuestas: `/registro`, `/ingresar`, `/practica`, `/sesiones`, `/sesiones/:id`, `/comparar`, `/cuenta`. La ruta de práctica muestra configuración, permiso de micrófono, consentimiento, conversación, frases, espera y fallo como estados de un mismo flujo.
+B integra navegación y componentes compartidos; A entrega formularios de cuenta mediante las interfaces de B, y B implementa la vista de informe a partir del DTO de C, que la revisa. Rutas propuestas: `/registro`, `/ingresar`, `/practica`, `/sesiones`, `/sesiones/:id`, `/comparar`, `/cuenta`. La ruta de práctica muestra configuración, permiso de micrófono, consentimiento, conversación, frases, espera y fallo como estados de un mismo flujo.
 
 No se permite que varios módulos instalen routers o manejadores de autenticación distintos. Las cadenas visibles y errores explicables están en español; el texto de tutor y frases en inglés. Controles con etiquetas, foco visible, operación por teclado y estados anunciables; las comprobaciones concretas pertenecen a cada spec.
 
@@ -110,7 +110,7 @@ Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma 
 | --- | --- | --- | --- |
 | ADR-001 | A con B/C | Lenguajes, web/backend, persistencia, canal, codificación de audio, puertos, scripts, autenticación y ejecución de tareas | G0 |
 | ADR-002 | C con A/B | Evaluador, evidencia disponible, costos, licencias, confianza, validez y versión compatible | G1 para usar modelo real; selección final G3 |
-| ADR-003 | A con B/C | Lease/heartbeat, deadlines, límites de carga, limpieza física y comportamiento ante reinicio | G1 |
+| ADR-003 | A con B/C | Lease/heartbeat, deadlines, límites de carga, limpieza física y comportamiento ante reinicio | G1: deadlines y límites de carga; iteración 2: lease/heartbeat, recortes, limpieza física y reinicio |
 | ADR-004 | B con C | Catálogo de frases/referencias, guía del tutor, parte de TTS no escuchada | G1 |
 
 Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. El 2026-10-30 el equipo aceptó como orientación FastAPI (Python) en el backend y React con Vite en el frontend; ADR-001 la formaliza. No se selecciona proveedor por insinuación. Pesos abiertos y las GPU locales del grupo (RTX 4090/5090 y 2× RTX 5060 de 16 GB) son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.

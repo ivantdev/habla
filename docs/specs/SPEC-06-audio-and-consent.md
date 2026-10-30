@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-09, RF-10, RF-14, RF-20 | **RNF:** RNF-07, RNF-09, RNF-12, RNF-13  
 > **RT:** No aplica directamente  
 > **Módulo:** Audio y privacidad | **Responsable:** A; B integra consentimiento y C consume audio  
-> **Etapa:** E1–E3 | **Iteración:** 1: consentimiento, temporales, anclas y corpus del equipo; 2: recortes, caducidad y reconciliación | **Versión:** 1.0 | **Actualizado:** 2026-10-30
+> **Etapa:** E1–E3 | **Iteración:** 1: temporales, anclas, consentimiento sembrado del usuario base y corpus del equipo; 2: texto de consentimiento, recortes, caducidad y reconciliación (D-18) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,15 +24,15 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Política versionada, aceptación explícita y comprobación previa a capturar/enviar.
 - Temporales, frases válidas, recortes mínimos y reproducción privada de usuario/referencia.
 - Caducidad, revocación, limpieza física y reconciliación de huérfanos.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
-- Conservar conversaciones completas, descargar datasets mediante endpoints del producto o compartir audio.
+- Conservar conversaciones completas, salvo el corpus interno del equipo (D-16); descargar datasets mediante endpoints del producto o compartir audio.
 - Implementar eliminación de cuenta y sesión completas fuera del coordinador SPEC-11.
 
 ### Supuestos acordados
@@ -97,7 +97,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 
 ### Preguntas abiertas
 
-- **S06-P-01 — bloqueante G1:** Aprobar texto de consentimiento y proveedores reales antes de procesar voz; A con B/C. El texto describe la retención real de cada iteración: en la 1, corpus interno del equipo sin caducidad automática (D-16); los 30 días solo se prometen cuando la caducidad esté implementada.
+- **S06-P-01 — bloqueante para que use la app alguien fuera del equipo (iteración 2):** Aprobar texto de consentimiento y proveedores reales; A con B/C. En la iteración 1 no hay texto en la app: el usuario base tiene un consentimiento sembrado respaldado por el acuerdo escrito del equipo (D-18). El texto describe la retención real y cita la Ley 1581 de 2012; los 30 días, incluido `ConsentPolicy.retention_days=30`, solo se publican cuando la caducidad esté implementada. Si no lo está, el DTO se ajusta antes de mostrarse, según la política para personas externas que se decide en G2.
 - **S06-P-02 — bloqueante para recortes reales (iteración 2):** Fijar límites de carga/recorte y plazo de depuración con medición; A/C, ADR-003.
 - **S06-P-03 — no bloqueante para almacenamiento local:** Si se elige proveedor externo, verificar política de retención/eliminación y describir sus límites antes de habilitarlo; A/C antes de G1.
 

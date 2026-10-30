@@ -19,8 +19,8 @@
 
 - Este archivo es la **única fuente** de instrucciones para agentes. Codex lo lee directamente; Claude Code lo carga mediante [CLAUDE.md](CLAUDE.md), que solo lo importa. No agregues reglas del proyecto en `CLAUDE.md` ni en configuraciones personales de una herramienta.
 - Los plugins, skills o comandos propios de una herramienta son opcionales y personales. Ninguna tarea del proyecto debe depender de ellos; las pautas compartidas van en `skills/` como Markdown legible por cualquier agente.
-- Trabaja en la rama de tu tarea (`<persona>/<spec>-<tema>`, por ejemplo `nicolas/s05-spike-audio`) e integra a `main` mediante pull request pequeño revisado por otro integrante.
-- Cada commit o pull request indica la spec y los criterios que toca (por ejemplo, `S05-CA-02`). No modifiques archivos de otro módulo sin acordarlo con su responsable; propón el cambio en el pull request.
+- Trabaja en la rama de tu tarea (`<persona>/<spec>-<tema>`, por ejemplo `nicolas/s05-spike-audio`) e integra a `main` mediante pull request pequeño revisado por otro integrante. Los cambios de planificación sin spec propia usan `<persona>/<tema>` (por ejemplo, `nicolas/plan-iteraciones`).
+- Cada commit o pull request indica la spec y los criterios que toca (por ejemplo, `S05-CA-02`) o, en cambios de planificación, las decisiones `D-xx` que toca. No modifiques archivos de otro módulo sin acordarlo con su responsable; propón el cambio en el pull request.
 - Todos ejecutan la aplicación en `localhost`. No subas datasets, audios, modelos, entornos virtuales ni secretos al repositorio.
 
 ## Forma de trabajo

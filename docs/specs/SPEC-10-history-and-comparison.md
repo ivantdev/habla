@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Listado paginado propio, detalle de estados e informe publicado.
 - Reproductores y disponibilidad actual del audio; acceso a acciones de borrado de SPEC-11.
 - Comparación de dos sesiones completadas propias y compatibles por sonido de anclas.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Ranking, nota global, mapa de vocales, comparar conversación libre o afirmar aprendizaje por variación de resultados.
 - Recalcular versiones antiguas o definir equivalencias no evaluadas entre motores.

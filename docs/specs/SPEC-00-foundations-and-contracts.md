@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - ADR-001, estructura de código y propietarios acordados en G0.
 - Shell web, entrada API/canal, configuración de desarrollo y carga de fixtures.
 - Contratos ejecutables y comprobación de compatibilidad para productores y consumidores.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Implementar la lógica de cuentas, audio o modelos de las specs posteriores.
 - Fijar umbrales de calidad o prometer latencia sin medición.

@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Adaptador de audio a evidencia normalizada y validador de anclas.
 - Cobertura por unidad/sonido, exclusión por incertidumbre, versiones y deduplicación.
 - Tarea desacoplada de conversación con cancelación, deadline y cola acotada.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Fijar métricas con prueba, elegir el modelo sin SPEC-01 o emitir nota global.
 - Validar muestra por parecido exacto al acento de referencia.

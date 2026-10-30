@@ -4,7 +4,7 @@
 > **RF relacionados:** RF-16, RF-20 | **RNF:** RNF-07, RNF-09, RNF-12  
 > **RT:** No aplica directamente  
 > **Módulo:** Ciclo de vida y privacidad | **Responsable:** B; A provee revocación de audio e identidad y C cancela trabajos  
-> **Etapa:** E3 | **Iteración:** 2 (P1, si alcanza para el pitch) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
+> **Etapa:** E3 | **Iteración:** 2 (prioridad P1 del plan por iteraciones: si alcanza para el pitch) | **Versión:** 1.0 | **Actualizado:** 2026-10-30
 
 ## 1. Contexto y problema
 
@@ -24,13 +24,13 @@ Actores secundarios: integrantes A/B/C y módulos consumidores según §8. Las o
 
 ## 4. Alcance
 
-### Dentro de esta iteración
+### Dentro del alcance de la spec
 
 - Solicitud propia, confirmación de acción y revocación inmediata.
 - Cascada de datos, cancelación de trabajos, limpieza física recuperable y estados de operación.
 - Protección contra resultados tardíos, doble borrado y caídas.
 
-### Fuera de esta iteración
+### Fuera del alcance de la spec
 
 - Recuperar datos borrados, exportación masiva, panel administrativo o nueva política de conservación.
 - Mantener textos/informes de una sesión o cuenta ya eliminada.
