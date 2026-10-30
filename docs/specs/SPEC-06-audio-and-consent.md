@@ -69,7 +69,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 **Datos:** `ConsentPolicy`, `ConsentRecord`, `AudioAsset`, referencias de origen y operación de limpieza. Bytes privados separados de rutas públicas; cada lectura revalida cuenta, pertenencia, estado y `expires_at`. Solo la referencia del catálogo es pública. La referencia `clip_reference` sintetizada desde texto del estudiante es privada, pertenece a su práctica y vence o se elimina con su recorte fuente, según C-02/C-05/C-06.
 
-**Backend:** C-03 y funciones `Audio.*` de C-05. Validación de tipo, tamaño y duración antes de procesar; el multipart de frases delega almacenamiento aquí. No conservar intentos inválidos más allá de la validación/reintento; si una práctica queda incompleta se descartan también anclas aún no publicadas. La única persistencia autorizada tras éxito son anclas válidas y recortes.
+**Backend:** C-03 y funciones `Audio.*` de C-05. Validación de tipo, tamaño y duración antes de procesar; el multipart de frases delega almacenamiento aquí. No conservar intentos inválidos más allá de la validación/reintento, salvo la copia al corpus del equipo (D-16); si una práctica queda incompleta se descartan también anclas aún no publicadas. La única persistencia autorizada tras éxito son anclas válidas y recortes.
 
 **Eventos:** cambios de disponibilidad alimentan proyección de historial; esta revalida la fuente al leer. Revocación lógica es inmediata, eliminación física tiene tarea idempotente; el ack de finalización de SPEC-04/09 espera limpieza de temporales. Los checkpoints de C-05 permiten reintentar limpieza sin regenerar desde audio eliminado. Los assets candidatos de un informe no publicado se eliminan si termina incompleta la práctica.
 

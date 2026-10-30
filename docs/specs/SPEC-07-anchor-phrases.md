@@ -67,7 +67,7 @@ Todos pendientes; escenarios propuestos para implementación y verificación. Ca
 
 ## 7. Diseño técnico y datos
 
-**Datos:** `AnchorAttempt` y cursor de frase activa por práctica. Unicidad de `(practice_id,phrase_id,attempt_number)` y de muestra válida de la frase; el estado de práctica se cambia solo mediante SPEC-04. Conservar la primera muestra válida, eliminar inválidas tras validación salvo la operación recuperable en curso.
+**Datos:** `AnchorAttempt` y cursor de frase activa por práctica. Unicidad de `(practice_id,phrase_id,attempt_number)` y de muestra válida de la frase; el estado de práctica se cambia solo mediante SPEC-04. Conservar la primera muestra válida, eliminar inválidas tras validación salvo la operación recuperable en curso y la copia al corpus del equipo (D-16).
 
 **Backend:** POST/GET de intentos en C-03. La subida multipart autentica antes de persistir, llama Audio y encola `Evaluator.validateAnchor`; `422` de formato no crea intento. Un audio aceptado cuya voz/texto no sea evaluable sí cuenta como grabación. Una indisponibilidad técnica no se etiqueta como inválida.
 

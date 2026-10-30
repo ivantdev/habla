@@ -42,7 +42,7 @@ Unidad: cada fonema esperado alineado con la secuencia canónica.
 
 ## 3. Validez de frases ancla (RNF-14, RF-17)
 
-Conjunto de validación con muestras válidas y degradadas: silencio, audio truncado, ruido de fondo, frase distinta a la solicitada y frases leídas con errores de pronunciación.
+Conjunto de validación con muestras válidas y degradadas: silencio, audio truncado, ruido de fondo, frase distinta a la solicitada y frases leídas con errores de pronunciación. Los intentos inválidos del corpus del equipo (D-16) amplían este conjunto una vez etiquetados.
 
 - **Tasa de falso inválido:** muestras válidas rechazadas. Es la más importante, porque consume reintentos del estudiante.
 - **Tasa de falso válido:** muestras no evaluables aceptadas.
