@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Spike de canal de audio — ¡Habla!</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 920px; margin: 1rem auto; padding: 0 1rem; }
+    section { border: 1px solid #ccc; border-radius: 6px; padding: .5rem 1rem; margin: .75rem 0; }
+    label { display: inline-block; margin: .25rem 1rem .25rem 0; }
+    button { margin: .25rem .5rem .25rem 0; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #1565c0; }
+    meter { width: 240px; }
+    textarea { width: 100%; }
+    pre { background: #f4f4f4; padding: .5rem; overflow: auto; max-height: 24rem; }
+    #log { font-family: monospace; font-size: .85rem; max-height: 16rem; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>Spike de canal de audio</h1>
+  <p>Prototipo desechable para S05-P-01 y C-04. No es la aplicación de ¡Habla!</p>
+
+  <section>
+    <h2>1. Micrófono</h2>
+    <label><input type="checkbox" id="aec" checked> echoCancellation</label>
+    <label><input type="checkbox" id="ns" checked> noiseSuppression</label>
+    <label><input type="checkbox" id="agc" checked> autoGainControl</label>
+    <br>
+    <button id="btn-mic">Comprobar micrófono</button>
+    <div role="status">Nivel <meter id="level" min="-90" max="0" value="-90"></meter>
+      <span id="db">–</span> dBFS · umbral <span id="thr">–</span> dBFS · <strong id="vad">silencio</strong></div>
+  </section>
+
+  <section>
+    <h2>2. Canal</h2>
+    <button id="btn-connect" disabled>Conectar canal</button>
+    <button id="btn-rtt" disabled>Medir RTT (50 pings)</button>
+  </section>
+
+  <section>
+    <h2>3. Tutor e interrupción</h2>
+    <label>Salida de audio
+      <select id="salida">
+        <option value="auriculares">Auriculares</option>
+        <option value="parlantes">Parlantes</option>
+      </select>
+    </label>
+    <label>Tipo de prueba
+      <select id="prueba">
+        <option value="interrumpir">Interrumpir al tutor</option>
+        <option value="silencio">Silencio: no hablar mientras habla el tutor</option>
+        <option value="tono">Tono de 1 kHz al micrófono</option>
+      </select>
+    </label><br>
+    <label>Nota de la prueba <input id="cond" size="48" placeholder="p. ej. micrófono del portátil, margen del VAD subido"></label><br>
+    <label>Margen del VAD (dB sobre el ruido) <input id="margin" type="number" value="15" min="3" max="40"></label>
+    <label>Frames de 20 ms para iniciar voz <input id="onset" type="number" value="3" min="1" max="20"></label>
+    <label>Frames tardíos simulados <input id="late" type="number" value="10" min="0" max="200"></label>
+    <label for="text">Texto del tutor (vacío: texto por defecto del servidor)</label>
+    <textarea id="text" rows="2"></textarea>
+    <button id="btn-tutor" disabled>Que hable el tutor</button>
+  </section>
+
+  <section>
+    <h2>4. Mediciones</h2>
+    <button id="btn-stats" disabled>Estadísticas del servidor</button>
+    <button id="btn-summary">Ver resumen</button>
+    <button id="btn-export">Exportar JSON</button>
+    <pre id="summary" aria-live="polite"></pre>
+  </section>
+
+  <section>
+    <h2>Registro</h2>
+    <ol id="log" reversed></ol>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
