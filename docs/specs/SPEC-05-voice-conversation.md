@@ -96,7 +96,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 ### Preguntas abiertas
 
 - **S05-P-01 — bloqueante G0:** Validar captura/conversión y perfil/cabecera de audio en spike; B con A/C antes de implementar streaming.
-- **S05-P-02 — bloqueante G1:** Elegir ASR/LLM/TTS/VAD y parte no escuchada; B con C, ADR-004 antes de demo real.
+- **S05-P-02 — bloqueante G1:** Elegir ASR/LLM/TTS/VAD y parte no escuchada; B con C, ADR-004 antes de demo real. La parte no escuchada y el historial están propuestos en POL-11 y POL-12 de la [política del tutor](../content/POLITICA-TUTOR.md) (2026-11-12); los modelos siguen abiertos.
 - **S05-P-03 — bloqueante G3:** Medir reacción y acordar umbral con SPEC-01; B/C antes de aceptar interrupciones.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
