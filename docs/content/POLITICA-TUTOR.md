@@ -266,5 +266,5 @@ Se reportan los conteos junto a cada porcentaje, el modelo, su cuantización y `
 - Aprobación del equipo de D-19 (crisis).
 - Acuerdo con Sebastián sobre la ventana de cierre y el tiempo tras la despedida (S04-P-01).
 - ADR-004: modelo de lenguaje y TTS, conversión de `heard_until_ms` a texto, regla de recorte del historial y voz del mensaje de crisis.
-- Las catorce fichas restantes ([FICHAS.md](FICHAS.md)).
+- Las fichas de los otros cuatro temas ([FICHAS.md](FICHAS.md)).
 - Banco de pruebas que ejecute estos casos contra el modelo elegido (tarea aparte).
