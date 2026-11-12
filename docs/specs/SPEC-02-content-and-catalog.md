@@ -48,7 +48,7 @@ IDs `S02-RF-*` son descomposiciones locales estables, no renumeraciones de `RF-*
 - **S02-RF-01** (RF-01) — CUANDO se consulte el catálogo, EL SISTEMA DEBE ofrecer exactamente los niveles A2, B1 y B2 y los cinco temas definidos con objetivos para cada combinación.
 - **S02-RF-02** (RF-07, RF-09) — EL SISTEMA DEBE identificar un conjunto versionado de exactamente cinco frases en inglés con orden estable, sonidos objetivo y referencia hablada estadounidense.
 - **S02-RF-03** (RNF-11) — CUANDO se cree una práctica, EL SISTEMA DEBE conservar las versiones de contenido usadas aunque se publique posteriormente otro catálogo.
-- **S02-RF-04** (RF-01, RNF-08) — CUANDO se entregue la política del tutor al módulo conversacional, EL SISTEMA DEBE incluir nivel, objetivos temáticos, reserva de correcciones y comportamiento acordado ante solicitudes fuera del contexto permitido.
+- **S02-RF-04** (RF-01, RNF-08) — CUANDO se entregue la política del tutor al módulo conversacional, EL SISTEMA DEBE incluir nivel, objetivos temáticos, reserva de correcciones y comportamiento acordado ante solicitudes fuera del contexto permitido. Propuesta en la [política del tutor](../content/POLITICA-TUTOR.md) y el esquema de [fichas](../content/FICHAS.md).
 - **S02-RF-05** (RNF-06) — CUANDO se revise la guía de errores, EL SISTEMA DEBE distinguir los errores que dificultan comprensión de diferencias de acento comprensibles y vincular los sonidos objetivo con la guía.
 
 ## 6. Criterios de aceptación
@@ -95,7 +95,7 @@ Autenticación interna, plazos, reintentos y duplicados: C-01, C-04, C-05 y C-07
 ### Preguntas abiertas
 
 - **S02-P-01 — bloqueante G1:** Cerrar las cinco frases, referencias con licencia y quince fichas; B con C, antes de pruebas reales de frases.
-- **S02-P-02 — bloqueante aceptación del tutor:** Precisar límites temáticos con la fuente de propuesta y casos esperados; B, antes de G2. Límites verificados el 2026-10-30 en la API pública de la propuesta: ajustarse a la ficha del tema, filtrar temas sensibles y no dar consejos médicos, legales ni emocionales. Falta redactar los casos esperados; no se inventan restricciones adicionales.
+- **S02-P-02 — bloqueante aceptación del tutor:** Precisar límites temáticos con la fuente de propuesta y casos esperados; B, antes de G2. Límites verificados el 2026-10-30 en la API pública de la propuesta: ajustarse a la ficha del tema, filtrar temas sensibles y no dar consejos médicos, legales ni emocionales. Falta redactar los casos esperados; no se inventan restricciones adicionales. **Redactada el 2026-11-12, pendiente de revisión de C:** reglas, interpretación de «temas sensibles» y casos en la [política del tutor](../content/POLITICA-TUTOR.md); la regla de crisis va aparte como D-19 propuesta.
 
 Una pregunta bloqueante detiene únicamente la interfaz o integración indicada. Se puede avanzar con fixtures del contrato congelado y en trabajo independiente; no conectar una interfaz incompatible por suposición.
 

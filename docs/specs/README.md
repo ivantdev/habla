@@ -129,7 +129,7 @@ Un requisito sigue **pendiente** si su prueba no se ejecutó. Registrar fallos y
 | --- | --- | --- | --- | --- |
 | Stack, estructura, sesión web, canal, perfil/cabecera de audio y puertos | A con B/C | G0 | Implementación incompatible de base/clientes | Protocolo y borradores de contenido |
 | Textos de cinco anclas, referencias y quince fichas | B con C | G1 | Validación/comparación reales | UI y DTO fixture |
-| Política detallada del tutor y parte TTS no escuchada | B con C | G1; casos temáticos completos G2 | Aceptación del tutor | Transporte y UI con fixtures |
+| Política detallada del tutor y parte TTS no escuchada | B con C | G1; casos temáticos completos G2. Propuesta redactada el 2026-11-12 en la [política del tutor](../content/POLITICA-TUTOR.md), pendiente de revisión de C, de D-19 y de la ventana de cierre con A (S04-P-01) | Aceptación del tutor | Transporte y UI con fixtures |
 | Motor preliminar, datos/licencias, validez y confianza | C | G1 | Adaptador acústico real | Plataforma y consumidor de evidencia fixture |
 | Texto de consentimiento y procesadores externos si aplican (D-18) | A con B/C | Iteración 2, antes de que use la app alguien fuera del equipo; en la iteración 1 basta el acuerdo escrito del equipo | Uso por personas ajenas al equipo | Desarrollo y corpus del equipo con el usuario base |
 | Deadlines de operación (G1); lease, límites de recorte y limpieza física (iteración 2) | A con B/C | G1 e iteración 2 | Recuperación, almacenamiento y trabajos reales | Contratos/algoritmos con reloj/configuración fixture |
