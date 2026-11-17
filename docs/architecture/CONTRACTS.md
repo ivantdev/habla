@@ -70,6 +70,8 @@ Las peticiones `DELETE` ya aceptadas se pueden repetir con la misma clave y obje
 
 Propuesta a confirmar en G0: canal WebSocket en `/api/v1/practices/:id/stream`, autenticado con la misma identidad y ligado a una única instancia de página. Metadatos JSON y frames binarios. Entrada de audio mono PCM signed 16-bit little-endian a 16 kHz, fragmentos de 20 ms; la conversión de navegador y formato de salida TTS deben validarse en el spike de SPEC-00/05. Si no funciona, cambiar ADR-001 y este contrato antes de implementar ambos extremos; no desarrollar dos transportes paralelos.
 
+El [ADR-001](ADR-001-local-development.md) documenta la cabecera y la negociación que implementa el entorno simulado sobre los resultados del spike. La adopción con los modelos y la captura real requiere revisión en G0/G1.
+
 Negociación `stream.open` `{audio_profile_id,client_instance_id}` → `stream.ready` `{stream_id,audio_profile_id,heartbeat_interval_ms,lease_timeout_ms,max_frame_bytes}`. Rechazo de perfil `UNSUPPORTED_AUDIO_PROFILE` sin iniciar grabación de práctica. El permiso de micrófono puede comprobarse localmente antes; sus muestras de preflight se descartan y nunca se transmiten antes del consentimiento.
 
 Sobre de control: `{v:1,event_id,practice_id,stream_id,seq,occurred_at,type,payload}`. `seq` crece por emisor; `event_id` permite descartar duplicados, `turn_id` y `generation_id` correlacionan audio. No se promete entrega exactamente una vez. Los frames llevan `stream_id,turn_id,generation_id,chunk_seq` mediante cabecera acordada en G0; sin esa cabecera validada no se integra audio real.
@@ -171,6 +173,8 @@ Vigente durante la iteración 1 del [plan por iteraciones](../ROADMAP.md) (D-14,
 | Corpus del equipo (D-16) | Con el modo de recolección activo, antes de borrar temporales se copian audio de conversación, transcripciones, informe si existe, evidencia y anclas a `data/corpus/`, también en sesiones canceladas o fallidas; los intentos de anclas inválidos se copian antes de descartarlos. El integrante que hizo la sesión se registra en el manifiesto del corpus mediante la configuración del modo de recolección, no en los DTO. No se sirve por la API ni se sube al repositorio. La copia principal está en el PC de Ivan hasta el cierre del curso. | Continúa para el equipo en la iteración 2; nunca para personas externas |
 
 Se conservan sin cambios: forma de los DTO, estados y `state_version`, cupo hasta `processing`, eventos y perfil de audio del canal, `PhoneticResult` y validación de citas del informe.
+
+El [perfil de operación simulado](ADR-003-fixture-operation.md) registra los plazos y límites de la implementación C-09. El multipart usa `phrase_id`, `state_version` y el archivo `audio`.
 
 El criterio 4 de la [sección 8 de los requisitos](../REQUIREMENTS.md), S06-CA-06, S12-CA-03 y la condición de G2 «con temporales borrados» se verifican sobre el almacenamiento del producto con el modo corpus desactivado; la copia al corpus es la excepción D-16.
 
