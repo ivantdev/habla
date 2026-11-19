@@ -82,7 +82,7 @@ Se reportan p50, p95 y máximo, junto con hardware, modelos y su cuantización.
 
 ## 8. Adecuación del tutor (RNF-08, RF-05)
 
-Casos escritos por Nicolás y revisados por Ivan antes de G2: por tema y nivel, peticiones dentro del tema, temas sensibles y peticiones de consejo médico, legal o emocional.
+Casos escritos por Nicolás y revisados por Ivan antes de G2: por tema y nivel, peticiones dentro del tema, temas sensibles y peticiones de consejo médico, legal o emocional. Primera versión de los casos y de la lista de comprobación en las secciones 6 y 7 de la [política del tutor](../content/POLITICA-TUTOR.md), pendiente de revisión.
 
 - Porcentaje de respuestas que cumplen la ficha y los límites, según una lista de comprobación.
 - Porcentaje de turnos con correcciones durante la charla. Meta: 0 %.
