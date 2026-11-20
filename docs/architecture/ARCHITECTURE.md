@@ -1,8 +1,8 @@
 # Arquitectura del MVP de ¡Habla!
 
-**Estado:** propuesta de diseño, versión 1.0, 2026-10-29; actualizada el 2026-10-30. **Custodio:** persona A; revisión de B y C.
+**Estado** · Diseño del MVP y componentes implementados del perfil C-09. Actualizado el 2026-11-20. **Custodio** · Persona A, con revisión de B y C.
 
-Este documento y [CONTRACTS.md](CONTRACTS.md) definen la base compartida de las [specs](../specs/README.md). Son borradores revisables; se convierten en referencia normativa de implementación al superar G0. Los requisitos confirmados en [REQUIREMENTS.md](../REQUIREMENTS.md) conservan su autoridad sobre el alcance. No hay arquitectura implementada ni tecnologías aprobadas.
+Este documento y [CONTRACTS.md](CONTRACTS.md) definen la base compartida de las [specs](../specs/README.md). El diseño completo sigue sujeto a los gates de integración. Los requisitos confirmados en [REQUIREMENTS.md](../REQUIREMENTS.md) conservan su autoridad sobre el alcance. La sección 9 y el [diagrama editable](COMPONENTS.mmd) describen la implementación local que existe actualmente, con sus adaptadores simulados.
 
 ## 1. Límites y estilo propuestos
 
@@ -115,6 +115,86 @@ Son valores propuestos, todavía no instrucciones ejecutables. SPEC-00 confirma 
 
 Opciones a estudiar: web con componentes y backend HTTP; persistencia relacional; almacenamiento privado local para la demo; tareas internas con cola acotada. El 2026-10-30 el equipo aceptó como orientación FastAPI (Python) en el backend y React con Vite en el frontend; ADR-001 la formaliza. No se selecciona proveedor por insinuación. Pesos abiertos y las GPU locales del grupo (RTX 4090/5090 y 2× RTX 5060 de 16 GB) son orientación del catálogo; compatibilidad, memoria y acceso deben medirse. No hacen falta servicios distribuidos para cumplir estos contratos.
 
+La base local C-09 ya implementa React/Vite, FastAPI y SQLite. Sus decisiones de operación están en [ADR-001](ADR-001-local-development.md) y [ADR-003](ADR-003-fixture-operation.md). El diagrama de la sección 1 conserva el diseño completo previsto para el MVP.
+
 ## 8. Protocolo para modificar contratos
 
 Quien posee un contrato propone el cambio y actualiza las specs afectadas. Sus consumidores B/C/A revisan ejemplos y pruebas de contrato antes de integrarlo. Durante una etapa se agregan campos opcionales compatibles; renombrar, quitar campos o cambiar semántica requiere nueva versión y migración acordada. Los archivos compartidos tienen un custodio; los demás aportan cambios en revisiones pequeñas. El flujo de trabajo está en [el plan de specs](../specs/README.md).
+
+## 9. Componentes y conectores implementados
+
+El sistema local ejecuta el servidor web de desarrollo y un proceso FastAPI. Los componentes dentro del backend se comunican mediante llamadas Python y tareas asíncronas del mismo proceso. El flujo de conversación, la validez acústica, la evaluación y la generación inicial de observaciones usan adaptadores de simulación. El diagrama se entrega también en [SVG](COMPONENTS.svg) y [PNG](COMPONENTS.png).
+
+```mermaid
+flowchart LR
+  subgraph browser["Navegador"]
+    direction LR
+    UI["Frontend React<br/>Pantallas de HABLA"]
+    CLIENT["Cliente HTTP<br/>JSON Schema v1"]
+    STREAM["Canal de audio<br/>Cliente WebSocket"]
+    UI --> CLIENT
+    UI --> STREAM
+  end
+  VITE["Vite · puerto 3000<br/>Assets y proxy"]
+  CLIENT <-->|"HTTP /api/v1<br/>JSON · multipart · WAV"| VITE
+  STREAM <-->|"WebSocket<br/>Eventos JSON y PCM"| VITE
+  subgraph backend["FastAPI · 127.0.0.1:8000"]
+    API["Entrada FastAPI<br/>DTO · origen · acceso"]
+    ID["Identidad base<br/>Usuario y consentimiento"]
+    ORCH["Orquestador<br/>Estados · reloj · cupo"]
+    SIM["Adaptadores simulados<br/>ASR · tutor · TTS<br/>Validez · evaluación · informe"]
+    REPORT["Validador de informe<br/>Citas y evidencia"]
+    HISTORY["Historial y comparación<br/>Conteos por sonido"]
+    AUDIO["Gestor de audio<br/>Acceso y limpieza"]
+    STORE["Persistencia<br/>Estados y registros"]
+    API --> ID
+    API --> ORCH
+    API --> HISTORY
+    API --> AUDIO
+    ORCH -->|"Tareas asíncronas"| SIM
+    SIM -->|"Borrador y evidencia"| REPORT
+    ORCH -->|"Valida antes de publicar"| REPORT
+    ORCH --> AUDIO
+    ORCH --> STORE
+    HISTORY --> STORE
+    HISTORY --> AUDIO
+  end
+  VITE <--> API
+  DB[("SQLite<br/>data/habla.sqlite3")]
+  FILES[("Archivos de audio<br/>data/audio/")]
+  CORPUS[("Corpus opcional del equipo<br/>data/corpus/")]
+  STORE <-->|"SQL y transacciones"| DB
+  ID -->|"Siembra de identidad"| DB
+  AUDIO <-->|"Metadatos de audio"| DB
+  AUDIO <-->|"Lectura, escritura y limpieza"| FILES
+  ORCH -->|"Copia opcional<br/>antes de limpiar"| CORPUS
+  classDef implemented fill:#f0f5ea,stroke:#699254,color:#243d31
+  classDef simulated fill:#fff1df,stroke:#c29961,color:#694b25
+  classDef storage fill:#eef2f7,stroke:#8ca2b7,color:#34495c
+  class UI,CLIENT,STREAM,VITE,API,ID,ORCH,REPORT,HISTORY,AUDIO,STORE implemented
+  class SIM simulated
+  class DB,FILES,CORPUS storage
+  style browser fill:#f6f9f2,stroke:#d8e4ce,color:#243d31
+  style backend fill:#fafcf8,stroke:#cbdac0,color:#243d31
+```
+
+### Correspondencia con el código
+
+| Componente | Archivo principal | Responsabilidad |
+| --- | --- | --- |
+| Interfaz React | [main.jsx](../../web/src/main.jsx), [Practice.jsx](../../web/src/Practice.jsx), [History.jsx](../../web/src/History.jsx) | Navegación, selección, conversación, anclas, informe, historial y comparación. |
+| Cliente HTTP y esquemas | [api.js](../../web/src/api.js), [contract.js](../../web/src/contract.js), [v1.json](../../contracts/v1.json) | Peticiones al mismo origen y comprobación del contrato compartido. |
+| Canal del navegador | [fixture-stream.js](../../web/src/fixture-stream.js) | Eventos de control, frames sintéticos y reproducción de la generación vigente. |
+| Proxy de desarrollo | [vite.config.js](../../vite.config.js) | Sirve la web y reenvía HTTP y WebSocket a FastAPI. |
+| Entrada y canal de servidor | [app.py](../../habla/app.py), [ws.py](../../habla/ws.py), [channel.py](../../habla/channel.py) | Rutas, negociación y validación de origen, DTO, eventos y cabecera binaria. |
+| Identidad base | [identity.py](../../habla/identity.py) | Actor y consentimiento sembrados de D-18. |
+| Orquestación | [orchestration.py](../../habla/orchestration.py) | Máquina de estados, reloj, cupo, tareas, reintento, publicación y recuperación tras reinicio. |
+| Simuladores | [simulators.py](../../habla/simulators.py), [fixtures.py](../../habla/fixtures.py) | Salidas deterministas, catálogo, referencias sintéticas y fallos controlados. |
+| Barrera de informe | [report_validation.py](../../habla/report_validation.py) | Comprueba citas exactas del estudiante y evidencia acústica antes del commit. |
+| Historial y comparación | [history.py](../../habla/history.py) | Listados paginados y comparación de versiones compatibles con denominadores explícitos. |
+| Audio y corpus | [audio.py](../../habla/audio.py) | Gestión de bytes, metadatos, rangos, limpieza y copia interna opcional. |
+| Persistencia | [storage.py](../../habla/storage.py) | Transacciones de estado, reserva única y almacenamiento de turnos, intentos y borradores. |
+
+### Integraciones pendientes
+
+Los adaptadores reales de ASR, tutor, TTS y evaluación se conectan donde hoy actúa [simulators.py](../../habla/simulators.py), respetando C-04/C-05 y los plazos que cierre el equipo en G1. Cuentas y consentimiento para personas externas, recuperación del canal, caducidad, borrado y despliegue siguen el alcance de la iteración 2 del [roadmap](../ROADMAP.md).

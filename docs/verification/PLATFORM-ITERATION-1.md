@@ -24,3 +24,19 @@ Se registraron marcas de simulación de primer frame del tutor e informe listo. 
 - G0/G1 requiere revisión conjunta de [ADR-001](../architecture/ADR-001-local-development.md), publicación del catálogo y referencias de Nicolás, acuerdo D-18, conexión de los adaptadores de voz y validación de Ivan, y cierre de la ventana de conversación y los plazos reales en [ADR-003](../architecture/ADR-003-fixture-operation.md).
 - G2 requiere dos recorridos con voz, informes reales, reproducción, comparación y mediciones en el PC de Ivan. La verificación del micrófono, la parada audible y la fluidez con modelos pendientes se completa en ese entorno.
 - Cuentas, consentimiento para personas externas, recuperación de canal con idempotencia, caducidad y acceso al auditorio figuran en la iteración 2. Los criterios de dos propietarios, recortes y borrado se verifican en el hito que los incorpora.
+
+## Interfaz y diagrama del 20 de noviembre de 2026
+
+La interfaz usa DM Sans e Instrument Serif servidas desde el proyecto, iconos Lucide, tarjetas de temas, controles por teclado para nivel y duración y navegación adaptable. El modo de prueba aparece también en la cabecera móvil. Se conservan las rutas y los DTO del backend.
+
+En la comprobación final pasaron los 20 casos de backend, los 2 de contrato del cliente y la compilación de Vite. Se validaron 231 enlaces locales y la correspondencia entre el bloque Mermaid de arquitectura y su fuente editable.
+
+El recorrido verificado en navegador comenzó con Viajes y nivel B1, envió un turno por WebSocket, esperó los cinco minutos del servidor, pasó automáticamente a anclas y publicó el informe después de las cinco muestras sintéticas. Se comprobaron también el filtrado por estado y búsqueda en el historial, la vista sin coincidencias y la comparación por sonido con oportunidades no evaluadas aparte. Se inspeccionaron vistas de escritorio y móvil. Esto aporta evidencia de interfaz para S00-CA-03, S04-CA-03, S10-CA-02, S10-CA-04 y RNF-12 en C-09.
+
+El [diagrama de componentes y conectores](../architecture/ARCHITECTURE.md#9-componentes-y-conectores-implementados) se contrastó con los módulos y rutas actuales y se exportó desde la misma [fuente Mermaid](../architecture/COMPONENTS.mmd) a [SVG](../architecture/COMPONENTS.svg) y [PNG](../architecture/COMPONENTS.png).
+
+### Recurso visual
+
+La [imagen de cabecera](../../web/public/images/practice-hero.png) se generó con la herramienta integrada ImageGen y se guardó en el proyecto. Se utilizó el siguiente prompt.
+
+> Use case: photorealistic-natural. Asset type: editorial photograph for the right-hand side of a Spanish language-learning dashboard hero. A relaxed young adult Latina woman with natural dark curly hair, wearing minimal sage-green over-ear headphones and an off-white t-shirt, seated at a clean light oak desk with a slim open laptop. She is smiling naturally as she speaks in a voice conversation. Quiet modern home study, soft warm daylight, an unobtrusive leafy plant, tactile materials and authentic skin texture, polished editorial photography. Landscape 3:2 composition, head and shoulders clearly visible in the center-right with generous breathing room above the hair, desk at bottom, soft pale sage background #e5eddf. Restrained evergreen, sage and warm white palette, small soft peach accents. Natural candid expression, realistic hands. No lettering, no text, no logos, no watermark. This image will be cropped as a landscape photo in the hero of a premium learning app.

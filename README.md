@@ -61,5 +61,6 @@ Los [fixtures v1](contracts/fixtures/platform-v1.json) y el [esquema compartido]
 
 - [Requisitos del MVP](docs/REQUIREMENTS.md): alcance, decisiones pendientes y criterios de aceptación.
 - [Plan por iteraciones](docs/ROADMAP.md): recorte del MVP, reparto por persona y demo del *Shark Tank*.
+- [Componentes y conectores actuales](docs/architecture/ARCHITECTURE.md#9-componentes-y-conectores-implementados), con [diagrama SVG](docs/architecture/COMPONENTS.svg), [PNG](docs/architecture/COMPONENTS.png) y [fuente editable Mermaid](docs/architecture/COMPONENTS.mmd).
 - [Especificaciones y plan de construcción](docs/specs/README.md): módulos, contratos, etapas y reparto del trabajo entre tres personas.
 - [Métricas de evaluación](docs/experiments/METRICS.md): qué se mide, cómo y quién lo ejecuta.
