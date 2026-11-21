@@ -45,6 +45,9 @@ Para cambios de documentación, comprueba enlaces locales, rutas y coherencia co
 
 Para cambios de código, ejecuta las comprobaciones pertinentes a las rutas afectadas. Al introducir herramientas de pruebas, formato o análisis, añade aquí los comandos que deban ejecutar los agentes.
 
+- Plataforma de iteración 1: `uv run --locked pytest`, `npm test` y `npm run build`.
+- Si cambian los DTO o fixtures de A, regenera con `uv run --locked python -m habla.schema` y `uv run --locked python -m habla.fixtures`.
+
 Relaciona los cambios con los criterios de la spec afectada y registra su evidencia; marca como satisfechos únicamente los criterios efectivamente comprobados.
 
 Al entregar un cambio, indica qué verificaste y qué quedó sin comprobar. No presentes una comprobación no ejecutada como aprobada.

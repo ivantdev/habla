@@ -1,0 +1,1861 @@
+{
+  "$defs": {
+    "AccountView": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "email": {
+          "title": "Email",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "created_at"
+      ],
+      "title": "AccountView",
+      "type": "object"
+    },
+    "AnchorAttempt": {
+      "additionalProperties": false,
+      "properties": {
+        "attempt_number": {
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Attempt Number",
+          "type": "integer"
+        },
+        "audio_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Audio Id",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "invalid_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Invalid Reason"
+        },
+        "phrase_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Phrase Id",
+          "type": "string"
+        },
+        "practice_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Practice Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "valid",
+            "invalid"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "validity_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Validity Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "practice_id",
+        "phrase_id",
+        "attempt_number",
+        "audio_id",
+        "status",
+        "validity_version"
+      ],
+      "title": "AnchorAttempt",
+      "type": "object"
+    },
+    "AnchorPhrase": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "position": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Position",
+          "type": "integer"
+        },
+        "reference_audio_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Reference Audio Id",
+          "type": "string"
+        },
+        "target_sounds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Target Sounds",
+          "type": "array"
+        },
+        "text_en": {
+          "title": "Text En",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "position",
+        "text_en",
+        "reference_audio_id",
+        "target_sounds"
+      ],
+      "title": "AnchorPhrase",
+      "type": "object"
+    },
+    "AnchorSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "detected_errors": {
+          "minimum": 0,
+          "title": "Detected Errors",
+          "type": "integer"
+        },
+        "evaluated_opportunities": {
+          "minimum": 0,
+          "title": "Evaluated Opportunities",
+          "type": "integer"
+        },
+        "not_evaluated_opportunities": {
+          "minimum": 0,
+          "title": "Not Evaluated Opportunities",
+          "type": "integer"
+        },
+        "phrase_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Phrase Id",
+          "type": "string"
+        },
+        "sound": {
+          "title": "Sound",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phrase_id",
+        "sound",
+        "evaluated_opportunities",
+        "detected_errors",
+        "not_evaluated_opportunities"
+      ],
+      "title": "AnchorSummary",
+      "type": "object"
+    },
+    "AttemptList": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/AnchorAttempt"
+          },
+          "maxItems": 15,
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "AttemptList",
+      "type": "object"
+    },
+    "AudioAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_at": {
+          "format": "date-time",
+          "title": "Captured At",
+          "type": "string"
+        },
+        "duration_ms": {
+          "minimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "media_type": {
+          "title": "Media Type",
+          "type": "string"
+        },
+        "practice_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Practice Id"
+        },
+        "source": {
+          "enum": [
+            "conversation_temp",
+            "anchor",
+            "conversation_clip",
+            "reference",
+            "clip_reference"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "source_asset_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Asset Id"
+        },
+        "source_end_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source End Ms"
+        },
+        "source_start_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Start Ms"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "available",
+            "expired",
+            "deleted"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "captured_at",
+        "status",
+        "media_type",
+        "duration_ms"
+      ],
+      "title": "AudioAsset",
+      "type": "object"
+    },
+    "Catalog": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_set_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Anchor Set Version",
+          "type": "string"
+        },
+        "anchors": {
+          "items": {
+            "$ref": "#/$defs/AnchorPhrase"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Anchors",
+          "type": "array"
+        },
+        "levels": {
+          "items": {
+            "enum": [
+              "A2",
+              "B1",
+              "B2"
+            ],
+            "type": "string"
+          },
+          "title": "Levels",
+          "type": "array"
+        },
+        "topics": {
+          "items": {
+            "$ref": "#/$defs/Topic"
+          },
+          "title": "Topics",
+          "type": "array"
+        },
+        "tutor_policy": {
+          "title": "Tutor Policy",
+          "type": "string"
+        },
+        "tutor_policy_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Tutor Policy Version",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "levels",
+        "topics",
+        "anchor_set_version",
+        "anchors",
+        "tutor_policy_version",
+        "tutor_policy"
+      ],
+      "title": "Catalog",
+      "type": "object"
+    },
+    "Categories": {
+      "additionalProperties": false,
+      "properties": {
+        "grammar": {
+          "$ref": "#/$defs/Category"
+        },
+        "pronunciation": {
+          "$ref": "#/$defs/Category"
+        },
+        "vocabulary": {
+          "$ref": "#/$defs/Category"
+        }
+      },
+      "required": [
+        "pronunciation",
+        "grammar",
+        "vocabulary"
+      ],
+      "title": "Categories",
+      "type": "object"
+    },
+    "Category": {
+      "additionalProperties": false,
+      "properties": {
+        "observations": {
+          "items": {
+            "$ref": "#/$defs/Observation"
+          },
+          "title": "Observations",
+          "type": "array"
+        },
+        "status": {
+          "enum": [
+            "observations",
+            "no_supported_observations",
+            "not_evaluated"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "observations"
+      ],
+      "title": "Category",
+      "type": "object"
+    },
+    "Comparison": {
+      "additionalProperties": false,
+      "properties": {
+        "compatibility_key": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Compatibility Key",
+          "type": "string"
+        },
+        "compatible": {
+          "const": true,
+          "title": "Compatible",
+          "type": "boolean"
+        },
+        "left_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Left Id",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "right_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Right Id",
+          "type": "string"
+        },
+        "sounds": {
+          "items": {
+            "$ref": "#/$defs/SoundComparison"
+          },
+          "title": "Sounds",
+          "type": "array"
+        }
+      },
+      "required": [
+        "left_id",
+        "right_id",
+        "compatible",
+        "compatibility_key",
+        "sounds",
+        "limitations"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "ConsentPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "external_processors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "External Processors",
+          "type": "array"
+        },
+        "purposes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Purposes",
+          "type": "array"
+        },
+        "retention_days": {
+          "const": 30,
+          "title": "Retention Days",
+          "type": "integer"
+        },
+        "version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "purposes",
+        "retention_days",
+        "external_processors"
+      ],
+      "title": "ConsentPolicy",
+      "type": "object"
+    },
+    "ConsentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted_at": {
+          "format": "date-time",
+          "title": "Accepted At",
+          "type": "string"
+        },
+        "external_processors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "External Processors",
+          "type": "array"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "owner_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Owner Id",
+          "type": "string"
+        },
+        "policy_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Policy Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "owner_id",
+        "policy_version",
+        "accepted_at",
+        "external_processors"
+      ],
+      "title": "ConsentRecord",
+      "type": "object"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "expected_sound": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Sound"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "evaluated",
+            "not_evaluated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "unit_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Unit Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "unit_id",
+        "start_ms",
+        "end_ms",
+        "status"
+      ],
+      "title": "Coverage",
+      "type": "object"
+    },
+    "CreatePractice": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Catalog Version",
+          "type": "string"
+        },
+        "consent_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Consent Id"
+        },
+        "duration_seconds": {
+          "enum": [
+            300,
+            600
+          ],
+          "title": "Duration Seconds",
+          "type": "integer"
+        },
+        "level": {
+          "enum": [
+            "A2",
+            "B1",
+            "B2"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "topic_id": {
+          "enum": [
+            "restaurant",
+            "job_interview",
+            "weekend",
+            "travel",
+            "news"
+          ],
+          "title": "Topic Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "topic_id",
+        "duration_seconds",
+        "catalog_version"
+      ],
+      "title": "CreatePractice",
+      "type": "object"
+    },
+    "ErrorBody": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Details"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "request_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Request Id",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "request_id",
+        "retryable"
+      ],
+      "title": "ErrorBody",
+      "type": "object"
+    },
+    "ErrorEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ErrorBody"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "title": "ErrorEnvelope",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        },
+        "practice_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Practice Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 0,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "stream_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stream Id"
+        },
+        "type": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Type",
+          "type": "string"
+        },
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "v",
+        "event_id",
+        "practice_id",
+        "stream_id",
+        "seq",
+        "occurred_at",
+        "type",
+        "payload"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        },
+        "decision_threshold": {
+          "title": "Decision Threshold",
+          "type": "number"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "error_type": {
+          "title": "Error Type",
+          "type": "string"
+        },
+        "expected_sound": {
+          "title": "Expected Sound",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "method": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "observed_sound": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed Sound"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "unit_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Unit Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "unit_id",
+        "start_ms",
+        "end_ms",
+        "expected_sound",
+        "error_type",
+        "confidence",
+        "decision_threshold",
+        "method"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "HistoryPage": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/PracticeSummary"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Next Cursor"
+        }
+      },
+      "required": [
+        "items",
+        "next_cursor"
+      ],
+      "title": "HistoryPage",
+      "type": "object"
+    },
+    "ObjectivesByLevel": {
+      "additionalProperties": false,
+      "properties": {
+        "A2": {
+          "$ref": "#/$defs/TopicObjectives"
+        },
+        "B1": {
+          "$ref": "#/$defs/TopicObjectives"
+        },
+        "B2": {
+          "$ref": "#/$defs/TopicObjectives"
+        }
+      },
+      "required": [
+        "A2",
+        "B1",
+        "B2"
+      ],
+      "title": "ObjectivesByLevel",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Id"
+        },
+        "category": {
+          "enum": [
+            "pronunciation",
+            "grammar",
+            "vocabulary"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "explanation_es": {
+          "title": "Explanation Es",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "playback_end_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Playback End Ms"
+        },
+        "playback_start_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Playback Start Ms"
+        },
+        "reference_audio_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Audio Id"
+        },
+        "reference_scope": {
+          "anyOf": [
+            {
+              "enum": [
+                "catalog",
+                "practice"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Scope"
+        },
+        "student_quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Student Quote"
+        },
+        "turn_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turn Id"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "explanation_es",
+        "evidence_refs"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "Operation": {
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorBody"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "resource_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resource Id"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "running",
+            "succeeded",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "status"
+      ],
+      "title": "Operation",
+      "type": "object"
+    },
+    "PhoneticResult": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_phrase_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Phrase Id"
+        },
+        "anchor_set_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anchor Set Version"
+        },
+        "calibration_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Calibration Version",
+          "type": "string"
+        },
+        "coverage": {
+          "items": {
+            "$ref": "#/$defs/Coverage"
+          },
+          "title": "Coverage",
+          "type": "array"
+        },
+        "evaluator_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Evaluator Version",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "practice_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Practice Id",
+          "type": "string"
+        },
+        "source_audio_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Audio Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "anchor",
+            "conversation_temp"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "practice_id",
+        "source_audio_id",
+        "source_kind",
+        "evaluator_version",
+        "calibration_version",
+        "coverage",
+        "evidence"
+      ],
+      "title": "PhoneticResult",
+      "type": "object"
+    },
+    "Practice": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_set_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Anchor Set Version",
+          "type": "string"
+        },
+        "catalog_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Catalog Version",
+          "type": "string"
+        },
+        "conversation_ends_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversation Ends At"
+        },
+        "conversation_started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversation Started At"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "duration_seconds": {
+          "enum": [
+            300,
+            600
+          ],
+          "title": "Duration Seconds",
+          "type": "integer"
+        },
+        "evaluator_version": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evaluator Version"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "A2",
+            "B1",
+            "B2"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason Code"
+        },
+        "report_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Report Id"
+        },
+        "state_version": {
+          "minimum": 1,
+          "title": "State Version",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "topic_id": {
+          "enum": [
+            "restaurant",
+            "job_interview",
+            "weekend",
+            "travel",
+            "news"
+          ],
+          "title": "Topic Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "created_at",
+        "level",
+        "topic_id",
+        "duration_seconds",
+        "status",
+        "state_version",
+        "catalog_version",
+        "anchor_set_version"
+      ],
+      "title": "Practice",
+      "type": "object"
+    },
+    "PracticeSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_availability": {
+          "enum": [
+            "available",
+            "unavailable"
+          ],
+          "title": "Audio Availability",
+          "type": "string"
+        },
+        "date": {
+          "format": "date-time",
+          "title": "Date",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "A2",
+            "B1",
+            "B2"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "report_available": {
+          "title": "Report Available",
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "topic_id": {
+          "enum": [
+            "restaurant",
+            "job_interview",
+            "weekend",
+            "travel",
+            "news"
+          ],
+          "title": "Topic Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "date",
+        "topic_id",
+        "level",
+        "status",
+        "report_available",
+        "audio_availability"
+      ],
+      "title": "PracticeSummary",
+      "type": "object"
+    },
+    "Report": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_set_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Anchor Set Version",
+          "type": "string"
+        },
+        "anchor_summary": {
+          "items": {
+            "$ref": "#/$defs/AnchorSummary"
+          },
+          "title": "Anchor Summary",
+          "type": "array"
+        },
+        "categories": {
+          "$ref": "#/$defs/Categories"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "evaluator_version": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Evaluator Version",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "language": {
+          "const": "es",
+          "title": "Language",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "practice_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Practice Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "practice_id",
+        "language",
+        "created_at",
+        "schema_version",
+        "evaluator_version",
+        "anchor_set_version",
+        "categories",
+        "limitations",
+        "anchor_summary"
+      ],
+      "title": "Report",
+      "type": "object"
+    },
+    "RetryCommand": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Operation Id",
+          "type": "string"
+        },
+        "state_version": {
+          "minimum": 1,
+          "title": "State Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "state_version",
+        "operation_id"
+      ],
+      "title": "RetryCommand",
+      "type": "object"
+    },
+    "SoundComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/SoundCounts"
+        },
+        "right": {
+          "$ref": "#/$defs/SoundCounts"
+        },
+        "sound": {
+          "title": "Sound",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sound",
+        "left",
+        "right"
+      ],
+      "title": "SoundComparison",
+      "type": "object"
+    },
+    "SoundCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "detected_errors": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Detected Errors",
+          "type": "integer"
+        },
+        "evaluated_opportunities": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Evaluated Opportunities",
+          "type": "integer"
+        },
+        "not_evaluated_opportunities": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Not Evaluated Opportunities",
+          "type": "integer"
+        }
+      },
+      "title": "SoundCounts",
+      "type": "object"
+    },
+    "StateCommand": {
+      "additionalProperties": false,
+      "properties": {
+        "state_version": {
+          "minimum": 1,
+          "title": "State Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "state_version"
+      ],
+      "title": "StateCommand",
+      "type": "object"
+    },
+    "Status": {
+      "enum": [
+        "ready",
+        "conversation",
+        "anchors",
+        "processing",
+        "recoverable_error",
+        "completed",
+        "incomplete"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "StreamOpen": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Audio Profile Id",
+          "type": "string"
+        },
+        "client_instance_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Client Instance Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "audio_profile_id",
+        "client_instance_id"
+      ],
+      "title": "StreamOpen",
+      "type": "object"
+    },
+    "StreamReady": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Audio Profile Id",
+          "type": "string"
+        },
+        "heartbeat_interval_ms": {
+          "minimum": 0,
+          "title": "Heartbeat Interval Ms",
+          "type": "integer"
+        },
+        "lease_timeout_ms": {
+          "minimum": 0,
+          "title": "Lease Timeout Ms",
+          "type": "integer"
+        },
+        "max_frame_bytes": {
+          "minimum": 0,
+          "title": "Max Frame Bytes",
+          "type": "integer"
+        },
+        "output_sample_rate_hz": {
+          "minimum": 0,
+          "title": "Output Sample Rate Hz",
+          "type": "integer"
+        },
+        "stream_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Stream Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stream_id",
+        "audio_profile_id",
+        "heartbeat_interval_ms",
+        "lease_timeout_ms",
+        "max_frame_bytes",
+        "output_sample_rate_hz"
+      ],
+      "title": "StreamReady",
+      "type": "object"
+    },
+    "Topic": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "restaurant",
+            "job_interview",
+            "weekend",
+            "travel",
+            "news"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "label_es": {
+          "title": "Label Es",
+          "type": "string"
+        },
+        "objectives_by_level": {
+          "$ref": "#/$defs/ObjectivesByLevel"
+        }
+      },
+      "required": [
+        "id",
+        "label_es",
+        "objectives_by_level"
+      ],
+      "title": "Topic",
+      "type": "object"
+    },
+    "TopicObjectives": {
+      "additionalProperties": false,
+      "properties": {
+        "scenario_en": {
+          "title": "Scenario En",
+          "type": "string"
+        },
+        "starter_questions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Starter Questions",
+          "type": "array"
+        },
+        "structures": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Structures",
+          "type": "array"
+        },
+        "vocabulary": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Vocabulary",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scenario_en",
+        "vocabulary",
+        "structures",
+        "starter_questions"
+      ],
+      "title": "TopicObjectives",
+      "type": "object"
+    },
+    "Turn": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Id"
+        },
+        "end_ms": {
+          "minimum": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "heard_until_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heard Until Ms"
+        },
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "practice_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Practice Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "speaker": {
+          "enum": [
+            "student",
+            "tutor"
+          ],
+          "title": "Speaker",
+          "type": "string"
+        },
+        "start_ms": {
+          "minimum": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "partial",
+            "final",
+            "interrupted"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "word_confidence": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Word Confidence"
+        }
+      },
+      "required": [
+        "id",
+        "practice_id",
+        "sequence",
+        "speaker",
+        "text",
+        "status",
+        "start_ms",
+        "end_ms"
+      ],
+      "title": "Turn",
+      "type": "object"
+    }
+  },
+  "$id": "https://habla.local/contracts/v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
