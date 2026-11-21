@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>¡Habla! — MVP del flujo de voz</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; display: flex; height: 100vh; background: #f6f6f4; color: #222; }
+    aside { width: 260px; padding: 24px; display: flex; flex-direction: column; gap: 16px; border-right: 1px solid #ddd; }
+    button { font-size: 18px; padding: 14px; border: 0; border-radius: 8px; background: #2563eb; color: #fff; cursor: pointer; }
+    button.stop { background: #b91c1c; }
+    #state { font-size: 14px; color: #555; }
+    #state b { color: #111; }
+    main { flex: 1; padding: 24px; overflow-y: auto; }
+    .msg { max-width: 70ch; margin: 0 0 12px; padding: 10px 14px; border-radius: 10px; line-height: 1.4; }
+    .student { background: #dbeafe; margin-left: auto; }
+    .tutor { background: #fff; border: 1px solid #e5e5e5; }
+    .who { font-size: 12px; color: #666; margin-bottom: 4px; }
+    .meta { font-size: 11px; color: #888; margin-top: 4px; }
+    .error { background: #fee2e2; }
+  </style>
+</head>
+<body>
+  <aside>
+    <h2 style="margin:0">¡Habla!</h2>
+    <button id="toggle">Empezar</button>
+    <div id="state">Estado: <b>detenido</b></div>
+    <div id="config" class="meta"></div>
+  </aside>
+  <main id="log"></main>
+  <script src="app.js"></script>
+</body>
+</html>
