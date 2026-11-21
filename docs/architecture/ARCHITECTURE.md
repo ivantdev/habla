@@ -132,12 +132,15 @@ flowchart LR
     UI["Frontend React<br/>Pantallas de HABLA"]
     CLIENT["Cliente HTTP<br/>JSON Schema v1"]
     STREAM["Canal de audio<br/>Cliente WebSocket"]
+    PLAYER["Reproductor del navegador<br/>Muestras y referencias"]
     UI --> CLIENT
     UI --> STREAM
+    UI --> PLAYER
   end
   VITE["Vite · puerto 3000<br/>Assets y proxy"]
-  CLIENT <-->|"HTTP /api/v1<br/>JSON · multipart · WAV"| VITE
+  CLIENT <-->|"HTTP /api/v1<br/>JSON y multipart"| VITE
   STREAM <-->|"WebSocket<br/>Eventos JSON y PCM"| VITE
+  PLAYER <-->|"HTTP GET<br/>Audio WAV"| VITE
   subgraph backend["FastAPI · 127.0.0.1:8000"]
     API["Entrada FastAPI<br/>DTO · origen · acceso"]
     ID["Identidad base<br/>Usuario y consentimiento"]
@@ -147,13 +150,12 @@ flowchart LR
     HISTORY["Historial y comparación<br/>Conteos por sonido"]
     AUDIO["Gestor de audio<br/>Acceso y limpieza"]
     STORE["Persistencia<br/>Estados y registros"]
-    API --> ID
+    API -->|"Al iniciar"| ID
     API --> ORCH
     API --> HISTORY
     API --> AUDIO
-    ORCH -->|"Tareas asíncronas"| SIM
-    SIM -->|"Borrador y evidencia"| REPORT
-    ORCH -->|"Valida antes de publicar"| REPORT
+    ORCH <-->|"Llamadas asíncronas y resultados"| SIM
+    ORCH -->|"Borrador y evidencia"| REPORT
     ORCH --> AUDIO
     ORCH --> STORE
     HISTORY --> STORE
@@ -171,12 +173,14 @@ flowchart LR
   classDef implemented fill:#f0f5ea,stroke:#699254,color:#243d31
   classDef simulated fill:#fff1df,stroke:#c29961,color:#694b25
   classDef storage fill:#eef2f7,stroke:#8ca2b7,color:#34495c
-  class UI,CLIENT,STREAM,VITE,API,ID,ORCH,REPORT,HISTORY,AUDIO,STORE implemented
+  class UI,CLIENT,STREAM,PLAYER,VITE,API,ID,ORCH,REPORT,HISTORY,AUDIO,STORE implemented
   class SIM simulated
   class DB,FILES,CORPUS storage
   style browser fill:#f6f9f2,stroke:#d8e4ce,color:#243d31
   style backend fill:#fafcf8,stroke:#cbdac0,color:#243d31
 ```
+
+El canal `/api/v1/practices/:id/stream` transporta eventos y audio de la conversación. Los reproductores usan HTTP GET a `/api/v1/audio/:id` para muestras y a `/api/v1/references/:id` para referencias. El orquestador recoge el borrador y la evidencia de los adaptadores, llama al validador y guarda el informe validado antes de la limpieza y la publicación.
 
 ### Correspondencia con el código
 
@@ -185,6 +189,7 @@ flowchart LR
 | Interfaz React | [main.jsx](../../web/src/main.jsx), [Practice.jsx](../../web/src/Practice.jsx), [History.jsx](../../web/src/History.jsx) | Navegación, selección, conversación, anclas, informe, historial y comparación. |
 | Cliente HTTP y esquemas | [api.js](../../web/src/api.js), [contract.js](../../web/src/contract.js), [v1.json](../../contracts/v1.json) | Peticiones al mismo origen y comprobación del contrato compartido. |
 | Canal del navegador | [fixture-stream.js](../../web/src/fixture-stream.js) | Eventos de control, frames sintéticos y reproducción de la generación vigente. |
+| Reproductores de WAV | [Practice.jsx](../../web/src/Practice.jsx), [History.jsx](../../web/src/History.jsx) | Lectura HTTP de las muestras guardadas y las referencias del catálogo. |
 | Proxy de desarrollo | [vite.config.js](../../vite.config.js) | Sirve la web y reenvía HTTP y WebSocket a FastAPI. |
 | Entrada y canal de servidor | [app.py](../../habla/app.py), [ws.py](../../habla/ws.py), [channel.py](../../habla/channel.py) | Rutas, negociación y validación de origen, DTO, eventos y cabecera binaria. |
 | Identidad base | [identity.py](../../habla/identity.py) | Actor y consentimiento sembrados de D-18. |
