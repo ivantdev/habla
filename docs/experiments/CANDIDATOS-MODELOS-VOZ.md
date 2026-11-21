@@ -2,6 +2,8 @@
 
 **Estado:** borrador para discutir con Ivan (C); **no hay decisión tomada**. **Responsable:** Nicolás (B), con Ivan (C); la elección se registra en ADR-004. **Bloquea:** G1 (un turno hablado real). **Spec:** [SPEC-05](../specs/SPEC-05-voice-conversation.md), pregunta S05-P-02.
 
+La parte no escuchada y el historial están propuestos en POL-11 y POL-12 de la [política del tutor](../content/POLITICA-TUTOR.md). El análisis de latencia del turno completo y de la ventana de contexto está en [LATENCIA-Y-CONTEXTO-VOZ.md](LATENCIA-Y-CONTEXTO-VOZ.md).
+
 La spec pide ASR, modelo de lenguaje, TTS y VAD **abiertos si resultan viables**, y que acceso a GPU, memoria y soporte real se prueben. Esta tabla reúne candidatos con los datos que hay que verificar antes de elegir; no sustituye las mediciones en las GPU.
 
 **Fecha de consulta:** 2026-11-08. Las licencias y tamaños proceden de búsquedas web, en su mayoría de fuentes secundarias. **Antes de adoptar un modelo, confirma su licencia en el archivo `LICENSE` o la ficha oficial** (RT-01, RT-07 piden documentar licencias). Lo marcado «por verificar» no se comprobó.
