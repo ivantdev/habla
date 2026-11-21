@@ -253,4 +253,6 @@ Revisión de los JSON de ambas corridas, sin mediciones nuevas:
 - **Audio de 5,2 s como máximo.** Un estudiante L2 puede hablar 10–15 s, y Whisper sin streaming procesa todo el clip al final del turno.
 - **El historial empieza con el estudiante,** sin el saludo de apertura del tutor. No afecta a los tiempos, pero la conversación simulada es poco realista.
 
-**Siguientes medidas propuestas:** frases del estudiante variadas, para romper el bucle; TTS sobre frases del tutor de longitud realista; Kokoro en GPU y en paralelo con la decodificación; una corrida con el evaluador cargado; y el barrido de la espera de silencio con grabaciones reales (sección 6, punto 2), que es el tramo mayor y sigue siendo un supuesto.
+**Prueba de calidad y latencia (2026-11-20):** la conversación sin bucle y los casos TUT con contexto creciente están en [CALIDAD-Y-LATENCIA-TUTOR.md](CALIDAD-Y-LATENCIA-TUTOR.md). Confirma la latencia plana con caché y muestra que mover el bloque de fase después del historial también mejora la calidad del cierre.
+
+**Siguientes medidas propuestas:** frases del estudiante variadas, para romper el bucle (hecho en la prueba de calidad); TTS sobre frases del tutor de longitud realista; Kokoro en GPU y en paralelo con la decodificación; una corrida con el evaluador cargado; y el barrido de la espera de silencio con grabaciones reales (sección 6, punto 2), que es el tramo mayor y sigue siendo un supuesto.

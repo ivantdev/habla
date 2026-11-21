@@ -267,4 +267,4 @@ Se reportan los conteos junto a cada porcentaje, el modelo, su cuantización y `
 - Acuerdo con Sebastián sobre la ventana de cierre y el tiempo tras la despedida (S04-P-01).
 - ADR-004: modelo de lenguaje y TTS, conversión de `heard_until_ms` a texto, regla de recorte del historial y voz del mensaje de crisis.
 - Las fichas de los otros cuatro temas ([FICHAS.md](FICHAS.md)).
-- Banco de pruebas que ejecute estos casos contra el modelo elegido (tarea aparte).
+- Banco de pruebas que ejecute estos casos contra el modelo elegido (tarea aparte). Primera corrida con Qwen3 8B en [CALIDAD-Y-LATENCIA-TUTOR.md](../experiments/CALIDAD-Y-LATENCIA-TUTOR.md) (2026-11-20): TUT-08, TUT-11, TUT-15 y TUT-21 fallan, y POL-10 no se cumple con este modelo y prompt.

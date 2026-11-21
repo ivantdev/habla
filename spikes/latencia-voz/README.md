@@ -41,6 +41,21 @@ Corrida de 100 turnos del 2026-11-18 en una RTX 5060 Ti de 16 GB. El contexto cr
 - Las etapas se miden en secuencia. No hay ASR incremental, ni LLM decodificando mientras el TTS sintetiza, ni evaluador cargado.
 - El audio del estudiante es sintético y dura como mucho 5,2 s.
 
+## Prueba conjunta de calidad y latencia
+
+`calidad.py` reutiliza las funciones de `bench.py` para evaluar la **calidad** de las respuestas del tutor junto a su latencia. Funciona en dos pasos:
+
+1. Arma una conversación base realista de 28 turnos con la ruta completa.
+2. En tres puntos de esa conversación (temprano, medio y final) lanza los casos TUT de la [política del tutor](../../docs/content/POLITICA-TUTOR.md#6-casos-de-prueba), 3 veces cada uno.
+
+Guarda el texto completo de cada respuesta, comprobaciones automáticas y un informe Markdown para la revisión manual. Necesita los mismos servidores que el banco:
+
+```bash
+~/modelos-habla/venv/bin/python calidad.py --label "5060ti-qwen3-8b-q4km-calidad"
+```
+
+Resultados y análisis: [CALIDAD-Y-LATENCIA-TUTOR.md](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md).
+
 ## Replicación
 
 ### Entorno de la medición original

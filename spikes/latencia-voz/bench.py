@@ -129,7 +129,7 @@ def llm(client, url, messages, cache_prompt, max_tokens):
     }
     t = time.perf_counter()
     first_token = first_sentence = None
-    text, timings, usage = "", None, None
+    text, timings, usage, finish = "", None, None, None
     with client.stream("POST", f"{url}/v1/chat/completions", json=body) as r:
         r.raise_for_status()
         for line in r.iter_lines():
@@ -139,6 +139,7 @@ def llm(client, url, messages, cache_prompt, max_tokens):
             timings = ev.get("timings", timings)
             usage = ev.get("usage") or usage
             for ch in ev.get("choices", []):
+                finish = ch.get("finish_reason") or finish
                 piece = (ch.get("delta") or {}).get("content") or ""
                 if not piece:
                     continue
@@ -155,6 +156,8 @@ def llm(client, url, messages, cache_prompt, max_tokens):
         "text": text, "first_sentence_text": sentence,
         "ttft_ms": first_token, "first_sentence_ms": first_sentence or total, "total_ms": total,
         "prompt_tokens": (usage or {}).get("prompt_tokens"),
+        "completion_tokens": (usage or {}).get("completion_tokens"),
+        "finish_reason": finish,
         "prompt_n": (timings or {}).get("prompt_n"),
         "prompt_ms": (timings or {}).get("prompt_ms"),
         "cache_n": (timings or {}).get("cache_n"),
