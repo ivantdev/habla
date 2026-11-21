@@ -47,7 +47,7 @@ Corrida de 100 turnos del 2026-11-18 en una RTX 5060 Ti de 16 GB. El contexto cr
 
 | Elemento | Versión |
 | --- | --- |
-| Equipo | 2× RTX 5060 Ti de 16 GB (solo se usa la GPU 0), 24 hilos de CPU, 26 GB de RAM |
+| Equipo | 2× RTX 5060 Ti de 16 GB (solo se usa la GPU 0), AMD Ryzen 9 7900X (24 hilos), 26 GB de RAM |
 | Sistema | Linux, controlador NVIDIA 595.99.02, CUDA 13.1 (`nvcc` V13.1.115) |
 | llama.cpp | `e4b620af19f02960dea7a3a81de7c5805aa3a333` |
 | whisper.cpp | `6680804f99c3982b7d59f27ae315ce880570017e` |
@@ -137,3 +137,66 @@ Otros parámetros: `--hangover-ms`, `--channel-ms`, `--max-tokens` (120) y `--mo
 - El LLM usa temperatura 0,7 sin semilla fija: las respuestas y los milisegundos varían entre corridas. Con la misma GPU, los p50 deberían quedar a unos pocos ms de la tabla.
 - En otra GPU cambian los tramos de ASR, prefill y decodificación. Los TTS en CPU dependen del procesador.
 - Para comprobar que la caché funciona, mira `cache_n` en el JSON: con caché debe crecer turno a turno, y sin caché debe ser 0.
+
+## Probar en otro hardware
+
+Esta sección reúne lo que hay que tener en cuenta para medir en otro equipo, por ejemplo el PC de demo (RTX 4090 + RTX 5090) o uno con Windows. El objetivo es que los números sean **comparables**: si algo cambia respecto a la medición original, se anota junto a los resultados.
+
+### GPU y CUDA
+
+- **Arquitectura de compilación.** `CMAKE_CUDA_ARCHITECTURES` debe coincidir con la GPU. Puedes consultarla con `nvidia-smi --query-gpu=name,compute_cap --format=csv`: `12.0` se compila como `120`.
+
+  | Serie | Valor |
+  | --- | --- |
+  | RTX 50 (5060 Ti, 5090) | `120` |
+  | RTX 40 (4090) | `89` |
+  | RTX 30 | `86` |
+
+  Con dos GPU de series distintas, compila para ambas: `-DCMAKE_CUDA_ARCHITECTURES="89;120"`. Si la arquitectura no coincide, el servidor falla al arrancar o no usa la GPU.
+- **Versión de CUDA.** Las RTX serie 50 necesitan CUDA 12.8 o posterior; la medición original usó CUDA 13.1. El controlador debe ser compatible con esa versión: `nvidia-smi` muestra en la cabecera la versión máxima que admite.
+- **Elegir la GPU.** `CUDA_VISIBLE_DEVICES` usa el orden de CUDA, que puede no coincidir con el de `nvidia-smi`. Para que coincidan, exporta también `CUDA_DEVICE_ORDER=PCI_BUS_ID`. Comprueba en el registro del servidor (`ggml_cuda_init: found 1 CUDA devices`) que cargó en la GPU esperada.
+- **Memoria.** Whisper y Qwen3 con contexto de 8192 ocupan unos 8 GB. En una GPU con menos memoria, no bajes `-ngl`: el modelo pasa en parte a la CPU, es mucho más lento y deja de ser comparable. Es mejor usar un modelo más pequeño y anotarlo.
+- **Que la GPU esté libre.** Cierra juegos, navegadores con aceleración y otros modelos. En dos GPU, la ruta de voz va en una y el evaluador en la otra (sección 4 del análisis). Si se prueba con el evaluador cargado, se indica en `--label`.
+
+### CPU, energía y sistema
+
+- **Los TTS corren en CPU,** así que sus tiempos dependen del procesador: anota el modelo de CPU. En portátiles, mide enchufado y en modo de máximo rendimiento. El ahorro de energía puede duplicar los tiempos.
+- **No ejecutes otras cargas pesadas durante la corrida:** compilaciones, descargas o videollamadas.
+- **Windows.** El banco funciona igual, pero cambian los comandos:
+  - Para compilar se necesitan Visual Studio con C++ y el CUDA Toolkit; WSL2 con CUDA es una alternativa.
+  - Las variables de entorno se escriben `$env:CUDA_VISIBLE_DEVICES=0` en PowerShell, y Python está en `venv\Scripts\python.exe`.
+  - Si usas los binarios precompilados de las páginas de *releases* de llama.cpp o whisper.cpp, anota su versión (`llama-server --version`), porque no será el commit fijado.
+- **Puertos.** Si 8081 u 8082 están ocupados, arranca los servidores en otros puertos y pásalos con `--llm-url` y `--whisper-url`.
+
+### Modelos y descargas
+
+- **Espacio:** unos 7 GB de modelos, 0,8 GB de las compilaciones y 0,2 GB del entorno de Python. Deja margen: llama.cpp y whisper.cpp generan más archivos si compilas más objetivos.
+- **Descargas grandes.** El GGUF de Qwen3 pesa 5 GB. Si se corta, reanuda con `curl -L -C - -O <url>`. Verifica siempre con `SHA256SUMS`: una descarga incompleta carga mal o falla al arrancar.
+- **Mismos archivos, misma medición.** Otra cuantización (por ejemplo `Q5_K_M`), otro Whisper (`large-v3` en lugar de `turbo`) u otra voz cambian los tiempos. Si los cambias a propósito, refléjalo en `--label`.
+- **Cambiar de LLM.** Basta con arrancar `llama-server` con otro GGUF y `--jinja`. Ten en cuenta dos cosas:
+  - `enable_thinking: false` es propio de Qwen3; otros modelos lo ignoran.
+  - Si un modelo razona, `llama-server` puede enviar ese texto por separado (`reasoning_content`), que el banco no lee. El primer token aparecería muy tarde sin explicación. Revisa en el JSON que `ttft_ms` sea coherente y que `first_sentence_text` sea una respuesta real.
+- **Contexto.** `-c 8192` cubre de sobra 100 turnos (≈ 4900 tokens). Si haces corridas más largas, súbelo. Al llenarse, según la versión, el servidor recorta el contexto (y se pierde la caché) o rechaza la petición.
+
+### Dependencias de Python
+
+- **Usa Python 3.11.** `piper-tts` y `onnxruntime` publican paquetes binarios por versión de Python. Con otra versión, la instalación puede fallar o compilar desde el código fuente.
+- **Instala con las versiones fijadas** de `requirements.txt`. Una versión distinta de `onnxruntime` cambia los tiempos de Kokoro.
+- **Kokoro en GPU** necesita `onnxruntime-gpu` en lugar de `onnxruntime` (no instales ambos), con versiones de CUDA y cuDNN compatibles. Además hay que pasarle el proveedor CUDA a `kokoro-onnx`. Es otra configuración: no la mezcles con resultados en CPU sin indicarlo.
+- **La primera ejecución tras instalar** suele ser más lenta, porque el sistema aún no tiene los modelos en la caché de disco. El banco hace un calentamiento antes de medir, pero conviene descartar esa primera corrida.
+
+### Qué registrar con cada corrida
+
+El JSON guarda los parámetros, los resultados por turno y la memoria de cada GPU (`nvidia-smi`). Lo demás se anota a mano junto a los resultados, en la sección 7 del análisis o en el pull request:
+
+| Dato | Cómo obtenerlo |
+| --- | --- |
+| GPU, controlador y CUDA | `nvidia-smi`, `nvcc --version` |
+| CPU y RAM | `lscpu` o `/proc/cpuinfo`, `free -g` (en Windows, el Administrador de tareas) |
+| Sistema operativo | `uname -a` o `winver` |
+| Versiones de los servidores | `llama-server --version` y el commit de whisper.cpp (`git -C whisper.cpp log -1`) |
+| Modelos | Resultado de `sha256sum -c SHA256SUMS` |
+| Flags de arranque | Los de la sección 3 de la replicación, si cambiaste alguno |
+| Carga paralela | Si había evaluador u otro modelo en la GPU |
+
+Usa un `--label` que identifique el equipo y los modelos, por ejemplo `4090-qwen3-8b-q4km-whisper-turbo-100`. Para comparar con la medición original, mantén `--turns 100`, `--hangover-ms 600`, `--channel-ms 85` y `--max-tokens 120`. Como no hay semilla fija, ejecuta al menos dos corridas y reporta ambas.
