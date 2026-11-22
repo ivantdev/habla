@@ -56,6 +56,23 @@ Guarda el texto completo de cada respuesta, comprobaciones automáticas y un inf
 
 Resultados y análisis: [CALIDAD-Y-LATENCIA-TUTOR.md](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md).
 
+Para repetir solo algunos casos con más muestras, usa `--reps` y `--probes` (TUT-16 necesita TUT-15):
+
+```bash
+~/modelos-habla/venv/bin/python calidad.py --reps 10 --probes TUT-06,TUT-10,TUT-11,TUT-15,TUT-21,TUT-21-fase-al-final --label "<etiqueta>-dirigida"
+```
+
+## Micro-banco de configuraciones del servidor
+
+`perfil.py` compara opciones de `llama-server` sin lanzar la prueba completa. Repite turnos de la conversación base de una corrida de `calidad.py` contra el servidor arrancado y separa los turnos **incrementales** (solo añaden la última intervención, el caso real) de los **saltos** (recalculan casi todo el historial). Mide prefill, primer token, primera frase, tokens/s, aceptación de la decodificación especulativa, respuestas vacías y, con `--pid-file`, la RAM del servidor:
+
+```bash
+~/modelos-habla/venv/bin/python perfil.py --from out/calidad-<fecha>.json --label G0 \
+  --turns 1,2,3,4,5,6,7,26,27 --reps 3 --pid-file ~/modelos-habla/llama-server.pid
+```
+
+Así se eligió la configuración del Gemma 4 31B: ver la [§9 de calidad y latencia](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md#9-configuración-optimizada-de-gemma-4-31b-y-qwen38-27b-2026-11-22). `bench.py` guarda ahora `draft_n` y `draft_n_accepted` cuando hay decodificación especulativa.
+
 ## Replicación
 
 ### Entorno de la medición original
@@ -191,6 +208,11 @@ Esta sección reúne lo que hay que tener en cuenta para medir en otro equipo, p
 - **Cambiar de LLM.** Basta con arrancar `llama-server` con otro GGUF y `--jinja`. Ten en cuenta dos cosas:
   - `enable_thinking: false` es propio de Qwen3; otros modelos lo ignoran.
   - Si un modelo razona, `llama-server` puede enviar ese texto por separado (`reasoning_content`), que el banco no lee. El primer token aparecería muy tarde sin explicación. Revisa en el JSON que `ttft_ms` sea coherente y que `first_sentence_text` sea una respuesta real.
+  - Con modelos de atención de ventana deslizante (SWA), como Gemma 4, arranca `llama-server` con `--swa-full`. Sin esa opción, cada petición guarda copias de la caché en la RAM: añade cientos de milisegundos por turno y, con modelos grandes, puede agotar la memoria. Ver la [§8.2 de calidad y latencia](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md#82-diagnóstico-checkpoints-de-la-caché-swa-en-gemma-4).
+  - En modelos híbridos con estado recurrente, como Qwen3.8 (`qwen35`), no hay equivalente a `--swa-full`: el servidor guarda checkpoints del estado en cada petición. Limítalos con `-ctxcp 4` para que no crezca la RAM; `-ctxcp 0` obliga a recalcular todo el historial en cada turno.
+  - Si las respuestas salen vacías con `finish_reason = stop`, prueba `--no-reasoning-preserve`: algunas plantillas reescriben un bloque de razonamiento vacío en cada respuesta anterior y el modelo lo imita.
+  - Para acelerar la decodificación con dos GPU, prueba `-sm tensor -fa on` y la decodificación especulativa `--spec-type draft-mtp` (con `-md <cabezal>.gguf` si el modelo no la trae integrada). Comprueba la tasa de aceptación con `perfil.py`.
+  - Algunas plantillas de chat no aceptan un mensaje `system` después del historial, que `calidad.py` usa en la variante de fase al final. Pasa con la de Qwen3.8 y da un error 500; revisa el prompt armado con `POST /apply-template`.
 - **Contexto.** `-c 8192` cubre de sobra 100 turnos (≈ 4900 tokens). Si haces corridas más largas, súbelo. Al llenarse, según la versión, el servidor recorta el contexto (y se pierde la caché) o rechaza la petición.
 
 ### Dependencias de Python

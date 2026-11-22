@@ -162,6 +162,9 @@ def llm(client, url, messages, cache_prompt, max_tokens):
         "prompt_ms": (timings or {}).get("prompt_ms"),
         "cache_n": (timings or {}).get("cache_n"),
         "predicted_per_second": (timings or {}).get("predicted_per_second"),
+        # Solo con decodificación especulativa (--spec-type); None en otro caso.
+        "draft_n": (timings or {}).get("draft_n"),
+        "draft_n_accepted": (timings or {}).get("draft_n_accepted"),
     }
 
 

@@ -190,7 +190,18 @@ def main():
     ap.add_argument("--hangover-ms", type=float, default=600)
     ap.add_argument("--channel-ms", type=float, default=85)
     ap.add_argument("--label", default="")
+    ap.add_argument("--probes", default="",
+                    help="IDs de casos separados por comas (por defecto, todos). TUT-16 requiere TUT-15.")
     args = ap.parse_args()
+    probes = PROBES
+    if args.probes:
+        wanted = {x.strip() for x in args.probes.split(",") if x.strip()}
+        unknown = wanted - {p["id"] for p in PROBES}
+        if unknown:
+            ap.error(f"casos desconocidos: {', '.join(sorted(unknown))}")
+        if "TUT-16" in wanted and "TUT-15" not in wanted:
+            ap.error("TUT-16 parte de la respuesta a TUT-15: incluye los dos")
+        probes = [p for p in PROBES if p["id"] in wanted]
 
     from piper import PiperVoice
     student_voice = PiperVoice.load(str(args.models / "en_US-ryan-medium.onnx"))
@@ -232,7 +243,7 @@ def main():
         for name, (base, texts) in snapshots.items():
             for rep in range(args.reps):
                 crisis = None
-                for probe in PROBES:
+                for probe in probes:
                     r = run_probe(client, args, tts, base, probe, texts, crisis)
                     if probe["id"] == "TUT-15":
                         crisis = r["text"]
