@@ -48,3 +48,20 @@ Para cambios de código, ejecuta las comprobaciones pertinentes a las rutas afec
 Relaciona los cambios con los criterios de la spec afectada y registra su evidencia; marca como satisfechos únicamente los criterios efectivamente comprobados.
 
 Al entregar un cambio, indica qué verificaste y qué quedó sin comprobar. No presentes una comprobación no ejecutada como aprobada.
+
+Para el [spike full duplex](spikes/full-duplex/README.md), comprueba sintaxis con
+`bash -n spikes/full-duplex/setup.sh spikes/full-duplex/run.sh` y
+`python -m compileall -q spikes/full-duplex`. La comprobación con pesos
+reales y GPU tiene su comando y sus límites en ese README; no equivale a aprobar
+calidad bilingüe ni criterios de producto.
+Para [Sophon](spikes/full-duplex/SOPHON.md), ejecuta también
+`bash -n spikes/full-duplex/setup_sophon.sh spikes/full-duplex/run_sophon.sh`;
+sus comprobaciones de dependencias y arranque están en ese documento.
+El banco ampliado de Sophon fija casos antes de medir y registra su protocolo
+en [SOPHON-PROTOCOLO.md](docs/experiments/SOPHON-PROTOCOLO.md). Sus comandos
+`bench_sophon.py`, `policy_sophon.py`, `instructions_sophon.py` y
+`turns_sophon.py` están en `spikes/full-duplex/`; requieren el servidor listo
+y se ejecutan de uno en uno, sin una conversación web simultánea. La prueba
+opcional `check_sophon_web.py` usa Playwright con micrófono simulado; instalación
+y comando están en [SOPHON.md](spikes/full-duplex/SOPHON.md#repetir-los-bancos-ampliados).
+No equivale a comprobar micrófono físico, altavoz ni cumplimiento humano del tutor.

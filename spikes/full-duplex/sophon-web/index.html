@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prueba de Sophon 4B Flash</title>
+<style>
+  body {
+    font: 17px system-ui;
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #101820;
+    color: #eff4f8
+  }
+
+  button,
+  select,
+  textarea {
+    font: inherit;
+    padding: 10px;
+    margin: 8px 8px 8px 0
+  }
+
+  textarea {
+    width: 95%;
+    min-height: 220px
+  }
+
+  button {
+    cursor: pointer
+  }
+
+  meter {
+    width: 180px
+  }
+
+  pre {
+    white-space: pre-wrap;
+    background: #1e2b38;
+    padding: 16px;
+    min-height: 80px
+  }
+
+  small {
+    display: block;
+    color: #c0ceda;
+    line-height: 1.5
+  }
+
+  #status {
+    padding: 12px 0
+  }
+</style>
+<h1>Sophon-Realtime 4B Flash</h1>
+<p>Habla con auriculares. No necesitas subir audio ni clonar una voz.</p>
+<label>Perfil <select id="profile">
+    <option value="tutor">Tutor ¡Habla! — política v1, restaurante B1</option>
+    <option value="free">Conversación libre — inglés/español</option>
+  </select></label>
+<label>Conversación <select id="language">
+    <option value="en">Inglés</option>
+    <option value="es">Español (experimental)</option>
+  </select></label>
+<label>Voz <select id="voice">
+    <option value="chelsie_en">Chelsie</option>
+    <option value="brand_en">Brand</option>
+  </select></label>
+<label for="instructions">Instrucciones personalizadas para el modelo</label>
+<textarea id="instructions" spellcheck="false"></textarea>
+<small>Puedes cambiar tema, nivel, personalidad y reglas antes de iniciar. El ejemplo pide iniciativa y una pregunta por turno. Al cambiar idioma se carga un ejemplo nuevo.</small>
+<small>El perfil tutor practica inglés y reserva las correcciones para después de la charla. Terminar apaga el micrófono y cierra la sesión.</small>
+<small>La conversación libre en español es experimental. Para probarla, selecciona español antes de iniciar otra sesión y evalúa por separado comprensión y voz.</small>
+<button id="start" disabled>Iniciar conversación</button><button id="stop" disabled>Terminar</button>
+<button id="export">Descargar métricas</button>
+<div id="status">Servidor cargando o sin conectar.</div><label>Micrófono <meter id="level" min="0" max="0.15"
+    value="0"></meter></label>
+<p id="latency">Respuesta audible estimada: pendiente.</p>
+<small>Estimación desde la última muestra que supera el umbral de energía hasta la reproducción programada. Incluye
+  búfer y latencias reportadas por el navegador. Requiere revisar la grabación para una medición formal por turno; no es
+  una prueba de 100 turnos.</small>
+<pre id="text"></pre>
+<script>
+  const $ = id => document.getElementById(id);
+  let ws, ctx, stream, node, source, mute, playAt = 0, active = new Set(), running = false, rows = [];
+  let lastVoice = null, waiting = false, firstForResponse = false, session = null;
+  let prompts = null;
+  fetch('prompts.json').then(r => {
+    if (!r.ok) throw Error('No se pudieron cargar las instrucciones.');
+    return r.json();
+  }).then(p => {
+    prompts = p; loadPrompt(); $('start').disabled = false;
+  }).catch(e => { $('status').textContent = e.message; });
+  function send(x) { if (ws?.readyState === 1) ws.send(JSON.stringify(x)); }
+  function base64(bytes) { let s = ''; for (let i = 0; i < bytes.length; i += 8192)s += String.fromCharCode(...bytes.subarray(i, i + 8192)); return btoa(s); }
+  function clearAudio() { for (const n of active) { try { n.stop(); } catch { } } active.clear(); if (ctx) playAt = ctx.currentTime; }
+  async function stop(message = 'Conversación terminada.') {
+    running = false; send({ type: 'session.close' });
+    if (ws) { ws.onclose = null; ws.onerror = null; ws.close(); }
+    clearAudio();
+    node?.disconnect(); source?.disconnect(); mute?.disconnect(); stream?.getTracks().forEach(t => t.stop());
+    if (ctx && ctx.state !== 'closed') await ctx.close();
+    for (const id of ['profile', 'language', 'voice', 'instructions']) $(id).disabled = false;
+    $('language').disabled = $('profile').value === 'tutor';
+    $('start').disabled = !prompts; $('stop').disabled = true; $('status').textContent = message;
+  }
+  function loadPrompt() {
+    if (!prompts) return;
+    const tutor = $('profile').value === 'tutor';
+    if (tutor) $('language').value = 'en';
+    $('language').disabled = tutor;
+    $('instructions').value = tutor ? prompts.tutor : prompts[$('language').value];
+  }
+  $('language').onchange = loadPrompt;
+  $('profile').onchange = loadPrompt;
+  $('start').onclick = async () => {
+    $('start').disabled = true; $('stop').disabled = false;
+    for (const id of ['profile', 'language', 'voice', 'instructions']) $(id).disabled = true;
+    try {
+      ctx = new AudioContext({ sampleRate: 16000 }); await ctx.resume();
+      if (ctx.sampleRate !== 16000) throw Error('El navegador no acepta captura a 16 kHz.');
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      const code = 'class Capture extends AudioWorkletProcessor{process(i,o){const x=i[0]?.[0];if(x)this.port.postMessage(x.slice());return true}}registerProcessor("capture",Capture)';
+      const url = URL.createObjectURL(new Blob([code], { type: 'application/javascript' }));
+      await ctx.audioWorklet.addModule(url); URL.revokeObjectURL(url);
+      node = new AudioWorkletNode(ctx, 'capture'); source = ctx.createMediaStreamSource(stream);
+      mute = ctx.createGain(); mute.gain.value = 0; source.connect(node); node.connect(mute); mute.connect(ctx.destination);
+      let pending = []; let count = 0; lastVoice = null; waiting = false; rows = []; $('text').textContent = '';
+      session = {
+        started_at: new Date().toISOString(), language: $('language').value, voice: $('voice').value,
+        instructions: $('instructions').value, profile: $('profile').value, prompt_version: prompts.version,
+        tutor_policy_version: $('profile').value === 'tutor' ? prompts.tutor_policy_version : null,
+        tutor_source_sha256: $('profile').value === 'tutor' ? prompts.tutor_source_sha256 : null,
+        capture_rate: ctx.sampleRate, output_rate: 24000,
+        energy_threshold: 0.0125, userAgent: navigator.userAgent, track_settings: stream.getAudioTracks()[0].getSettings(),
+        measurement: 'local energy to scheduled playback; approximate; no human VAD reference'
+      };
+      node.port.onmessage = e => {
+        if (!running) return; const x = e.data; let sum = 0; for (const v of x) sum += v * v;
+        const rms = Math.sqrt(sum / x.length); $('level').value = rms;
+        if (rms > 0.0125) { lastVoice = performance.now(); waiting = true; }
+        pending.push(x); count += x.length;
+        if (count >= 1280) {
+          const all = new Float32Array(count); let offset = 0; for (const a of pending) { all.set(a, offset); offset += a.length; }
+          send({ type: 'input_audio_buffer.append', audio: base64(new Uint8Array(all.buffer)), format: 'pcm_f32le', sample_rate_hz: 16000 }); pending = []; count = 0;
+        }
+      };
+      ws = new WebSocket('ws://127.0.0.1:8000/v1/realtime');
+      ws.onopen = () => send({
+        type: 'session.update', session: {
+          modalities: ['audio', 'text'], voice: $('voice').value,
+          input_audio_format: 'pcm_f32le', output_audio_format: 'pcm16', instructions: $('instructions').value,
+          turn_detection: { type: 'server_vad' }, extra_body: { auto_response: true, language: $('language').value }
+        }
+      });
+      ws.onmessage = e => {
+        const ev = JSON.parse(e.data), t = ev.type;
+        if (t === 'session.updated') { running = true; $('status').textContent = 'Escuchando. Ya puedes hablar.'; }
+        if (t === 'response.created') { firstForResponse = true; $('text').textContent += '\n'; }
+        if (t === 'input_audio_buffer.speech_started' || t === 'output_audio_buffer.cleared') clearAudio();
+        if (t === 'response.audio_transcript.delta' || t === 'response.output_audio_transcript.delta' || t === 'response.output_text.delta') $('text').textContent += ev.delta || '';
+        if (t === 'response.done' && ev.response?.status === 'cancelled') clearAudio();
+        if (t === 'response.audio.delta' || t === 'response.output_audio.delta') {
+          const bytes = Uint8Array.from(atob(ev.delta || ev.audio), c => c.charCodeAt(0)); const pcm = new Int16Array(bytes.buffer);
+          const values = Float32Array.from(pcm, v => v / 32768); let peak = 0; for (const v of values) peak = Math.max(peak, Math.abs(v));
+          const buffer = ctx.createBuffer(1, values.length, ev.sample_rate_hz || 24000); buffer.copyToChannel(values, 0);
+          const out = ctx.createBufferSource(); out.buffer = buffer; out.connect(ctx.destination);
+          playAt = Math.max(playAt, ctx.currentTime + 0.04); const start = playAt; out.start(start); playAt += buffer.duration;
+          active.add(out); out.onended = () => active.delete(out);
+          if (firstForResponse && peak > 0.005) {
+            firstForResponse = false;
+            if (waiting && lastVoice !== null) {
+              const audible = performance.now() + (start - ctx.currentTime + ctx.baseLatency + (ctx.outputLatency || 0)) * 1000;
+              const row = {
+                response_id: ev.response_id, last_voice_ms: lastVoice, scheduled_audible_ms: audible,
+                estimated_response_ms: audible - lastVoice, base_latency_s: ctx.baseLatency, output_latency_s: ctx.outputLatency || 0
+              };
+              rows.push(row); waiting = false; $('latency').textContent = `Respuesta audible estimada: ${Math.round(row.estimated_response_ms)} ms (${rows.length} respuestas).`;
+            }
+          }
+        }
+        if (t === 'error') stop('Error de sesión: ' + JSON.stringify(ev.error || ev));
+      };
+      ws.onerror = () => stop('No se pudo conectar. Comprueba que /health en el puerto 8000 esté listo.');
+      ws.onclose = () => stop('El servidor cerró la conexión. Puedes iniciar otra sesión.');
+      $('status').textContent = 'Abriendo sesión…';
+    } catch (e) {
+      await stop(e.name === 'NotAllowedError'
+        ? 'Permite el micrófono desde el icono junto a la dirección y vuelve a iniciar.'
+        : e.name === 'NotFoundError' ? 'No se encontró un micrófono. Conecta uno y vuelve a iniciar.' : e.message);
+    }
+  };
+  $('stop').onclick = () => stop();
+  $('export').onclick = () => {
+    const blob = new Blob([JSON.stringify({ session, rows, tutor_text_received: $('text').textContent,
+      text_definition: 'model output received; may include interrupted or unheard text; not user transcription'
+    }, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'sophon-metrics.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+</script>
+
+</html>
