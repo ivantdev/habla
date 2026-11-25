@@ -52,10 +52,13 @@ def pct(values, q):
 
 
 def gpu_memory():
-    out = subprocess.run(
-        ["nvidia-smi", "--query-gpu=index,name,memory.used,memory.total", "--format=csv,noheader"],
-        capture_output=True, text=True,
-    ).stdout.strip()
+    try:
+        out = subprocess.run(
+            ["nvidia-smi", "--query-gpu=index,name,memory.used,memory.total", "--format=csv,noheader"],
+            capture_output=True, text=True,
+        ).stdout.strip()
+    except FileNotFoundError:  # sin GPU NVIDIA (por ejemplo, en un Mac)
+        return []
     return out.splitlines()
 
 

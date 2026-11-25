@@ -69,6 +69,62 @@ Es el modelo y la configuración que salieron mejor en la [§9 de calidad y late
 
 Es la configuración original del spike y la del [banco de latencia](../latencia-voz/README.md#3-arrancar-los-servidores). Arranca los dos servidores en la GPU 0 como indica ese enlace y después `server.py`. Es rápido, pero **no cumple la política del tutor** en los casos de seguridad: crisis, consulta legal y petición de hablar en español ([§2](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md#2-calidad)).
 
+### Opción C: Gemma 4 12B en un Mac con Apple Silicon
+
+Sirve para desarrollar y hacer demos sin las GPU. Es el mismo modelo de la [§8 de calidad y latencia](../../docs/experiments/CALIDAD-Y-LATENCIA-TUTOR.md#8-comparación-con-otros-modelos-2026-11-22): resuelve bien los casos de español, legal y sentimental, pero **falla la crisis** (TUT-15, 2 de 9). Sus latencias **no son comparables** con las de las GPU.
+
+Requisitos: Apple Silicon con 16 GB o más, macOS 14 o superior, unos 10 GB libres en disco, las Command Line Tools (`xcode-select --install`) y `brew install cmake uv`.
+
+1. **Preparar el equipo** con [`preparar-mac.sh`](preparar-mac.sh). Compila `llama-server` y `whisper-server` con Metal en los commits del banco, descarga los modelos y los comprueba con [`SHA256SUMS-mac`](SHA256SUMS-mac). Después crea el entorno `~/modelos-habla/venv`. Se puede repetir: salta lo que ya está hecho.
+
+   ```bash
+   cd spikes/flujo-agente
+   ./preparar-mac.sh
+   ```
+
+   | Modelo | Tamaño | Para qué |
+   | --- | --- | --- |
+   | `gemma-4-12b-it-Q4_K_M.gguf` | 7,1 GB | LLM del tutor, el mismo GGUF de la §8 |
+   | `mtp-gemma-4-12b-it.gguf` | 0,47 GB | Cabezal MTP para la decodificación especulativa |
+   | `ggml-small.en.bin` | 0,49 GB | Whisper `small.en`, en lugar de `large-v3-turbo`, para ahorrar memoria |
+   | Piper `lessac` y `ryan` | 0,13 GB | Voz del tutor y voz del estudiante sintético de `bench.py` |
+
+2. **Arrancar los servidores** con [`servidores-mac.sh`](servidores-mac.sh). La primera carga tarda unos minutos.
+
+   ```bash
+   ./servidores-mac.sh          # ./servidores-mac.sh stop para apagarlos
+   ```
+
+   Usa la configuración de la §8 (`-ngl 99 -np 1 --jinja --swa-full`), con estos cambios:
+
+   | Cambio | Por qué | Variable |
+   | --- | --- | --- |
+   | Contexto de 4096 en lugar de 8192 | Con `--swa-full`, la caché crece con el contexto; 4096 alcanza para una sesión corta | `CTX` |
+   | `-fa on` y cabezal MTP (`--spec-draft-n-max 3`) | En el Mac, la decodificación es el cuello de botella; en el 31B el MTP subió los tokens/s ≈ 1,7× | `MTP=0` lo desactiva |
+   | Whisper `small.en` | Unos 1–1,5 GB menos que `large-v3-turbo`; transcribe algo peor con acento fuerte | `WHISPER` |
+   | Caché `q8_0` (opcional) | Ahorra memoria si no cabe; no se ha medido su efecto en la calidad | `KV=q8_0` |
+
+   Por defecto, macOS deja a la GPU unos 2/3 de la RAM (≈ 10,7 GB con 16 GB). Si `llama-server` falla al reservar memoria, en este orden:
+
+   - sube el límite hasta el próximo reinicio con `sudo sysctl iogpu.wired_limit_mb=12288`;
+   - o prueba `CTX=2048`, `KV=q8_0` o `MTP=0`.
+
+   Cierra antes las aplicaciones pesadas.
+
+3. **Arrancar la interfaz**, igual que en las otras opciones:
+
+   ```bash
+   ~/modelos-habla/venv/bin/python server.py       # http://127.0.0.1:8000
+   ```
+
+4. **Medir la latencia en el Mac** con el banco, que reutiliza los mismos servidores. Anota el chip (M1, M1 Pro…) en la etiqueta y lee las pautas de [probar en otro hardware](../latencia-voz/README.md#probar-en-otro-hardware). Desde `spikes/latencia-voz/`:
+
+   ```bash
+   ~/modelos-habla/venv/bin/python bench.py --turns 30 --modes cache --label "m1-16gb-gemma4-12b-q4km-mtp-ctx4096-whisper-small"
+   ```
+
+**Qué esperar (estimación, sin medir):** en un M1 base (68 GB/s de memoria), la decodificación de un 12B en 4 bits queda en ≈ 7–9 tokens/s sin MTP. La primera frase tardaría ≈ 2–2,5 s y el total desde el fin de la voz, ≈ 4–5 s. En un M1 Pro (200 GB/s), ≈ 2–2,5 s en total. La apertura de la sesión procesa el prompt completo (≈ 770 tokens) y puede tardar varios segundos; los turnos siguientes usan la caché.
+
 ### En el navegador
 
 Abre `http://127.0.0.1:8000`, pulsa **Empezar** y permite el micrófono. En `localhost` el micrófono funciona sin HTTPS.
@@ -108,3 +164,13 @@ Con la opción A, en el mismo equipo (2× RTX 5060 Ti, perfil `power-saver`).
 
 - **Prueba manual en el navegador con micrófono real**, hecha por Nicolás: la conversación funcionó bien. No se midió de forma sistemática.
 - **Sin comprobar:** otro equipo, ruido de fondo fuerte y sesiones largas cerca del límite de `-c 8192`.
+
+## Prueba en Mac (opción C)
+
+**Pendiente.** Los scripts se escribieron sin un Mac a mano: solo se revisó su sintaxis. No se ha comprobado ningún paso en un equipo real, y estas preguntas siguen abiertas:
+
+- si el commit fijado de llama.cpp compila con Metal y soporta `--swa-full`, `-fa on` y el MTP del 12B en ese backend;
+- cuánta memoria ocupa la configuración por defecto y si cabe sin subir `iogpu.wired_limit_mb`;
+- la latencia real y la ganancia del MTP en el chip concreto.
+
+Al probarlo, registra aquí el chip, la RAM, la versión de macOS, las variables usadas, la memoria que reporta `servidores-mac.sh` y la tabla de `bench.py`.

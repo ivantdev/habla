@@ -91,7 +91,7 @@ Sigue la **opción A** del [README del MVP](../../spikes/flujo-agente/README.md#
 2. Ejecuta `./servidores-gemma.sh`.
 3. Ejecuta `server.py` y abre `http://127.0.0.1:8000` con audífonos.
 
-Necesitas dos GPU de 16 GB. Con una sola, la alternativa es Gemma 4 12B con `--swa-full`, que falla la crisis ([§8](CALIDAD-Y-LATENCIA-TUTOR.md#8-comparación-con-otros-modelos-2026-11-22)).
+Necesitas dos GPU de 16 GB. Con una sola, la alternativa es Gemma 4 12B con `--swa-full`, que falla la crisis ([§8](CALIDAD-Y-LATENCIA-TUTOR.md#8-comparación-con-otros-modelos-2026-11-22)). En un Mac con Apple Silicon de 16 GB, ese mismo 12B se prepara con la [opción C del MVP](../../spikes/flujo-agente/README.md#opción-c-gemma-4-12b-en-un-mac-con-apple-silicon) (sin medir).
 
 ## Lo que sigue abierto
 
